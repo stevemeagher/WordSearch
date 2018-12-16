@@ -34,6 +34,8 @@ namespace Tests
         /// </para>
         private string[,] StringToGrid(string source)
         {
+            if (!source.Contains("|")) throw new ArgumentException("Input not in correct format: did not include any row separator characters.");
+
             string[] rows = source.Split('|');
             int rowCount = rows.Length;
             int columnCount = rows[0].Length;
@@ -66,6 +68,19 @@ namespace Tests
 
             //assert
             Assert.Equal(expeceted, actual);
+
+        }
+
+        [Fact]
+        public void StringToGrid_NoRowDividers_GeneratesArgumentException()
+        {
+            //arrange
+            string source = "ABCDEFGHI";
+            string expectedMessage = "Input not in correct format: did not include any row separator characters.";
+
+            //act & assert
+            var exception = Assert.Throws<ArgumentException>(() => StringToGrid(source));
+            Assert.Equal(expectedMessage, exception.Message);
 
         }
     }
