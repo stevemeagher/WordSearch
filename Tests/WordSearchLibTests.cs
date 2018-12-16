@@ -6,26 +6,8 @@ namespace Tests
 {
     public class WordSearchLibTests
     {
-        [Fact]
-        public void GridToString_NxNStringGrid_ReturnsLeftToRightString()
-        {
-            //arrange
-            string[,] grid = {
-                {"A","B","C"},
-                {"D","E","F"},
-                {"G","H","I"}
-            };
 
-            string expected = "ABCDEFGHI";
-
-            //act
-            var gridToString = new GridToString();
-            string actual = gridToString.ConvertToLeftToRight(grid);
-
-            //assert
-            Assert.True(expected == actual);
-        }
-
+        #region StringToGrid Test Helper
         /// <summary>Converts formatted string to 2d string array
         /// </summary>
         /// <para>StringToGrid_WellFormedStringInput_Creates2dStringArray converts a specifically formatted source string
@@ -74,7 +56,6 @@ namespace Tests
 
             //assert
             Assert.Equal(expeceted, actual);
-
         }
 
         [Fact]
@@ -87,7 +68,6 @@ namespace Tests
             //act & assert
             var exception = Assert.Throws<ArgumentException>(() => StringToGrid(source));
             Assert.Equal(expectedMessage, exception.Message);
-
         }
 
         [Fact]
@@ -100,7 +80,6 @@ namespace Tests
             //act & assert
             var exception = Assert.Throws<ArgumentException>(() => StringToGrid(source));
             Assert.Equal(expectedMessage, exception.Message);
-
         }
         
         [Fact]
@@ -113,73 +92,108 @@ namespace Tests
             //act & assert
             var exception = Assert.Throws<ArgumentException>(() => StringToGrid(source));
             Assert.Equal(expectedMessage, exception.Message);
+        }
+        #endregion 
 
+        [Fact]
+        public void gridToLinear_NxNStringGrid_ReturnsLeftToRightString()
+        {
+            //arrange
+            string[,] grid = {
+                {"A","B","C"},
+                {"D","E","F"},
+                {"G","H","I"}
+            };
+
+            string expected = "ABCDEFGHI";
+
+            //act
+            var gridToLinear = new GridToLinear();
+            LinearView linearView = gridToLinear.ConvertToLeftToRight(grid);
+
+            //assert
+            Assert.True(expected == linearView.Value);
         }
 
         [Theory]
         [InlineData("ABC|DEF|GHI", "ABCDEFGHI")]
         [InlineData("ABCD|EFGH|IJKL|MNOP", "ABCDEFGHIJKLMNOP")]
         [InlineData("12345|67890|12345|67890|12345", "1234567890123456789012345")]
-        public void GridToString_MultipleNxNStringGrid_ReturnsLeftToRightString(string gridSource, string expected)
+        public void gridToLinear_MultipleNxNStringGrid_ReturnsLeftToRightString(string gridSource, string expected)
         {
             //arrange
             string[,] grid = StringToGrid(gridSource);
 
             //act
-            var gridToString = new GridToString();
-            string actual = gridToString.ConvertToLeftToRight(grid);
+            var gridToLinear = new GridToLinear();
+            LinearView linearView = gridToLinear.ConvertToLeftToRight(grid);
 
             //assert
-            Assert.True(expected == actual);
+            Assert.True(expected == linearView.Value);
         }
 
         [Theory]
         [InlineData("ABC|DEF|GHI", "IHGFEDCBA")]
         [InlineData("12|34|56", "654321")]
         [InlineData("ABCD|EFGH|IJKL", "LKJIHGFEDCBA")]
-        public void GridToString_NxNStringGrid_ReturnsRightToLeftString(string gridSource, string expected)
+        public void gridToLinear_NxNStringGrid_ReturnsRightToLeftString(string gridSource, string expected)
         {
             //arrange
             string[,] grid = StringToGrid(gridSource);
 
             //act
-            var gridToString = new GridToString();
-            string actual = gridToString.ConvertToRightToLeft(grid);
+            var gridToLinear = new GridToLinear();
+            LinearView linearView = gridToLinear.ConvertToRightToLeft(grid);
 
             //assert
-            Assert.True(expected == actual);
+            Assert.True(expected == linearView.Value);
         }
 
         [Theory]
         [InlineData("ABC|DEF|GHI", "ADGBEHCFI")]
         [InlineData("12|34|56", "135246")]
-        public void GridToString_NxNStringGrid_ReturnsTopToBottomString(string gridSource, string expected)
+        public void gridToLinear_NxNStringGrid_ReturnsTopToBottomString(string gridSource, string expected)
         {
             //arrange
             string[,] grid = StringToGrid(gridSource);
 
             //act
-            var gridToString = new GridToString();
-            string actual = gridToString.ConvertToTopToBottom(grid);
+            var gridToLinear = new GridToLinear();
+            LinearView linearView = gridToLinear.ConvertToTopToBottom(grid);
 
             //assert
-            Assert.True(expected == actual);
+            Assert.True(expected == linearView.Value);
         }
 
         [Theory]
         [InlineData("ABC|DEF|GHI", "IFCHEBGDA")]
         [InlineData("12|34|56", "642531")]
-        public void GridToString_NxNStringGrid_ReturnsBottomToTopString(string gridSource, string expected)
+        public void gridToLinear_NxNStringGrid_ReturnsBottomToTopString(string gridSource, string expected)
         {
             //arrange
             string[,] grid = StringToGrid(gridSource);
 
             //act
-            var gridToString = new GridToString();
-            string actual = gridToString.ConvertToBottomToTop(grid);
+            var gridToLinear = new GridToLinear();
+            LinearView linearView = gridToLinear.ConvertToBottomToTop(grid);
 
             //assert
-            Assert.True(expected == actual);
+            Assert.True(expected == linearView.Value);
+        }
+
+        [Theory]
+        [InlineData("ABC|DEF|GHI", "DEF", "(0,1),(1,1),(2,1)")]
+        public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInLeftRightOrientation_CoorinatesReturned(string gridSource, string searchTarget, string expected)
+        {
+            //arrange
+            string[,] grid = StringToGrid(gridSource);
+
+            //act
+            var wordFinder = new WordFinder();
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(grid, searchTarget);
+
+            //assert
+            Assert.Equal(expected, actual);
         }
     }
 }

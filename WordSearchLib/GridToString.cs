@@ -1,76 +1,94 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace WordSearch.WordSearchLib
 {
-    public class GridToString
+    public class GridToLinear
     {
-        public string ConvertToLeftToRight(string[,] grid)
+        public LinearView ConvertToLeftToRight(string[,] grid)
         {
             int rowsCount = grid.GetLength(0);
             int columnsCount = grid.GetLength(1);
-            StringBuilder gridAsString = new StringBuilder("", columnsCount * rowsCount);
+            int stringPosition = 0;
+            StringBuilder gridAsLinear = new StringBuilder("", columnsCount * rowsCount);
+            Dictionary<int, Point> indexToGridPosition = new Dictionary<int, Point>();
 
             for (int rowNumber = 0; rowNumber < rowsCount; rowNumber++)
             {
                 for (int columnNumber = 0; columnNumber < columnsCount; columnNumber++)
                 {
-                    gridAsString.Append(grid[rowNumber, columnNumber]);
+                    gridAsLinear.Append(grid[rowNumber, columnNumber]);
+                    indexToGridPosition.Add(stringPosition, new Point(columnNumber, rowNumber));
+                    stringPosition++;
                 }
             }
 
-            return gridAsString.ToString();
+            return new LinearView(gridAsLinear.ToString(), indexToGridPosition);
         }
 
-        public string ConvertToRightToLeft(string[,] grid)
+        public LinearView ConvertToRightToLeft(string[,] grid)
         {
             int rowsCount = grid.GetLength(0);
             int columnsCount = grid.GetLength(1);
-            StringBuilder gridAsString = new StringBuilder("", columnsCount * rowsCount);
+            int stringPosition = 0;
+            StringBuilder gridAsLinear = new StringBuilder("", columnsCount * rowsCount);
+            Dictionary<int, Point> indexToGridPosition = new Dictionary<int, Point>();
 
             for (int rowNumber = rowsCount-1; rowNumber >= 0; rowNumber--)
             {
                 for (int columnNumber = columnsCount-1; columnNumber >= 0; columnNumber--)
                 {
-                    gridAsString.Append(grid[rowNumber, columnNumber]);
+                    gridAsLinear.Append(grid[rowNumber, columnNumber]);
+                    indexToGridPosition.Add(stringPosition, new Point(columnNumber, rowNumber));
+                    stringPosition++;
                 }
             }
 
-            return gridAsString.ToString();
+            return new LinearView(gridAsLinear.ToString(), indexToGridPosition);
         }
 
-        public string ConvertToTopToBottom(string[,] grid)
+        public LinearView ConvertToTopToBottom(string[,] grid)
         {
             int rowsCount = grid.GetLength(0);
             int columnsCount = grid.GetLength(1);
-            StringBuilder gridAsString = new StringBuilder("", columnsCount * rowsCount);
+            int stringPosition = 0;
+            StringBuilder gridAsLinear = new StringBuilder("", columnsCount * rowsCount);
+            Dictionary<int, Point> indexToGridPosition = new Dictionary<int, Point>();
 
             for (int columnNumber = 0; columnNumber < columnsCount; columnNumber++)
             {
                 for (int rowNumber = 0; rowNumber < rowsCount; rowNumber++)
                 {
-                    gridAsString.Append(grid[rowNumber, columnNumber]);
+                    gridAsLinear.Append(grid[rowNumber, columnNumber]);
+                    indexToGridPosition.Add(stringPosition, new Point(columnNumber, rowNumber));
+                    stringPosition++;
                 }
             }
 
-            return gridAsString.ToString();
+            return new LinearView(gridAsLinear.ToString(), indexToGridPosition);
         }
 
-        public string ConvertToBottomToTop(string[,] grid)
+        public LinearView ConvertToBottomToTop(string[,] grid)
         {
             int rowsCount = grid.GetLength(0);
             int columnsCount = grid.GetLength(1);
-            StringBuilder gridAsString = new StringBuilder("", columnsCount * rowsCount);
+            int stringPosition = 0;
+            StringBuilder gridAsLinear = new StringBuilder("", columnsCount * rowsCount);
+            Dictionary<int, Point> indexToGridPosition = new Dictionary<int, Point>();
 
             for (int columnNumber = columnsCount - 1; columnNumber >= 0; columnNumber--)
             {
                 for (int rowNumber = rowsCount - 1; rowNumber >= 0; rowNumber--)
                 {
-                    gridAsString.Append(grid[rowNumber, columnNumber]);
+                    gridAsLinear.Append(grid[rowNumber, columnNumber]);
+                    indexToGridPosition.Add(stringPosition, new Point(columnNumber, rowNumber));
+                    stringPosition++;
                 }
             }
 
-            return gridAsString.ToString();
+            return new LinearView(gridAsLinear.ToString(), indexToGridPosition);
         }
     }
 }
