@@ -165,5 +165,21 @@ namespace Tests
             //assert
             Assert.True(expected == actual);
         }
+
+        [Theory]
+        [InlineData("ABC|DEF|GHI", "IFCHEBGDA")]
+        [InlineData("12|34|56", "642531")]
+        public void GridToString_NxNStringGrid_ReturnsBottomToTopString(string gridSource, string expected)
+        {
+            //arrange
+            string[,] grid = StringToGrid(gridSource);
+
+            //act
+            var gridToString = new GridToString();
+            string actual = gridToString.ConvertToBottomToTop(grid);
+
+            //assert
+            Assert.True(expected == actual);
+        }
     }
 }
