@@ -34,7 +34,8 @@ namespace Tests
         /// </para>
         private string[,] StringToGrid(string source)
         {
-            if (!source.Contains("|")) throw new ArgumentException("Input not in correct format: did not include any row separator characters.");
+            if (string.IsNullOrEmpty(source)) throw new ArgumentException("source parameter contains no characters.");
+            if (!source.Contains("|")) throw new ArgumentException("source parameter not in correct format: no row separator characters.");
 
             string[] rows = source.Split('|');
             int rowCount = rows.Length;
@@ -76,7 +77,20 @@ namespace Tests
         {
             //arrange
             string source = "ABCDEFGHI";
-            string expectedMessage = "Input not in correct format: did not include any row separator characters.";
+            string expectedMessage = "source parameter not in correct format: no row separator characters.";
+
+            //act & assert
+            var exception = Assert.Throws<ArgumentException>(() => StringToGrid(source));
+            Assert.Equal(expectedMessage, exception.Message);
+
+        }
+
+        [Fact]
+        public void StringToGrid_EmptyInputParameter_GeneratesArgumentException()
+        {
+            //arrange
+            string source = "";
+            string expectedMessage = "source parameter contains no characters.";
 
             //act & assert
             var exception = Assert.Throws<ArgumentException>(() => StringToGrid(source));
