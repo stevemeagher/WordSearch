@@ -132,5 +132,22 @@ namespace Tests
             //assert
             Assert.True(expected == actual);
         }
+
+        [Theory]
+        [InlineData("ABC|DEF|GHI", "IHGFEDCBA")]
+        [InlineData("12|34|56", "654321")]
+        [InlineData("ABCD|EFGH|IJKL", "LKJIHGFEDCBA")]
+        public void GridToString_NxNStringGrid_ReturnsRightToLeftString(string gridSource, string expected)
+        {
+            //arrange
+            string[,] grid = StringToGrid(gridSource);
+
+            //act
+            var gridToString = new GridToString();
+            string actual = gridToString.ConvertToRightToLeft(grid);
+
+            //assert
+            Assert.True(expected == actual);
+        }
     }
 }

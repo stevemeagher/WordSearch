@@ -21,5 +21,22 @@ namespace WordSearch.WordSearchLib
 
             return gridAsString.ToString();
         }
+
+        public string ConvertToRightToLeft(string[,] grid)
+        {
+            int rowsCount = grid.GetLength(0);
+            int columnsCount = grid.GetLength(1);
+            StringBuilder gridAsString = new StringBuilder("", columnsCount * rowsCount);
+
+            for (int rowNumber = rowsCount-1; rowNumber >= 0; rowNumber--)
+            {
+                for (int columnNumber = columnsCount-1; columnNumber >= 0; columnNumber--)
+                {
+                    gridAsString.Append(grid[rowNumber, columnNumber]);
+                }
+            }
+
+            return gridAsString.ToString();
+        }
     }
 }
