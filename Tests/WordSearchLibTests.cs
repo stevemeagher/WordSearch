@@ -41,6 +41,11 @@ namespace Tests
             int rowCount = rows.Length;
             int columnCount = rows[0].Length;
 
+            foreach (var row in rows)
+            {
+                if (row.Length != columnCount) throw new ArgumentException("source parameter not in correct format: rows must contain the same number of characters.");
+            }
+
             string[,] grid = new string[rowCount, columnCount];
 
             for (int i = 0; i < rowCount; i++)
@@ -91,6 +96,19 @@ namespace Tests
             //arrange
             string source = "";
             string expectedMessage = "source parameter contains no characters.";
+
+            //act & assert
+            var exception = Assert.Throws<ArgumentException>(() => StringToGrid(source));
+            Assert.Equal(expectedMessage, exception.Message);
+
+        }
+        
+        [Fact]
+        public void StringToGrid_InputParameterWouldProduceJaggedArray_GeneratesArgumentException()
+        {
+            //arrange
+            string source = "ABC|DE|FGHI";
+            string expectedMessage = "source parameter not in correct format: rows must contain the same number of characters.";
 
             //act & assert
             var exception = Assert.Throws<ArgumentException>(() => StringToGrid(source));
