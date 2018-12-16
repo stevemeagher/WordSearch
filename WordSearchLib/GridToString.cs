@@ -38,5 +38,22 @@ namespace WordSearch.WordSearchLib
 
             return gridAsString.ToString();
         }
+
+        public string ConvertToTopToBottom(string[,] grid)
+        {
+            int rowsCount = grid.GetLength(0);
+            int columnsCount = grid.GetLength(1);
+            StringBuilder gridAsString = new StringBuilder("", columnsCount * rowsCount);
+
+            for (int columnNumber = 0; columnNumber < columnsCount; columnNumber++)
+            {
+                for (int rowNumber = 0; rowNumber < rowsCount; rowNumber++)
+                {
+                    gridAsString.Append(grid[rowNumber, columnNumber]);
+                }
+            }
+
+            return gridAsString.ToString();
+        }
     }
 }
