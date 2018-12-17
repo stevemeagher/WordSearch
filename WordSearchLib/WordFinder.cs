@@ -1,52 +1,25 @@
 using System.Text;
+using System.Collections.Generic;
 
 namespace WordSearch.WordSearchLib
 {
     public class WordFinder
     {
-        private enum LinearViewDirection
+        private List<ISearchOrientation> _searchOrientations;
+
+        public WordFinder(List<ISearchOrientation> searchOrientations)
         {
-            LeftToRight,
-            RightToLeft
+            _searchOrientations = searchOrientations;
         }
 
-        public string GetCoordinatesOfSearchTarget(string[,] grid, string searchTarget)
+        public string GetCoordinatesOfSearchTarget(string searchTarget)
         {
-            var gridToLinear = new GridToLinear();
-
-            var linearViewLeftToRight = gridToLinear.ConvertToLeftToRight(grid);
-            var linearViewRightToLeft = gridToLinear.ConvertToRightToLeft(grid);
-
-            var linearViewDirection = LinearViewDirection.LeftToRight;
-            int targetIndex = linearViewLeftToRight.Value.IndexOf(searchTarget.ToUpper());
-
-            if (targetIndex == -1)
+            foreach (var searchOrientation in _searchOrientations)
             {
-                linearViewDirection = LinearViewDirection.RightToLeft;;
-                targetIndex = linearViewRightToLeft.Value.IndexOf(searchTarget.ToUpper());
-            }
-
-            if (targetIndex != -1)
-            {
-                StringBuilder coordinates = new StringBuilder();
-
-                for (int i = targetIndex; i < targetIndex + searchTarget.Length; i++)
+                if (searchOrientation.IsSearchTargetFound(searchTarget))
                 {
-                    //if last coordinate then don't add a comma
-                    string comma = i == targetIndex + searchTarget.Length - 1 ? "" : ",";
-                    switch (linearViewDirection)
-                    {
-                        case LinearViewDirection.LeftToRight:
-                            coordinates.Append($"({linearViewLeftToRight.IndexToGridPosition[i].X},{linearViewLeftToRight.IndexToGridPosition[i].Y}){comma}");
-                            break;
-                        case LinearViewDirection.RightToLeft:
-                            coordinates.Append($"({linearViewRightToLeft.IndexToGridPosition[i].X},{linearViewRightToLeft.IndexToGridPosition[i].Y}){comma}");
-                            break;
-                            
-                    }
+                    return searchOrientation.GetCoordinatesOfSearchTarget(searchTarget);
                 }
-
-                return coordinates.ToString();
             }
 
             return "";
