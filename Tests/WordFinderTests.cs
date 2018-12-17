@@ -55,6 +55,23 @@ namespace Tests
             Assert.Equal(expected, actual);
         }
 
+        [Theory]
+        [InlineData("ABC|DEF|GHI", "JKL", "Not found")]
+        [InlineData("ABCD|EFGH|IJKL|MNOP", "QRST", "Search target was not found")]
+        public void GetCoordinatesOfSearchTarget_NxNGridDoesNotContainsTarget_NotFoundMessageReturned(string gridSource, string searchTarget, string expected)
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid(gridSource);
+
+            //act
+            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, expected);
+
+            //assert
+            Assert.Equal(expected, actual);
+        }
+
+        
 
     }
 }

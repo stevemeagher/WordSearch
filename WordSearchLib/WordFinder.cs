@@ -12,7 +12,7 @@ namespace WordSearch.WordSearchLib
             _searchOrientations = searchOrientations;
         }
 
-        public string GetCoordinatesOfSearchTarget(string searchTarget)
+        public string GetCoordinatesOfSearchTarget(string searchTarget, string searchFailedMessage = "")
         {
             foreach (var searchOrientation in _searchOrientations)
             {
@@ -22,7 +22,7 @@ namespace WordSearch.WordSearchLib
                 }
             }
 
-            return "";
+            return searchFailedMessage;
         }
     }
 }
