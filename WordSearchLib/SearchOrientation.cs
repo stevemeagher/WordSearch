@@ -13,6 +13,8 @@ namespace WordSearch.WordSearchLib
 
         public SearchOrientation(GridToLinearStrategy gridToLinearStrategy)
         {
+            if (gridToLinearStrategy is null) throw new ArgumentException("gridToLinearStragtey parameter is null.");
+
             _gridToLinearStrategy = gridToLinearStrategy;
 
             _linearView = _gridToLinearStrategy.GridToLinear();

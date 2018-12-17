@@ -48,5 +48,16 @@ namespace Tests
                 return new LinearView("ABC", new Dictionary<int, Point>() {{0, new Point(0,0)}});
             }
         }
+
+        [Fact]
+        public void SearchOrientation_CreatedWithNullGridToLinearStrategy_ThrowsArgumentException()
+        {
+            //arrange
+            string expectedMessage = "gridToLinearStragtey parameter is null.";
+
+            //act & assert
+            var exception = Assert.Throws<ArgumentException>(() => new SearchOrientation(null));
+            Assert.Equal(expectedMessage, exception.Message);
+        }
     }
 }
