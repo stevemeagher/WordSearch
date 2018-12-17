@@ -22,7 +22,7 @@ namespace WordSearch.WordSearchLib
 
         public bool IsSearchTargetFound(string searchTarget)
         {
-            return _linearView.Value.IndexOf(searchTarget.ToUpper()) != -1;
+            return String.IsNullOrEmpty(searchTarget) ? false : _linearView.Value.IndexOf(searchTarget.ToUpper()) != -1;
         }
 
         public string GetCoordinatesOfSearchTarget(string searchTarget)

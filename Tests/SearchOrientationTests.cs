@@ -59,5 +59,19 @@ namespace Tests
             var exception = Assert.Throws<ArgumentException>(() => new SearchOrientation(null));
             Assert.Equal(expectedMessage, exception.Message);
         }
+
+        [Fact]
+        public void IsSearchTargetFound_PassNullSearchTarget_ReturnsFalse()
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid("ABC|DEF|GHI");
+            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(grid));
+
+            //act
+            bool actual = serachOrientation.IsSearchTargetFound(null);
+
+            //assert
+            Assert.False(actual);
+        }
     }
 }
