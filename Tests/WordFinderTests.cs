@@ -10,7 +10,7 @@ namespace Tests
         [Theory]
         [InlineData("ABC|DEF|GHI", "DEF", "(0,1),(1,1),(2,1)")]
         [InlineData("ABCD|EFGH|IJKL|MNOP", "JKL", "(1,2),(2,2),(3,2)")]
-        public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInLeftRightOrientation_CoorinatesReturned(string gridSource, string searchTarget, string expected)
+        public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInLeftRightOrientation_CoordinatesReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
             string[,] grid = TestUtilities.StringToGrid(gridSource);
@@ -26,7 +26,7 @@ namespace Tests
         [Theory]
         [InlineData("ABC|DEF|GHI", "FED", "(2,1),(1,1),(0,1)")]
         [InlineData("ABCD|EFGH|IJKL|MNOP", "LKJ", "(3,2),(2,2),(1,2)")]
-        public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInRightLeftOrientation_CoorinatesReturned(string gridSource, string searchTarget, string expected)
+        public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInRightLeftOrientation_CoordinatesReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
             string[,] grid = TestUtilities.StringToGrid(gridSource);
@@ -42,7 +42,7 @@ namespace Tests
         [Theory]
         [InlineData("ABC|DEF|GHI", "ADG", "(0,0),(0,1),(0,2)")]
         [InlineData("ABCD|EFGH|IJKL|MNOP", "CGKO", "(2,0),(2,1),(2,2),(2,3)")]
-        public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInTopBottomOrientation_CoorinatesReturned(string gridSource, string searchTarget, string expected)
+        public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInTopBottomOrientation_CoordinatesReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
             string[,] grid = TestUtilities.StringToGrid(gridSource);

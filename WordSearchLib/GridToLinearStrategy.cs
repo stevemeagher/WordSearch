@@ -1,6 +1,6 @@
 namespace WordSearch.WordSearchLib
 {
-    public abstract class GridToLinearStrategy : IGridToLinearStrategy
+    public abstract class GridToLinearStrategy
     {
         protected string[,] Grid {get; private set;}
 

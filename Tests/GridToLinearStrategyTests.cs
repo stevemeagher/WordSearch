@@ -1,6 +1,8 @@
 using System;
 using Xunit;
 using WordSearch.WordSearchLib;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace Tests
 {
@@ -33,7 +35,7 @@ namespace Tests
         [InlineData("ABC|DEF|GHI", "ABCDEFGHI")]
         [InlineData("ABCD|EFGH|IJKL|MNOP", "ABCDEFGHIJKLMNOP")]
         [InlineData("12345|67890|12345|67890|12345", "1234567890123456789012345")]
-        public void GridToLinearLeftRightStrategy_MultipleNxNStringGrid_ReturnsLeftToRightString(string gridSource, string expected)
+        public void GridToLinearLeftRightStrategy_NxNGrid_ReturnsLeftToRightString(string gridSource, string expected)
         {
             //arrange
             string[,] grid = TestUtilities.StringToGrid(gridSource);
@@ -93,6 +95,82 @@ namespace Tests
 
             //assert
             Assert.True(expected == linearView.Value);
+        }
+
+        [Fact]
+        public void GridToLinearLeftRightStrategy_NxNStringGrid_ReturnsIndexToGridDictionary()
+        {
+            //arrange
+            string[,] grid = {
+                {"A","B"},
+                {"C","D"}
+            };
+
+            var expected = new Dictionary<int, Point>() {{0, new Point(0,0)}, {1, new Point(1,0)}, {2, new Point(0,1)}, {3, new Point(1,1)}};
+
+            //act
+            var gridToLinearStrategy = new GridToLinearLeftRightStrategy(grid);
+            LinearView linearView = gridToLinearStrategy.GridToLinear();
+
+            //assert
+            Assert.Equal(expected, linearView.IndexToGridPosition);
+        }
+
+        [Fact]
+        public void GridToLinearRightLeftStrategy_NxNStringGrid_ReturnsIndexToGridDictionary()
+        {
+            //arrange
+            string[,] grid = {
+                {"A","B"},
+                {"C","D"}
+            };
+
+            var expected = new Dictionary<int, Point>() {{0, new Point(1,1)}, {1, new Point(0,1)}, {2, new Point(1,0)}, {3, new Point(0,0)}};
+
+            //act
+            var gridToLinearStrategy = new GridToLinearRightLeftStrategy(grid);
+            LinearView linearView = gridToLinearStrategy.GridToLinear();
+
+            //assert
+            Assert.Equal(expected, linearView.IndexToGridPosition);
+        }
+
+        [Fact]
+        public void GridToLinearTopBottomStrategy_NxNStringGrid_ReturnsIndexToGridDictionary()
+        {
+            //arrange
+            string[,] grid = {
+                {"A","B"},
+                {"C","D"}
+            };
+
+            var expected = new Dictionary<int, Point>() {{0, new Point(0,0)}, {1, new Point(0,1)}, {2, new Point(1,0)}, {3, new Point(1,1)}};
+
+            //act
+            var gridToLinearStrategy = new GridToLinearTopBottomStrategy(grid);
+            LinearView linearView = gridToLinearStrategy.GridToLinear();
+
+            //assert
+            Assert.Equal(expected, linearView.IndexToGridPosition);
+        }
+
+        [Fact]
+        public void GridToLinearBottomTopStrategy_NxNStringGrid_ReturnsIndexToGridDictionary()
+        {
+            //arrange
+            string[,] grid = {
+                {"A","B"},
+                {"C","D"}
+            };
+
+            var expected = new Dictionary<int, Point>() {{0, new Point(1,1)}, {1, new Point(1,0)}, {2, new Point(0,1)}, {3, new Point(0,0)}};
+
+            //act
+            var gridToLinearStrategy = new GridToLinearBottomTopStrategy(grid);
+            LinearView linearView = gridToLinearStrategy.GridToLinear();
+
+            //assert
+            Assert.Equal(expected, linearView.IndexToGridPosition);
         }
     }
 }

@@ -8,10 +8,10 @@ namespace WordSearch.WordSearchLib
 {
     public class SearchOrientation : ISearchOrientation
     {
-        private readonly IGridToLinearStrategy _gridToLinearStrategy;
+        private readonly GridToLinearStrategy _gridToLinearStrategy;
         private readonly LinearView _linearView;
 
-        public SearchOrientation(IGridToLinearStrategy gridToLinearStrategy)
+        public SearchOrientation(GridToLinearStrategy gridToLinearStrategy)
         {
             _gridToLinearStrategy = gridToLinearStrategy;
 
