@@ -27,6 +27,8 @@ namespace WordSearch.WordSearchLib
 
         public string GetCoordinatesOfSearchTarget(string searchTarget)
         {
+            if (String.IsNullOrEmpty(searchTarget)) return "";
+
             int targetIndex = _linearView.Value.IndexOf(searchTarget.ToUpper());
 
             StringBuilder coordinates = new StringBuilder();

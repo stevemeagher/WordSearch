@@ -87,5 +87,34 @@ namespace Tests
             //assert
             Assert.False(actual);
         }
+
+        [Fact]
+        public void GetCoordinatesOfSearchTarget_PassNullSearchTarget_ReturnsEmptyString()
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid("ABC|DEF|GHI");
+            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(grid));
+
+            //act
+            string actual = serachOrientation.GetCoordinatesOfSearchTarget(null);
+
+            //assert
+            Assert.True(actual == "");
+        }
+
+        [Fact]
+        public void GetCoordinatesOfSearchTarget_PassEmptySearchTarget_ReturnsEmptyString()
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid("ABC|DEF|GHI");
+            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(grid));
+
+            //act
+            string actual = serachOrientation.GetCoordinatesOfSearchTarget("");
+
+            //assert
+            Assert.True(actual == "");
+        }
+
     }
 }
