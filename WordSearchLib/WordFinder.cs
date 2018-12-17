@@ -11,6 +11,7 @@ namespace WordSearch.WordSearchLib
         public WordFinder(List<ISearchOrientation> searchOrientations)
         {
             if (searchOrientations is null) throw new ArgumentException("searchOrientations parameter is null.");
+            if (searchOrientations.Count == 0) throw new ArgumentException("searchOrientations list is empty.");
 
             _searchOrientations = searchOrientations;
         }

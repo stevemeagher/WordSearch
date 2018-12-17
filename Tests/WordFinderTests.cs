@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using WordSearch.WordSearchLib;
+using System.Collections.Generic;
 
 namespace Tests
 {
@@ -79,6 +80,17 @@ namespace Tests
 
             //act & assert
             var exception = Assert.Throws<ArgumentException>(() => new WordFinder(null));
+            Assert.Equal(expectedMessage, exception.Message);
+        }
+        
+        [Fact]
+        public void WordFinder_CreatedWithEmptySearchOrientations_ThrowsArgumentException()
+        {
+            //arrange
+            string expectedMessage = "searchOrientations list is empty.";
+
+            //act & assert
+            var exception = Assert.Throws<ArgumentException>(() => new WordFinder(new List<ISearchOrientation>()));
             Assert.Equal(expectedMessage, exception.Message);
         }
 
