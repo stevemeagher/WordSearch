@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using System.Collections.Generic;
 
@@ -9,6 +10,8 @@ namespace WordSearch.WordSearchLib
 
         public WordFinder(List<ISearchOrientation> searchOrientations)
         {
+            if (searchOrientations is null) throw new ArgumentException("searchOrientations parameter is null.");
+
             _searchOrientations = searchOrientations;
         }
 

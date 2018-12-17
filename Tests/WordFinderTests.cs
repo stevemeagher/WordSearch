@@ -70,8 +70,17 @@ namespace Tests
             //assert
             Assert.Equal(expected, actual);
         }
-
         
+        [Fact]
+        public void WordFinder_CreatedWithNullSearchOrientations_ThrowsArgumentException()
+        {
+            //arrange
+            string expectedMessage = "searchOrientations parameter is null.";
+
+            //act & assert
+            var exception = Assert.Throws<ArgumentException>(() => new WordFinder(null));
+            Assert.Equal(expectedMessage, exception.Message);
+        }
 
     }
 }
