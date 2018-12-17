@@ -73,5 +73,19 @@ namespace Tests
             //assert
             Assert.False(actual);
         }
+
+        [Fact]
+        public void IsSearchTargetFound_PassEmptySearchTarget_ReturnsFalse()
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid("ABC|DEF|GHI");
+            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(grid));
+
+            //act
+            bool actual = serachOrientation.IsSearchTargetFound("");
+
+            //assert
+            Assert.False(actual);
+        }
     }
 }
