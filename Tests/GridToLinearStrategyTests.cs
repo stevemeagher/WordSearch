@@ -63,8 +63,8 @@ namespace Tests
         }
 
         [Theory]
-        [InlineData("ABC|DEF|GHI", "ADGBEHCFI")]
-        [InlineData("12|34|56", "135246")]
+        [InlineData("ABC|DEF|GHI", "ADG|BEH|CFI")]
+        [InlineData("12|34|56", "135|246")]
         public void GridToLinearTopBottomStrategy_NxNStringGrid_ReturnsTopToBottomString(string gridSource, string expected)
         {
             //arrange

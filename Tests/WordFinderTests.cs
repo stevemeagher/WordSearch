@@ -126,5 +126,20 @@ namespace Tests
             Assert.Equal(expected, actual);
         }
 
+        [Theory]
+        [InlineData("ABC|DEF|GHI", "DGB", "Not found.")]
+        [InlineData("ABCD|EFGH|IJKL|MNOP", "GKOD", "Not found.")]
+        public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInTopBottomOrientationDueToColumnEdgesJoined_CoordinatesNotReturned(string gridSource, string searchTarget, string expected)
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid(gridSource);
+
+            //act
+            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, "Not found.");
+
+            //assert
+            Assert.Equal(expected, actual);
+        }
     }
 }
