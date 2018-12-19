@@ -26,6 +26,12 @@ namespace WordSearch.WordSearchLib
                     indexToGridPosition.Add(stringPosition, new Point(columnNumber, rowNumber));
                     stringPosition++;
                 }
+
+                if (rowNumber < rowsCount - 1)
+                {
+                    //add grid boundary indicator to avoid false finds when searching for target string
+                    gridAsLinear.Append("|");
+                }
             }
 
             return new LinearView(gridAsLinear.ToString(), indexToGridPosition);

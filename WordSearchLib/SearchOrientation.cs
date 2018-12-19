@@ -1,8 +1,8 @@
 using System;
+using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace WordSearch.WordSearchLib
 {
@@ -22,7 +22,7 @@ namespace WordSearch.WordSearchLib
 
         public bool IsSearchTargetFound(string searchTarget)
         {
-            return String.IsNullOrEmpty(searchTarget) ? false : _linearView.Value.IndexOf(searchTarget.ToUpper()) != -1;
+            return String.IsNullOrEmpty(searchTarget) || _linearView is null || _linearView.Value is null ? false : _linearView.Value.IndexOf(searchTarget.ToUpper()) != -1;
         }
 
         public string GetCoordinatesOfSearchTarget(string searchTarget)
@@ -30,6 +30,10 @@ namespace WordSearch.WordSearchLib
             if (String.IsNullOrEmpty(searchTarget)) return "";
 
             int targetIndex = _linearView.Value.IndexOf(searchTarget.ToUpper());
+
+            //reduce targetIndex by the number of |'s (row or column boundary indicators) found up to the position of the target string
+            var boundaryIndicatorCount = _linearView.Value.Substring(0, targetIndex).Count(o => o == '|');
+            targetIndex = targetIndex - boundaryIndicatorCount;
 
             StringBuilder coordinates = new StringBuilder();
 

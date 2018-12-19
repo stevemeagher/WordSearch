@@ -1,8 +1,9 @@
 using System;
-using Xunit;
-using WordSearch.WordSearchLib;
-using System.Collections.Generic;
 using System.Drawing;
+using System.Collections.Generic;
+using Xunit;
+using Moq;
+using WordSearch.WordSearchLib;
 
 namespace Tests
 {
@@ -115,6 +116,61 @@ namespace Tests
             //assert
             Assert.True(actual == "");
         }
+
+        private class GridToLinearStrategyLeftToRighNullLinearViewtMock : GridToLinearStrategy
+        {
+
+            public GridToLinearStrategyLeftToRighNullLinearViewtMock(string[,] grid): base(grid)
+            {
+            }
+
+            public override LinearView GridToLinear()
+            {
+                return null;
+            }
+        }
+
+        private class GridToLinearStrategyLeftToRighValueIsNullInLinearViewtMock : GridToLinearStrategy
+        {
+
+            public GridToLinearStrategyLeftToRighValueIsNullInLinearViewtMock(string[,] grid): base(grid)
+            {
+            }
+
+            public override LinearView GridToLinear()
+            {
+                return null;
+            }
+        }
+
+        [Fact]
+        public void IsSearchTargetFound_LinearViewIsNull_ReturnsFalse()
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid("ABC|DEF|GHI");
+            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRighNullLinearViewtMock(grid));
+
+            //act
+            bool actual = serachOrientation.IsSearchTargetFound("BC");
+
+            //assert
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsSearchTargetFound_ValueOfLinearViewIsNull_ReturnsFalse()
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid("ABC|DEF|GHI");
+            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRighNullLinearViewtMock(grid));
+
+            //act
+            bool actual = serachOrientation.IsSearchTargetFound("BC");
+
+            //assert
+            Assert.False(actual);
+        }
+        
 
     }
 }

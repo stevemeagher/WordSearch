@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Xunit;
 using WordSearch.WordSearchLib;
-using System.Collections.Generic;
 
 namespace Tests
 {
@@ -93,6 +93,23 @@ namespace Tests
             var exception = Assert.Throws<ArgumentException>(() => new WordFinder(new List<ISearchOrientation>()));
             Assert.Equal(expectedMessage, exception.Message);
         }
+
+        [Theory]
+        [InlineData("ABC|DEF|GHI", "CDE", "Not found.")]
+        [InlineData("ABCD|EFGH|IJKL|MNOP", "GHIJ", "Not found.")]
+        public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInLeftRightOrientationOnlyWhenRowEdgesJoined_CoordinatesNotReturned(string gridSource, string searchTarget, string expected)
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid(gridSource);
+
+            //act
+            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget,"Not found.");
+
+            //assert
+            Assert.Equal(expected, actual);
+        }
+
 
     }
 }

@@ -21,7 +21,7 @@ namespace Tests
                 {"G","H","I"}
             };
 
-            string expected = "ABCDEFGHI";
+            string expected = "ABC|DEF|GHI";
 
             //act
             var gridToLinearStrategy = new GridToLinearLeftRightStrategy(grid);
@@ -32,9 +32,9 @@ namespace Tests
         }
 
         [Theory]
-        [InlineData("ABC|DEF|GHI", "ABCDEFGHI")]
-        [InlineData("ABCD|EFGH|IJKL|MNOP", "ABCDEFGHIJKLMNOP")]
-        [InlineData("12345|67890|12345|67890|12345", "1234567890123456789012345")]
+        [InlineData("ABC|DEF|GHI", "ABC|DEF|GHI")]
+        [InlineData("ABCD|EFGH|IJKL|MNOP", "ABCD|EFGH|IJKL|MNOP")]
+        [InlineData("12345|67890|12345|67890|12345", "12345|67890|12345|67890|12345")]
         public void GridToLinearLeftRightStrategy_NxNGrid_ReturnsLeftToRightString(string gridSource, string expected)
         {
             //arrange
