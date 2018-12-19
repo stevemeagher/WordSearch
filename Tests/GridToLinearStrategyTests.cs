@@ -8,9 +8,6 @@ namespace Tests
 {
     public class GridToLinearStrategyTests
     {
-
-        
-
         [Fact]
         public void GridToLinearLeftRightStrategy_NxNStringGrid_ReturnsLeftToRightString()
         {
@@ -49,9 +46,9 @@ namespace Tests
         }
 
         [Theory]
-        [InlineData("ABC|DEF|GHI", "IHGFEDCBA")]
-        [InlineData("12|34|56", "654321")]
-        [InlineData("ABCD|EFGH|IJKL", "LKJIHGFEDCBA")]
+        [InlineData("ABC|DEF|GHI", "IHG|FED|CBA")]
+        [InlineData("12|34|56", "65|43|21")]
+        [InlineData("ABCD|EFGH|IJKL", "LKJI|HGFE|DCBA")]
         public void GridToLinearRightLeftStrategy_NxNStringGrid_ReturnsRightToLeftString(string gridSource, string expected)
         {
             //arrange

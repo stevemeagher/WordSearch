@@ -97,7 +97,7 @@ namespace Tests
         [Theory]
         [InlineData("ABC|DEF|GHI", "CDE", "Not found.")]
         [InlineData("ABCD|EFGH|IJKL|MNOP", "GHIJ", "Not found.")]
-        public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInLeftRightOrientationOnlyWhenRowEdgesJoined_CoordinatesNotReturned(string gridSource, string searchTarget, string expected)
+        public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInLeftRightOrientationDueToRowEdgesJoined_CoordinatesNotReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
             string[,] grid = TestUtilities.StringToGrid(gridSource);
@@ -110,6 +110,21 @@ namespace Tests
             Assert.Equal(expected, actual);
         }
 
+        [Theory]
+        [InlineData("ABC|DEF|GHI", "GFE", "Not found.")]
+        [InlineData("ABCD|EFGH|IJKL|MNOP", "MLKJ", "Not found.")]
+        public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInRightLeftOrientationDueToRowEdgesJoined_CoordinatesNotReturned(string gridSource, string searchTarget, string expected)
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid(gridSource);
+
+            //act
+            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, "Not found.");
+
+            //assert
+            Assert.Equal(expected, actual);
+        }
 
     }
 }
