@@ -57,6 +57,22 @@ namespace Tests
         }
 
         [Theory]
+        [InlineData("ABC|DEF|GHI", "GDA", "(0,2),(0,1),(0,0)")]
+        [InlineData("ABCD|EFGH|IJKL|MNOP", "OKGC", "(2,3),(2,2),(2,1),(2,0)")]
+        public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInBottomTopOrientation_CoordinatesReturned(string gridSource, string searchTarget, string expected)
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid(gridSource);
+
+            //act
+            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
+
+            //assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
         [InlineData("ABC|DEF|GHI", "JKL", "Not found")]
         [InlineData("ABCD|EFGH|IJKL|MNOP", "QRST", "Search target was not found")]
         public void GetCoordinatesOfSearchTarget_NxNGridDoesNotContainsTarget_NotFoundMessageReturned(string gridSource, string searchTarget, string expected)
@@ -130,6 +146,22 @@ namespace Tests
         [InlineData("ABC|DEF|GHI", "DGB", "Not found.")]
         [InlineData("ABCD|EFGH|IJKL|MNOP", "GKOD", "Not found.")]
         public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInTopBottomOrientationDueToColumnEdgesJoined_CoordinatesNotReturned(string gridSource, string searchTarget, string expected)
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid(gridSource);
+
+            //act
+            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, "Not found.");
+
+            //assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData("ABC|DEF|GHI", "EBG", "Not found.")]
+        [InlineData("ABCD|EFGH|IJKL|MNOP", "KGCN", "Not found.")]
+        public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInBottomTopOrientationDueToColumnEdgesJoined_CoordinatesReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
             string[,] grid = TestUtilities.StringToGrid(gridSource);

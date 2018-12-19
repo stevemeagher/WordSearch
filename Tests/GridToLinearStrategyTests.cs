@@ -79,8 +79,8 @@ namespace Tests
         }
 
         [Theory]
-        [InlineData("ABC|DEF|GHI", "IFCHEBGDA")]
-        [InlineData("12|34|56", "642531")]
+        [InlineData("ABC|DEF|GHI", "IFC|HEB|GDA")]
+        [InlineData("12|34|56", "642|531")]
         public void GridToLinearBottomTopStrategy_NxNStringGrid_ReturnsBottomToTopString(string gridSource, string expected)
         {
             //arrange
