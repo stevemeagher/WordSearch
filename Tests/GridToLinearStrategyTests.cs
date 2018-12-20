@@ -202,6 +202,38 @@ namespace Tests
             Assert.True(expected == linearView.Value);
         }
 
+        [Theory]
+        [InlineData("ABC|DEF|GHI", "C|BF|AEI|DH|G")]
+        [InlineData("ABCD|EFGH|IJKL|MNOP", "D|CH|BGL|AFKP|EJO|IN|M")]
+        public void GridToLinearTopLeftBottomRightStrategy_NxNGrid_ReturnsTopLeftToBottomRightString(string gridSource, string expected)
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid(gridSource);
+
+            //act
+            var gridToLinearStrategy = new GridToLinearTopLeftBottomRightStrategy(grid);
+            LinearView linearView = gridToLinearStrategy.GridToLinear();
+
+            //assert
+            Assert.True(expected == linearView.Value);
+        }
+
+        [Theory]
+        [InlineData("ABC|DEF|GHI", "G|HD|IEA|FB|C")]
+        [InlineData("ABCD|EFGH|IJKL|MNOP", "M|NI|OJE|PKFA|LGB|HC|D")]
+        public void GridToLinearBottomRightTopLeftStrategy_NxNGrid_ReturnsBottomRightToTopLeftString(string gridSource, string expected)
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid(gridSource);
+
+            //act
+            var gridToLinearStrategy = new GridToLinearBottomRightTopLeftStrategy(grid);
+            LinearView linearView = gridToLinearStrategy.GridToLinear();
+
+            //assert
+            Assert.True(expected == linearView.Value);
+        }
+
 
     }
 }
