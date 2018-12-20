@@ -11,7 +11,7 @@ namespace WordSearch.WordSearchLib
         }
 
         /// <summary>
-        /// Traverse the grid such that we create a string that enables us to search
+        /// Traverse the grid to create a string that enables us to search
         /// for words that have a diagonal orientation from lower right to upper left
         /// </summary>
         public override LinearView GridToLinear()

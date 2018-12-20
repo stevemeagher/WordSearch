@@ -10,6 +10,10 @@ namespace WordSearch.WordSearchLib
         {
         }
 
+        /// <summary>
+        /// Traverse the grid to create a string that enables us to search
+        /// for words that have a vertical orientation from top to bottom
+        /// </summary>
         public override LinearView GridToLinear()
         {
             int rowsCount = Grid.GetLength(0);

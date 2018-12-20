@@ -223,6 +223,23 @@ namespace Tests
             //assert
             Assert.Equal(expected, actual);
         }
+        
+        [Theory]
+        [InlineData("ABC|DEF|GHI", "CEG", "(2,0),(1,1),(0,2)")]
+        [InlineData("ABCD|EFGH|IJKL|MNOP", "DGJM", "(3,0),(2,1),(1,2),(0,3)")]
+        public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInTopRightBottomLeftOrientation_CoordinatesReturned(string gridSource, string searchTarget, string expected)
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid(gridSource);
+
+            //act
+            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
+
+            //assert
+            Assert.Equal(expected, actual);
+        }
+
 
     }
 }
