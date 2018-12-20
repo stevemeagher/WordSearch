@@ -291,5 +291,24 @@ namespace Tests
             Assert.Equal(expected, linearView.IndexToGridPosition);
         }
 
+        [Fact]
+        public void GridToLinearBottomRightTopLeftStrategy_NxNStringGrid_ReturnsIndexToGridDictionary()
+        {
+            //arrange
+            string[,] grid = {
+                {"A","B"},
+                {"C","D"}
+            };
+
+            var expected = new Dictionary<int, Point>() {{0, new Point(0,1)}, {1, new Point(1,1)}, {2, new Point(0,0)}, {3, new Point(1,0)}};
+
+            //act
+            var gridToLinearStrategy = new GridToLinearBottomRightTopLeftStrategy(grid);
+            LinearView linearView = gridToLinearStrategy.GridToLinear();
+
+            //assert
+            Assert.Equal(expected, linearView.IndexToGridPosition);
+        }
+
     }
 }
