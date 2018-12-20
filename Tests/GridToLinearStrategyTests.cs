@@ -186,5 +186,22 @@ namespace Tests
             Assert.True(expected == linearView.Value);
         }
 
+        [Theory]
+        [InlineData("ABC|DEF|GHI", "I|HF|GEC|DB|A")]
+        [InlineData("ABCD|EFGH|IJKL|MNOP", "P|OL|NKH|MJGD|IFC|EB|A")]
+        public void GridToLinearBottomLeftTopRightStrategy_NxNGrid_ReturnsBottomLeftToTopRightString(string gridSource, string expected)
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid(gridSource);
+
+            //act
+            var gridToLinearStrategy = new GridToLinearBottomLeftTopRightStrategy(grid);
+            LinearView linearView = gridToLinearStrategy.GridToLinear();
+
+            //assert
+            Assert.True(expected == linearView.Value);
+        }
+
+
     }
 }
