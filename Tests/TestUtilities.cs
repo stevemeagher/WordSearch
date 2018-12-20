@@ -49,6 +49,7 @@ namespace Tests
                 new SearchOrientation(new GridToLinearTopLeftBottomRightStrategy(grid)),
                 new SearchOrientation(new GridToLinearBottomRightTopLeftStrategy(grid)),
                 new SearchOrientation(new GridToLinearTopRightBottomLeftStrategy(grid)),
+                new SearchOrientation(new GridToLinearBottomLeftTopRightStrategy(grid))
             };
         }
     }

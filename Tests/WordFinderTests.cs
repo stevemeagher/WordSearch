@@ -240,6 +240,20 @@ namespace Tests
             Assert.Equal(expected, actual);
         }
 
+        [Theory]
+        [InlineData("ABC|DEF|GHI", "GEC", "(0,2),(1,1),(2,0)")]
+        [InlineData("ABCD|EFGH|IJKL|MNOP", "MJGD", "(0,3),(1,2),(2,1),(3,0)")]
+        public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInBottomLeftTopRightOrientation_CoordinatesReturned(string gridSource, string searchTarget, string expected)
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid(gridSource);
 
+            //act
+            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
+
+            //assert
+            Assert.Equal(expected, actual);
+        }
     }
 }
