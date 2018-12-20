@@ -208,5 +208,21 @@ namespace Tests
             Assert.Equal(expected, actual);
         }
 
+        [Theory]
+        [InlineData("ABC|DEF|GHI", "IEA", "(2,2),(1,1),(0,0)")]
+        [InlineData("ABCD|EFGH|IJKL|MNOP", "LGB", "(3,2),(2,1),(1,0)")]
+        public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInBottomRightTopLeftOrientation_CoordinatesReturned(string gridSource, string searchTarget, string expected)
+        {
+            //arrange
+            string[,] grid = TestUtilities.StringToGrid(gridSource);
+
+            //act
+            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
+
+            //assert
+            Assert.Equal(expected, actual);
+        }
+
     }
 }
