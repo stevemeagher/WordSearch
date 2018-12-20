@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Xunit;
+using Moq;
 using WordSearch.WordSearchLib;
 
 namespace Tests
@@ -172,6 +173,24 @@ namespace Tests
 
             //assert
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void GetCoordinatesOfSearchTarget_SearchTargetFound_ReturnsResultOfSearchOrientationGetCoords()
+        {
+            //arrange
+            string expected = "(11,10)";
+            Mock<ISearchOrientation> mock = new Mock<ISearchOrientation>();
+            mock.Setup(m => m.IsSearchTargetFound(It.IsAny<string>())).Returns(true);
+            mock.Setup(m => m.GetCoordinatesOfSearchTarget(It.IsAny<string>())).Returns("(10,10)");
+
+            //act
+            var wordFinder = new WordFinder(new List<ISearchOrientation>(){{mock.Object}});
+            string actual = wordFinder.GetCoordinatesOfSearchTarget("", "Not found.");
+
+            //assert
+            Assert.Equal(expected, actual);
+
         }
     }
 }

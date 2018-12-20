@@ -7,11 +7,10 @@ namespace Tests
 {
     public class TestUtilities
     {
-        /// <summary>Converts formatted string to 2d string array
-        /// </summary>
-        /// <para>StringToGrid_WellFormedStringInput_Creates2dStringArray converts a specifically formatted source string
-        /// into a two-dimensional string array.  This method is used to produce string arrays for testing and enables
-        /// the formatted strings to be passed as InLineData attribute parameters.
+        /// <summary>Converts formatted string to 2d string array </summary>
+        /// <para>StringToGrid converts a specifically formatted source string into a two-dimensional string array.  
+        /// This method is used to produce string arrays for testing and enables the formatted strings to be passed 
+        /// as InLineData attribute parameters.
         /// </para>
         public static string[,] StringToGrid(string source)
         {

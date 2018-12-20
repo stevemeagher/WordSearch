@@ -2,7 +2,6 @@ using System;
 using System.Drawing;
 using System.Collections.Generic;
 using Xunit;
-using Moq;
 using WordSearch.WordSearchLib;
 
 namespace Tests
