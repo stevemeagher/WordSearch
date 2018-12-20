@@ -179,7 +179,7 @@ namespace Tests
         public void GetCoordinatesOfSearchTarget_SearchTargetFound_ReturnsResultOfSearchOrientationGetCoords()
         {
             //arrange
-            string expected = "(11,10)";
+            string expected = "(10,10)";
             Mock<ISearchOrientation> mock = new Mock<ISearchOrientation>();
             mock.Setup(m => m.IsSearchTargetFound(It.IsAny<string>())).Returns(true);
             mock.Setup(m => m.GetCoordinatesOfSearchTarget(It.IsAny<string>())).Returns("(10,10)");
@@ -190,7 +190,6 @@ namespace Tests
 
             //assert
             Assert.Equal(expected, actual);
-
         }
     }
 }
