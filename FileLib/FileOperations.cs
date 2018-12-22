@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace WordSearch.FileLib
 {
@@ -9,7 +10,14 @@ namespace WordSearch.FileLib
 
         public string[] ReadLines(string filePath)
         {
-            return System.IO.File.ReadAllLines(filePath);
+            if (File.Exists(filePath))
+            {
+                return File.ReadAllLines(filePath);
+            }
+            else
+            {
+                return new string[0];
+            }
         }
 
         public string ApplicationBasePath(string baseApplicationDirectory)

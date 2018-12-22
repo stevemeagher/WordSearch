@@ -22,5 +22,18 @@ namespace Tests
             Assert.True(fileLines[1] == secondLine);
         }
 
+        [Fact]
+        public void ReadLines_WhenFileDoesNotExists_ReturnsEmptyArray()
+        {
+            //arrange
+            FileOperations fileOperations = new FileOperations();
+
+            //act
+            string[] fileLines = fileOperations.ReadLines(fileOperations.ApplicationBasePath("WordSearch") + "/puzzles/nofile.txt");
+
+            //assert
+            Assert.True(fileLines.Length == 0);
+        }
+
     }
 }
