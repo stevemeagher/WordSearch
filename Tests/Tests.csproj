@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\WordSearchLib\WordSearchLib.csproj" />
     <ProjectReference Include="..\FileLib\FileLib.csproj" />
+    <ProjectReference Include="..\ConsoleApp\ConsoleApp.csproj" />
   </ItemGroup>
 
 </Project>
