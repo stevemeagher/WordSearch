@@ -12,7 +12,7 @@ namespace WordSearch.ConsoleApp
             return Console.ReadKey();
         }
 
-        public string ReadLine()
+        public virtual string ReadLine()
         {
             return Console.ReadLine();
         }

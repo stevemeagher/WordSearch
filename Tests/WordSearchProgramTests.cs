@@ -61,7 +61,7 @@ namespace Tests
         {
             //arrange
             string[,] grid = _testUtilities.StringToGrid(gridSource);
-            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForColors();
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder);
 
             //act
@@ -141,7 +141,7 @@ namespace Tests
             string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
             CreatePuzzleFile(workingDir, searchWords, fileRowsDelimeteredArray, puzzleFileName);
 
-            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForColors();
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder);
 
             //act
@@ -153,7 +153,28 @@ namespace Tests
             Assert.True(expected == _consoleOuput.ToString());
         }
 
-        private class ConsoleWrapperMock : ConsoleWrapper
+        [Theory]
+        [InlineData("Z")]
+        [InlineData("READLINERESULT")]
+        [InlineData("Word")]
+        public void PromptForSearchWord_WhenUserEntersWord_PromptDisplayedAndWordReturned(string searchWord)
+        {
+            //arrange
+            string expected = $"Enter a search word to find in puzzle or hit <enter> to return to the menu\nSearch word: {searchWord}\n";
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForReadLine();
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder);
+            ((ConsoleWrapperMockForReadLine)consoleWrapper).ReadLineResult = searchWord;
+
+            //act
+            string searchWordOut = wordSearchProgram.PromptForSearchWord();
+            string output = _consoleOuput.ToString();
+
+            //assert
+            Assert.Equal(searchWord, searchWordOut);
+            Assert.Equal(expected, output);
+        }
+
+        private class ConsoleWrapperMockForColors : ConsoleWrapper
         {
             public override ConsoleColor BackgroundColor
             { 
@@ -181,6 +202,17 @@ namespace Tests
                 }
             }
         }
+
+        private class ConsoleWrapperMockForReadLine : ConsoleWrapper
+        {
+            public string ReadLineResult {get; set;}
+            public override string ReadLine()
+            {
+                WriteLine(ReadLineResult);
+                return ReadLineResult;
+            }
+        }
+
 
         public void Dispose()
         {

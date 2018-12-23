@@ -107,10 +107,25 @@ namespace WordSearch.ConsoleApp
                 if (coordinates != null && coordinates.Count != 0)
                 {
                     _consoleWrapper.WriteLine($"{searchWord}: " + $"{coordinates.ToString()}");
+
+                    foreach(var coordinate in coordinates)
+                    {
+                        if (!points.Contains(coordinate))
+                        {
+                            points.Add(coordinate);
+                        }
+                    }
                 }
             }
 
             return points;
+        }
+
+        public string PromptForSearchWord()
+        {
+            _consoleWrapper.WriteLine("Enter a search word to find in puzzle or hit <enter> to return to the menu");
+            _consoleWrapper.Write("Search word: ");
+            return _consoleWrapper.ReadLine();
         }
 
         private List<ISearchOrientation> GetSearchOrientations(string[,] grid)
