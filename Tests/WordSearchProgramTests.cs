@@ -40,9 +40,9 @@ namespace Tests
 
         }
 
-        ///<summary>This test uses a class, ConsoleWrapperMock, which inherits from ConsoleWrapper and overrides the color setting proeprties so that
+        ///<summary>This test uses a class, ConsoleWrapperMock, which inherits from ConsoleWrapper and overrides the color setting properties so that
         ///we can "see" the color changes in the output and confirm that the output to the console should appear correctly.
-        ///<fg indicates setting the foreground color and <bg indicates setting the background color
+        ///fg: indicates setting the foreground color and bg: indicates setting the background color
         ///</summary>
         [Theory]
         [InlineData("ABC|DEF|GHI", 1, 1, "<fg:Gray><bg:Black>A B C \nD <fg:Black><bg:Gray>E<fg:Gray><bg:Black> F \nG H I \n")]
@@ -61,11 +61,6 @@ namespace Tests
 
             //assert
             Assert.True(expected == _consoleOuput.ToString());
-        }
-
-        public void Dispose()
-        {
-            Console.SetOut(_originalConsoleOutput);
         }
 
         private class ConsoleWrapperMock : ConsoleWrapper
@@ -96,5 +91,12 @@ namespace Tests
                 }
             }
         }
+
+        public void Dispose()
+        {
+            Console.SetOut(_originalConsoleOutput);
+        }
+
+
     }
 }

@@ -44,5 +44,12 @@ namespace WordSearch.FileLib
 
             return path.Substring(0,indexOfBaseName + baseApplicationDirectory.Length);
         }
+
+        public string[] GetDirectoryContents(string directoryPath)
+        {
+            string[] filePaths = Directory.GetFiles(directoryPath);
+            Array.Sort(filePaths);
+            return filePaths;
+        }
     }
 }

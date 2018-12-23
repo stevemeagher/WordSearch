@@ -14,7 +14,7 @@ namespace Tests
         public FileOperationsTests()
         {
             _fileOperations = new FileOperations();
-            _testFilePath = _fileOperations.ApplicationBasePath(APPLICATION_DIRECTORY) + "testFile.txt";
+            _testFilePath = _fileOperations.ApplicationBasePath(APPLICATION_DIRECTORY) + "/testFile.txt";
             if (File.Exists(_testFilePath))
             {
                 File.Delete(_testFilePath);
@@ -64,12 +64,47 @@ namespace Tests
             Assert.True(fileLines.Length == 0);
         }
 
+        [Fact]
+        public void GetDirectoryContents_WhenFilesExistInDirectory_ReturnsSortdedArrayOfFilePaths()
+        {
+            //arrange
+            string workingDir = _fileOperations.ApplicationBasePath(APPLICATION_DIRECTORY) + "/testdirectory";
+            DirectoryInfo di = new DirectoryInfo(workingDir);
+            if (di.Exists)
+            {
+                di.Delete(true);
+            }
+            di.Create();
+            File.Create(workingDir + "/file1.txt");
+            File.Create(workingDir + "/file2.txt");
+            File.Create(workingDir + "/file3.txt");
+            File.Create(workingDir + "/file4.txt");
+            File.Create(workingDir + "/file5.txt");
+
+            //act
+            string[] filePaths = _fileOperations.GetDirectoryContents(workingDir);
+
+            //assert
+            Assert.True(filePaths[0] == workingDir + "/file1.txt");
+            Assert.True(filePaths[1] == workingDir + "/file2.txt");
+            Assert.True(filePaths[2] == workingDir + "/file3.txt");
+            Assert.True(filePaths[3] == workingDir + "/file4.txt");
+            Assert.True(filePaths[4] == workingDir + "/file5.txt");
+        }
+
         public void Dispose()
         {
             //clean-up
             if (File.Exists(_testFilePath))
             {
                 File.Delete(_testFilePath);
+            }
+
+            string workingDir = _fileOperations.ApplicationBasePath(APPLICATION_DIRECTORY) + "/testdirectory";
+            DirectoryInfo di = new DirectoryInfo(workingDir);
+            if (di.Exists)
+            {
+                di.Delete(true);
             }
         }
     }
