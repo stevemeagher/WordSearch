@@ -7,7 +7,7 @@ namespace WordSearch.ConsoleApp
         public virtual ConsoleColor BackgroundColor { get => Console.BackgroundColor; set => Console.BackgroundColor = value; }
         public virtual ConsoleColor ForegroundColor { get => Console.ForegroundColor; set => Console.ForegroundColor = value; }
 
-        public ConsoleKeyInfo ReadKey()
+        public virtual ConsoleKeyInfo ReadKey()
         {
             return Console.ReadKey();
         }

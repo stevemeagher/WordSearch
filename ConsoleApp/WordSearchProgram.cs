@@ -131,11 +131,12 @@ namespace WordSearch.ConsoleApp
         public string PromptForSearchWord()
         {
             _consoleWrapper.WriteLine("Enter a search word to find in puzzle or hit <enter> to return to the menu");
+            _consoleWrapper.WriteLine();
             _consoleWrapper.Write("Search word: ");
             return _consoleWrapper.ReadLine();
         }
 
-        public void WritePuzzleSolutionForSearchWord(string[,] grid, string searchWord, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
+        public bool WritePuzzleSolutionForSearchWord(string[,] grid, string searchWord, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
         {
             var failedSearchMessage = $"Did not find {searchWord} in puzzle.";
 
@@ -144,7 +145,6 @@ namespace WordSearch.ConsoleApp
             var coordinates = _wordFinder.GetCoordinatesOfSearchTarget(searchWord, failedSearchMessage);
             var coordinatesForDisplay = coordinates.ToString();
             
-            _consoleWrapper.WriteLine();
             _consoleWrapper.WriteLine($"{searchWord}: {coordinatesForDisplay}");
 
             if (coordinatesForDisplay != failedSearchMessage)
@@ -152,7 +152,22 @@ namespace WordSearch.ConsoleApp
                 _consoleWrapper.WriteLine();
                 WriteGridToConsole(grid, foregroundColor, backgroundColor, coordinates);
                 _consoleWrapper.WriteLine();
+
+                return true;
             }
+
+            return false;
+        }
+
+        public string PromptForMenuSelection()
+        {
+            _consoleWrapper.WriteLine("(1) Show solution");
+            _consoleWrapper.WriteLine("(2) Enter a search word");
+            _consoleWrapper.WriteLine("(3) Select another file");
+            _consoleWrapper.WriteLine("(4) Exit");
+            _consoleWrapper.WriteLine();
+            _consoleWrapper.Write("Enter selection: ");
+            return _consoleWrapper.ReadKey().KeyChar.ToString();
         }
 
         private List<ISearchOrientation> GetSearchOrientations(string[,] grid)
