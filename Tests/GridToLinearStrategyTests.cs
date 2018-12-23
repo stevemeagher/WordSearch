@@ -29,7 +29,7 @@ namespace Tests
 
             //act
             var gridToLinearStrategy = new GridToLinearLeftRightStrategy(grid);
-            LinearView linearView = gridToLinearStrategy.GridToLinear();
+            ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
             Assert.True(expected == linearView.Value);
@@ -46,7 +46,7 @@ namespace Tests
 
             //act
             var gridToLinearStrategy = new GridToLinearLeftRightStrategy(grid);
-            LinearView linearView = gridToLinearStrategy.GridToLinear();
+            ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
             Assert.True(expected == linearView.Value);
@@ -63,7 +63,7 @@ namespace Tests
 
             //act
             var gridToLinearStrategy = new GridToLinearRightLeftStrategy(grid);
-            LinearView linearView = gridToLinearStrategy.GridToLinear();
+            ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
             Assert.True(expected == linearView.Value);
@@ -79,7 +79,7 @@ namespace Tests
 
             //act
             var gridToLinearStrategy = new GridToLinearTopBottomStrategy(grid);
-            LinearView linearView = gridToLinearStrategy.GridToLinear();
+            ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
             Assert.True(expected == linearView.Value);
@@ -95,7 +95,7 @@ namespace Tests
 
             //act
             var gridToLinearStrategy = new GridToLinearBottomTopStrategy(grid);
-            LinearView linearView = gridToLinearStrategy.GridToLinear();
+            ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
             Assert.True(expected == linearView.Value);
@@ -114,7 +114,7 @@ namespace Tests
 
             //act
             var gridToLinearStrategy = new GridToLinearLeftRightStrategy(grid);
-            LinearView linearView = gridToLinearStrategy.GridToLinear();
+            ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
             Assert.Equal(expected, linearView.IndexToGridPosition);
@@ -133,7 +133,7 @@ namespace Tests
 
             //act
             var gridToLinearStrategy = new GridToLinearRightLeftStrategy(grid);
-            LinearView linearView = gridToLinearStrategy.GridToLinear();
+            ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
             Assert.Equal(expected, linearView.IndexToGridPosition);
@@ -152,7 +152,7 @@ namespace Tests
 
             //act
             var gridToLinearStrategy = new GridToLinearTopBottomStrategy(grid);
-            LinearView linearView = gridToLinearStrategy.GridToLinear();
+            ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
             Assert.Equal(expected, linearView.IndexToGridPosition);
@@ -171,7 +171,7 @@ namespace Tests
 
             //act
             var gridToLinearStrategy = new GridToLinearBottomTopStrategy(grid);
-            LinearView linearView = gridToLinearStrategy.GridToLinear();
+            ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
             Assert.Equal(expected, linearView.IndexToGridPosition);
@@ -187,7 +187,7 @@ namespace Tests
 
             //act
             var gridToLinearStrategy = new GridToLinearTopRightBottomLeftStrategy(grid);
-            LinearView linearView = gridToLinearStrategy.GridToLinear();
+            ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
             Assert.True(expected == linearView.Value);
@@ -203,7 +203,7 @@ namespace Tests
 
             //act
             var gridToLinearStrategy = new GridToLinearBottomLeftTopRightStrategy(grid);
-            LinearView linearView = gridToLinearStrategy.GridToLinear();
+            ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
             Assert.True(expected == linearView.Value);
@@ -219,7 +219,7 @@ namespace Tests
 
             //act
             var gridToLinearStrategy = new GridToLinearTopLeftBottomRightStrategy(grid);
-            LinearView linearView = gridToLinearStrategy.GridToLinear();
+            ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
             Assert.True(expected == linearView.Value);
@@ -235,7 +235,7 @@ namespace Tests
 
             //act
             var gridToLinearStrategy = new GridToLinearBottomRightTopLeftStrategy(grid);
-            LinearView linearView = gridToLinearStrategy.GridToLinear();
+            ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
             Assert.True(expected == linearView.Value);
@@ -254,7 +254,7 @@ namespace Tests
 
             //act
             var gridToLinearStrategy = new GridToLinearTopRightBottomLeftStrategy(grid);
-            LinearView linearView = gridToLinearStrategy.GridToLinear();
+            ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
             Assert.Equal(expected, linearView.IndexToGridPosition);
@@ -273,7 +273,7 @@ namespace Tests
 
             //act
             var gridToLinearStrategy = new GridToLinearBottomLeftTopRightStrategy(grid);
-            LinearView linearView = gridToLinearStrategy.GridToLinear();
+            ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
             Assert.Equal(expected, linearView.IndexToGridPosition);
@@ -292,7 +292,7 @@ namespace Tests
 
             //act
             var gridToLinearStrategy = new GridToLinearTopLeftBottomRightStrategy(grid);
-            LinearView linearView = gridToLinearStrategy.GridToLinear();
+            ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
             Assert.Equal(expected, linearView.IndexToGridPosition);
@@ -311,7 +311,7 @@ namespace Tests
 
             //act
             var gridToLinearStrategy = new GridToLinearBottomRightTopLeftStrategy(grid);
-            LinearView linearView = gridToLinearStrategy.GridToLinear();
+            ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
             Assert.Equal(expected, linearView.IndexToGridPosition);

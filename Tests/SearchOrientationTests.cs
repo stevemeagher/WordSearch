@@ -50,7 +50,7 @@ namespace Tests
             {
             }
 
-            public override LinearView GridToLinear()
+            public override ILinearView GridToLinear()
             {
                 return new LinearView("ABC", new Dictionary<int, Point>() {{0, new Point(0,0)}});
             }
@@ -130,7 +130,7 @@ namespace Tests
             {
             }
 
-            public override LinearView GridToLinear()
+            public override ILinearView GridToLinear()
             {
                 return null;
             }
@@ -143,7 +143,7 @@ namespace Tests
             {
             }
 
-            public override LinearView GridToLinear()
+            public override ILinearView GridToLinear()
             {
                 return null;
             }

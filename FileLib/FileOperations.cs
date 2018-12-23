@@ -33,7 +33,7 @@ namespace WordSearch.FileLib
 
         private string GetApplicationBasePath(string baseApplicationDirectory)
         {
-            string path = System.IO.Directory.GetCurrentDirectory();
+            string path = Directory.GetCurrentDirectory();
 
             var indexOfBaseName = path.IndexOf(baseApplicationDirectory);
 

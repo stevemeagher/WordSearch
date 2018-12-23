@@ -331,3 +331,8 @@ ASALocalRun/
 
 # Mac Desktop Services file
 .DS_Store
+
+# Test Coverage files
+coverage.json
+lcov.info
+lcov.opencover.xml

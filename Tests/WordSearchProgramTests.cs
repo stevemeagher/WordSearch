@@ -16,6 +16,7 @@ namespace Tests
         private readonly StringWriter _consoleOuput;
         private readonly TextWriter _originalConsoleOutput;
         private readonly FileOperations _fileOperations;
+        private readonly WordFinder _wordFinder;
         private const string TEST_DIRECTORY = "Test_WordSearchProgram";
 
         public WordSearchProgramTests()
@@ -24,6 +25,7 @@ namespace Tests
             _originalConsoleOutput = Console.Out;
             _consoleOuput = new StringWriter();
             _fileOperations = new FileOperations();
+            _wordFinder = new WordFinder();
 
             Console.SetOut(_consoleOuput);
         }
@@ -36,7 +38,7 @@ namespace Tests
             //arrange
             string[,] grid = _testUtilities.StringToGrid(gridSource);
             IConsoleWrapper consoleWrapper = new ConsoleWrapper();
-            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations);
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder);
 
             //act
             wordSearchProgram.WriteGridToConsole(grid, ConsoleColor.Gray, ConsoleColor.Black);
@@ -60,7 +62,7 @@ namespace Tests
             //arrange
             string[,] grid = _testUtilities.StringToGrid(gridSource);
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
-            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations);
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder);
 
             //act
             wordSearchProgram.WriteGridToConsole(grid, ConsoleColor.Gray, ConsoleColor.Black, new PointList(){ new Point(xcoord, ycoord)});
@@ -80,7 +82,7 @@ namespace Tests
             string[] filePaths = filePathDelimeteredArray.Split('|');
             IConsoleWrapper consoleWrapper = new ConsoleWrapper();
             IFileOperations fileOperations = new FileOperations();
-            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, fileOperations);
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, fileOperations, _wordFinder);
 
             //act
             wordSearchProgram.WriteNumberedFileNamesToConsole(filePaths);
@@ -104,7 +106,7 @@ namespace Tests
             string[,] expectedGrid = _testUtilities.StringToGrid(fileRowsDelimeteredArray.Replace(",",""));
 
             IConsoleWrapper consoleWrapper = new ConsoleWrapper();
-            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations);
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder);
 
             //act
             var (searchString, grid) = wordSearchProgram.ConvertPuzzleFileToSearchWordsAndGrid($"{workingDir}/{puzzleFileName}");
@@ -140,7 +142,7 @@ namespace Tests
             CreatePuzzleFile(workingDir, searchWords, fileRowsDelimeteredArray, puzzleFileName);
 
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
-            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations);
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder);
 
             //act
             var (searchString, grid) = wordSearchProgram.ConvertPuzzleFileToSearchWordsAndGrid($"{workingDir}/{puzzleFileName}");

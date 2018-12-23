@@ -12,11 +12,13 @@ namespace WordSearch.ConsoleApp
     {
         private IConsoleWrapper _consoleWrapper;
         private IFileOperations _fileOperations;
+        private IWordFinder _wordFinder;
 
-        public WordSearchProgram(IConsoleWrapper consoleWrapper, IFileOperations fileOperations)
+        public WordSearchProgram(IConsoleWrapper consoleWrapper, IFileOperations fileOperations, IWordFinder wordFinder)
         {
             _consoleWrapper = consoleWrapper;
             _fileOperations = fileOperations;
+            _wordFinder = wordFinder;
         }
 
         public void WriteGridToConsole(string[,] grid, ConsoleColor foregroundColor, ConsoleColor backgroundColor, PointList coordinatesToHighlight = null)
@@ -97,11 +99,11 @@ namespace WordSearch.ConsoleApp
 
             PointList points = new PointList();
 
-            WordFinder finder = new WordFinder(GetSearchOrientations(grid));
+            _wordFinder.SetSearchOrientations(GetSearchOrientations(grid));
 
             foreach (var searchWord in searchWords)
             {
-                var coordinates = finder.GetCoordinatesOfSearchTarget(searchWord, "");
+                var coordinates = _wordFinder.GetCoordinatesOfSearchTarget(searchWord, "");
                 if (coordinates != null && coordinates.Count != 0)
                 {
                     _consoleWrapper.WriteLine($"{searchWord}: " + $"{coordinates.ToString()}");

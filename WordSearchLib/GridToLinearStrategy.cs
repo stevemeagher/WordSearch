@@ -9,6 +9,6 @@ namespace WordSearch.WordSearchLib
             Grid = grid;
         }
 
-        public abstract LinearView GridToLinear();
+        public abstract ILinearView GridToLinear();
     }
 }

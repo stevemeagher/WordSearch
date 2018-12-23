@@ -9,7 +9,7 @@ namespace WordSearch.WordSearchLib
     public class SearchOrientation : ISearchOrientation
     {
         private readonly GridToLinearStrategy _gridToLinearStrategy;
-        private readonly LinearView _linearView;
+        private readonly ILinearView _linearView;
 
         public SearchOrientation(GridToLinearStrategy gridToLinearStrategy)
         {
@@ -39,9 +39,6 @@ namespace WordSearch.WordSearchLib
 
             for (int i = targetIndex; i < targetIndex + searchTarget.Length; i++)
             {
-                //if last coordinate then don't add a comma
-                string comma = i == targetIndex + searchTarget.Length - 1 ? "" : ",";
-
                 coordinates.Add(new Point(_linearView.IndexToGridPosition[i].X, _linearView.IndexToGridPosition[i].Y));
             }
 
