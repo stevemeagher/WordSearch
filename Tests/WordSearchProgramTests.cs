@@ -107,7 +107,7 @@ namespace Tests
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations);
 
             //act
-            var (searchString, grid) = wordSearchProgram.ReadPuzzleFileToSearchWordsAndGrid($"{workingDir}/{puzzleFileName}");
+            var (searchString, grid) = wordSearchProgram.ConvertPuzzleFileToSearchWordsAndGrid($"{workingDir}/{puzzleFileName}");
 
             //assert
             Assert.Equal(searchWords, searchString);
@@ -133,7 +133,7 @@ namespace Tests
         [Theory]
         [InlineData("AB,HEB", "A,B,C|D,E,F|G,H,I", "puzzle.txt","AB: (0,0),(1,0)\nHEB: (1,2),(1,1),(1,0)\n")]
         [InlineData("16AF", "1,2,3,4|5,6,7,8|9,0,A,B|C,D,E,F", "puzzle.txt","16AF: (0,0),(1,1),(2,2),(3,3)\n")]
-        public void WriteSolvedPuzzleCoordinatesToConsole(string searchWords, string fileRowsDelimeteredArray, string puzzleFileName, string expected)
+        public void WriteSolvedPuzzleCoordinatesToConsole_WhenSearchWordFound_CoordinatesWrittenToConsole(string searchWords, string fileRowsDelimeteredArray, string puzzleFileName, string expected)
         {
             //arrange
             string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
@@ -143,14 +143,13 @@ namespace Tests
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations);
 
             //act
-            var (searchString, grid) = wordSearchProgram.ReadPuzzleFileToSearchWordsAndGrid($"{workingDir}/{puzzleFileName}");
+            var (searchString, grid) = wordSearchProgram.ConvertPuzzleFileToSearchWordsAndGrid($"{workingDir}/{puzzleFileName}");
             wordSearchProgram.WriteSolvedPuzzleCoordinatesToConsole(searchString, grid);
             var output = _consoleOuput.ToString();
 
             //assert
             Assert.True(expected == _consoleOuput.ToString());
         }
-        
 
         private class ConsoleWrapperMock : ConsoleWrapper
         {

@@ -62,10 +62,9 @@ namespace WordSearch.ConsoleApp
                 _consoleWrapper.WriteLine($"({counter}) {Path.GetFileName(filePath)}");
                 counter++;
             }
-
         }
 
-        public (string, string[,]) ReadPuzzleFileToSearchWordsAndGrid(string filePath)
+        public (string, string[,]) ConvertPuzzleFileToSearchWordsAndGrid(string filePath)
         {
             string[] fileRows = _fileOperations.ReadLines(filePath); 
 

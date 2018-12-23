@@ -17,20 +17,7 @@ namespace WordSearch.WordSearchLib
             _searchOrientations = searchOrientations;
         }
 
-        // public string GetCoordinatesOfSearchTarget(string searchTarget, string searchFailedMessage = "")
-        // {
-        //     foreach (var searchOrientation in _searchOrientations)
-        //     {
-        //         if (searchOrientation.IsSearchTargetFound(searchTarget))
-        //         {
-        //             return searchOrientation.GetCoordinatesOfSearchTarget(searchTarget);
-        //         }
-        //     }
-
-        //     return searchFailedMessage;
-        // }
-
-        public PointList GetCoordinatesOfSearchTarget(string searchTarget, string noPointsMessage = "")
+        public PointList GetCoordinatesOfSearchTarget(string searchTarget, string targetNotFoundMessage = "")
         {
             foreach (var searchOrientation in _searchOrientations)
             {
@@ -40,7 +27,7 @@ namespace WordSearch.WordSearchLib
                 }
             }
 
-            return new PointList(noPointsMessage);
+            return new PointList(targetNotFoundMessage);
         }
     }
 }

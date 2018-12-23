@@ -60,7 +60,7 @@ namespace Tests
         public void SearchOrientation_CreatedWithNullGridToLinearStrategy_ThrowsArgumentException()
         {
             //arrange
-            string expectedMessage = "gridToLinearStragtey parameter is null.";
+            string expectedMessage = "gridToLinearStrategy parameter is null.";
 
             //act & assert
             var exception = Assert.Throws<ArgumentException>(() => new SearchOrientation(null));

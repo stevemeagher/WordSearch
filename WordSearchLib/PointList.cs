@@ -18,15 +18,6 @@ namespace WordSearch.WordSearchLib
             _noPointsMessage = noPointsMessage;
         }
 
-        // public string ToString(string nullListMessage)
-        // {
-        //     if (this == null || this.Count() == 0)
-        //         return nullListMessage;
-        //     else
-        //         return ToString();
-        // }
-
-
         public override string ToString()
         {
             if (this == null || this.Count() == 0)
