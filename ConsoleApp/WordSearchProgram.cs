@@ -7,13 +7,20 @@ namespace WordSearch.ConsoleApp
 {
     public class WordSearchProgram
     {
-        public void WriteGridToConsole(IConsoleWrapper consoleWrapper, string[,] grid, ConsoleColor foregroundColor, ConsoleColor backgroundColor, List<Point> coordinatesToHighlight = null)
+        private IConsoleWrapper _consoleWrapper;
+
+        public WordSearchProgram(IConsoleWrapper consoleWrapper)
+        {
+            _consoleWrapper = consoleWrapper;
+        }
+
+        public void WriteGridToConsole(string[,] grid, ConsoleColor foregroundColor, ConsoleColor backgroundColor, List<Point> coordinatesToHighlight = null)
         {
             var columnsCount = grid.GetLength(1);
             var rowsCount = grid.GetLength(0);
 
-            consoleWrapper.ForegroundColor = foregroundColor;
-            consoleWrapper.BackgroundColor = backgroundColor;
+            _consoleWrapper.ForegroundColor = foregroundColor;
+            _consoleWrapper.BackgroundColor = backgroundColor;
 
             for (int rowNumber = 0; rowNumber < rowsCount; rowNumber++)
             {
@@ -23,22 +30,34 @@ namespace WordSearch.ConsoleApp
 
                     if (coordinatesToHighlight != null && coordinatesToHighlight.Contains(new Point(columnNumber, rowNumber)))
                     {
-                        consoleWrapper.ForegroundColor = backgroundColor;
-                        consoleWrapper.BackgroundColor = foregroundColor;
+                        _consoleWrapper.ForegroundColor = backgroundColor;
+                        _consoleWrapper.BackgroundColor = foregroundColor;
                     }
 
-                    consoleWrapper.Write(letter);
+                    _consoleWrapper.Write(letter);
                     
-                    if (consoleWrapper.ForegroundColor != foregroundColor)
-                        consoleWrapper.ForegroundColor = foregroundColor;
+                    if (_consoleWrapper.ForegroundColor != foregroundColor)
+                        _consoleWrapper.ForegroundColor = foregroundColor;
 
-                    if (consoleWrapper.BackgroundColor != backgroundColor)
-                        consoleWrapper.BackgroundColor = backgroundColor;
+                    if (_consoleWrapper.BackgroundColor != backgroundColor)
+                        _consoleWrapper.BackgroundColor = backgroundColor;
 
-                    consoleWrapper.Write(" ");
+                    _consoleWrapper.Write(" ");
                 }
-                consoleWrapper.WriteLine();
+                _consoleWrapper.WriteLine();
             }
+        }
+
+        public void WriteNumberedFileNamesToConsole(string[] filePaths)
+        {
+            int counter = 1;
+
+            foreach(var filePath in filePaths)
+            {
+                _consoleWrapper.WriteLine($"({counter}) {Path.GetFileName(filePath)}");
+                counter++;
+            }
+
         }
     }
 }

@@ -27,11 +27,11 @@ namespace Tests
         {
             //arrange
             string[,] grid = TestUtilities.StringToGrid(gridSource);
-            WordSearchProgram wordSearchProgram = new WordSearchProgram();
             IConsoleWrapper consoleWrapper = new ConsoleWrapper();
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper);
 
             //act
-            wordSearchProgram.WriteGridToConsole(consoleWrapper, grid, ConsoleColor.Gray, ConsoleColor.Black);
+            wordSearchProgram.WriteGridToConsole(grid, ConsoleColor.Gray, ConsoleColor.Black);
 
             var output = _consoleOuput.ToString();
 
@@ -51,16 +51,35 @@ namespace Tests
         {
             //arrange
             string[,] grid = TestUtilities.StringToGrid(gridSource);
-            WordSearchProgram wordSearchProgram = new WordSearchProgram();
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper);
 
             //act
-            wordSearchProgram.WriteGridToConsole(consoleWrapper, grid, ConsoleColor.Gray, ConsoleColor.Black, new List<Point>(){ new Point(xcoord, ycoord)});
+            wordSearchProgram.WriteGridToConsole(grid, ConsoleColor.Gray, ConsoleColor.Black, new List<Point>(){ new Point(xcoord, ycoord)});
 
             var output = _consoleOuput.ToString();
 
             //assert
             Assert.True(expected == _consoleOuput.ToString());
+        }
+
+        [Theory]
+        [InlineData("c:/dir/file1.txt|c:/dir/file2.txt|c:/dir/file3.txt", "(1) file1.txt\n(2) file2.txt\n(3) file3.txt\n")]
+        [InlineData("c:/dir1/dir2/file1.txt|c:/dir1/dir2/file2.txt|c:/dir1/dir2/file3.txt", "(1) file1.txt\n(2) file2.txt\n(3) file3.txt\n")]
+        public void WriteNumberedFileNamesToConsole_WhenWellFormedFilePathsArePassedIn_WritesNumberedFileNamesToConsole(string filePathDelimeteredArray, string expected)
+        {
+            //arrange
+            string[] filePaths = filePathDelimeteredArray.Split('|');
+            IConsoleWrapper consoleWrapper = new ConsoleWrapper();
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper);
+
+            //act
+            wordSearchProgram.WriteNumberedFileNamesToConsole(filePaths);
+            var output = _consoleOuput.ToString();
+
+            //assert
+            Assert.True(expected == _consoleOuput.ToString());
+
         }
 
         private class ConsoleWrapperMock : ConsoleWrapper
