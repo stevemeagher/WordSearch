@@ -6,6 +6,7 @@ using Xunit;
 using Moq;
 using WordSearch.ConsoleApp;
 using WordSearch.FileLib;
+using WordSearch.WordSearchLib;
 
 namespace Tests
 {
@@ -62,7 +63,7 @@ namespace Tests
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations);
 
             //act
-            wordSearchProgram.WriteGridToConsole(grid, ConsoleColor.Gray, ConsoleColor.Black, new List<Point>(){ new Point(xcoord, ycoord)});
+            wordSearchProgram.WriteGridToConsole(grid, ConsoleColor.Gray, ConsoleColor.Black, new PointList(){ new Point(xcoord, ycoord)});
 
             var output = _consoleOuput.ToString();
 
@@ -91,11 +92,30 @@ namespace Tests
         }
 
         [Theory]
-        [InlineData("WORD1,WORD2,WORD3", "A,B,C|D,E,F|G,H,I")]
-        public void GetSearchStringsAndGridFromPuzzleFile_WhenFileExistsInCorrectFormat_ReturnsFirstRowAsSearchStringAndAllOthersAsStringArray(string searchWords, string fileRowsDelimeteredArray)
+        [InlineData("WORD1,WORD2,WORD3", "A,B,C|D,E,F|G,H,I", "puzzle.txt")]
+        [InlineData("WORD1,WORD2,WORD3,WORD4", "A,B,C,D|E,F,G,H|I,J,K,L|M,N,O,P", "puzzle.txt")]
+        public void GetSearchStringsAndGridFromPuzzleFile_WhenFileExistsInCorrectFormat_ReturnsFirstRowAsSearchStringAndAllOthersAsStringArray(string searchWords, string fileRowsDelimeteredArray, string puzzleFileName)
         {
             //arrange
             string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
+            CreatePuzzleFile(workingDir, searchWords, fileRowsDelimeteredArray, puzzleFileName);
+
+            //need to remove the commas to provide meaningful input to StringToGrid
+            string[,] expectedGrid = _testUtilities.StringToGrid(fileRowsDelimeteredArray.Replace(",",""));
+
+            IConsoleWrapper consoleWrapper = new ConsoleWrapper();
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations);
+
+            //act
+            var (searchString, grid) = wordSearchProgram.ReadPuzzleFileToSearchWordsAndGrid($"{workingDir}/{puzzleFileName}");
+
+            //assert
+            Assert.Equal(searchWords, searchString);
+            Assert.Equal(expectedGrid, grid);
+        }
+
+        private void CreatePuzzleFile(string workingDir, string searchWords, string fileRowsDelimeteredArray, string puzzleFileName)
+        {
             _testUtilities.CreateEmptyDirectory(workingDir);
 
             string[] puzzleRows = fileRowsDelimeteredArray.Split('|');  
@@ -107,21 +127,30 @@ namespace Tests
                 puzzleForFile[i + 1] = puzzleRows[i];
             }
 
-            File.WriteAllLines(workingDir + "/puzzle.txt", puzzleForFile);
+            File.WriteAllLines($"{workingDir}/{puzzleFileName}", puzzleForFile);
+        }
 
-            //need to remove the commas to provide meaningful input to StringToGrid
-            string[,] expectedGrid = _testUtilities.StringToGrid(fileRowsDelimeteredArray.Replace(",",""));
+        [Theory]
+        [InlineData("AB,HEB", "A,B,C|D,E,F|G,H,I", "puzzle.txt","AB: (0,0),(1,0)\nHEB: (1,2),(1,1),(1,0)\n")]
+        [InlineData("16AF", "1,2,3,4|5,6,7,8|9,0,A,B|C,D,E,F", "puzzle.txt","16AF: (0,0),(1,1),(2,2),(3,3)\n")]
+        public void WriteSolvedPuzzleCoordinatesToConsole(string searchWords, string fileRowsDelimeteredArray, string puzzleFileName, string expected)
+        {
+            //arrange
+            string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
+            CreatePuzzleFile(workingDir, searchWords, fileRowsDelimeteredArray, puzzleFileName);
 
-            IConsoleWrapper consoleWrapper = new ConsoleWrapper();
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations);
 
             //act
-            var (searchString, grid) = wordSearchProgram.GetSearchStringsAndGridFromPuzzleFile(workingDir + "/puzzle.txt");
+            var (searchString, grid) = wordSearchProgram.ReadPuzzleFileToSearchWordsAndGrid($"{workingDir}/{puzzleFileName}");
+            wordSearchProgram.WriteSolvedPuzzleCoordinatesToConsole(searchString, grid);
+            var output = _consoleOuput.ToString();
 
             //assert
-            Assert.Equal(searchWords, searchString);
-            Assert.Equal(expectedGrid, grid);
+            Assert.True(expected == _consoleOuput.ToString());
         }
+        
 
         private class ConsoleWrapperMock : ConsoleWrapper
         {

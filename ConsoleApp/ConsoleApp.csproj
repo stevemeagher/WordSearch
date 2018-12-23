@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FileLib\FileLib.csproj" />
+    <ProjectReference Include="..\WordSearchLib\WordSearchLib.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

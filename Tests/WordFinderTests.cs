@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Xunit;
 using Moq;
 using WordSearch.WordSearchLib;
+using System.Drawing;
 
 namespace Tests
 {
@@ -26,7 +27,7 @@ namespace Tests
 
             //act
             var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
-            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
+            string actual = (wordFinder.GetCoordinatesOfSearchTarget(searchTarget)).ToString();
 
             //assert
             Assert.Equal(expected, actual);
@@ -42,7 +43,7 @@ namespace Tests
 
             //act
             var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
-            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget).ToString();
 
             //assert
             Assert.Equal(expected, actual);
@@ -58,7 +59,7 @@ namespace Tests
 
             //act
             var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
-            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget).ToString();
 
             //assert
             Assert.Equal(expected, actual);
@@ -74,7 +75,7 @@ namespace Tests
 
             //act
             var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
-            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget).ToString();
 
             //assert
             Assert.Equal(expected, actual);
@@ -90,7 +91,7 @@ namespace Tests
 
             //act
             var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
-            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, expected);
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, expected).ToString();
 
             //assert
             Assert.Equal(expected, actual);
@@ -128,7 +129,7 @@ namespace Tests
 
             //act
             var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
-            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget,"Not found.");
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget,"Not found.").ToString();
 
             //assert
             Assert.Equal(expected, actual);
@@ -144,7 +145,7 @@ namespace Tests
 
             //act
             var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
-            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, "Not found.");
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, "Not found.").ToString();
 
             //assert
             Assert.Equal(expected, actual);
@@ -160,7 +161,7 @@ namespace Tests
 
             //act
             var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
-            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, "Not found.");
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, "Not found.").ToString();
 
             //assert
             Assert.Equal(expected, actual);
@@ -176,7 +177,7 @@ namespace Tests
 
             //act
             var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
-            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, "Not found.");
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, "Not found.").ToString();
 
             //assert
             Assert.Equal(expected, actual);
@@ -189,11 +190,11 @@ namespace Tests
             string expected = "(10,10)";
             Mock<ISearchOrientation> mock = new Mock<ISearchOrientation>();
             mock.Setup(m => m.IsSearchTargetFound(It.IsAny<string>())).Returns(true);
-            mock.Setup(m => m.GetCoordinatesOfSearchTarget(It.IsAny<string>())).Returns("(10,10)");
+            mock.Setup(m => m.GetCoordinatesOfSearchTarget(It.IsAny<string>())).Returns(new PointList(){new Point(10,10)});
 
             //act
             var wordFinder = new WordFinder(new List<ISearchOrientation>(){{mock.Object}});
-            string actual = wordFinder.GetCoordinatesOfSearchTarget("", "Not found.");
+            string actual = wordFinder.GetCoordinatesOfSearchTarget("","Not found.").ToString();
 
             //assert
             Assert.Equal(expected, actual);
@@ -209,7 +210,7 @@ namespace Tests
 
             //act
             var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
-            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget).ToString();
 
             //assert
             Assert.Equal(expected, actual);
@@ -225,7 +226,7 @@ namespace Tests
 
             //act
             var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
-            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget).ToString();
 
             //assert
             Assert.Equal(expected, actual);
@@ -241,7 +242,7 @@ namespace Tests
 
             //act
             var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
-            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget).ToString();
 
             //assert
             Assert.Equal(expected, actual);
@@ -257,7 +258,7 @@ namespace Tests
 
             //act
             var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
-            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
+            string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget).ToString();
 
             //assert
             Assert.Equal(expected, actual);

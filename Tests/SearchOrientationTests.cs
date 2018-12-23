@@ -37,10 +37,10 @@ namespace Tests
             var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(grid));
 
             //act
-            string actual = serachOrientation.GetCoordinatesOfSearchTarget("A");
+            PointList actual = serachOrientation.GetCoordinatesOfSearchTarget("A");
 
             //assert
-            Assert.Equal("(0,0)", actual);
+            Assert.Equal(new PointList() {new Point(0,0)}, actual);
         }
 
         private class GridToLinearStrategyLeftToRightMock : GridToLinearStrategy
@@ -96,17 +96,17 @@ namespace Tests
         }
 
         [Fact]
-        public void GetCoordinatesOfSearchTarget_PassNullSearchTarget_ReturnsEmptyString()
+        public void GetCoordinatesOfSearchTarget_PassNullSearchTarget_ReturnsNull()
         {
             //arrange
             string[,] grid = _testUtilities.StringToGrid("ABC|DEF|GHI");
             var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(grid));
 
             //act
-            string actual = serachOrientation.GetCoordinatesOfSearchTarget(null);
+            PointList actual = serachOrientation.GetCoordinatesOfSearchTarget(null);
 
             //assert
-            Assert.True(actual == "");
+            Assert.True(actual == null);
         }
 
         [Fact]
@@ -117,10 +117,10 @@ namespace Tests
             var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(grid));
 
             //act
-            string actual = serachOrientation.GetCoordinatesOfSearchTarget("");
+            PointList actual = serachOrientation.GetCoordinatesOfSearchTarget("");
 
             //assert
-            Assert.True(actual == "");
+            Assert.True(actual == null);
         }
 
         private class GridToLinearStrategyLeftToRighNullLinearViewtMock : GridToLinearStrategy

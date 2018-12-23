@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace WordSearch.WordSearchLib
 {
@@ -16,7 +17,20 @@ namespace WordSearch.WordSearchLib
             _searchOrientations = searchOrientations;
         }
 
-        public string GetCoordinatesOfSearchTarget(string searchTarget, string searchFailedMessage = "")
+        // public string GetCoordinatesOfSearchTarget(string searchTarget, string searchFailedMessage = "")
+        // {
+        //     foreach (var searchOrientation in _searchOrientations)
+        //     {
+        //         if (searchOrientation.IsSearchTargetFound(searchTarget))
+        //         {
+        //             return searchOrientation.GetCoordinatesOfSearchTarget(searchTarget);
+        //         }
+        //     }
+
+        //     return searchFailedMessage;
+        // }
+
+        public PointList GetCoordinatesOfSearchTarget(string searchTarget, string noPointsMessage = "")
         {
             foreach (var searchOrientation in _searchOrientations)
             {
@@ -26,7 +40,7 @@ namespace WordSearch.WordSearchLib
                 }
             }
 
-            return searchFailedMessage;
+            return new PointList(noPointsMessage);
         }
     }
 }

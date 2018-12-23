@@ -25,9 +25,32 @@ namespace WordSearch.WordSearchLib
             return String.IsNullOrEmpty(searchTarget) || _linearView is null || _linearView.Value is null ? false : _linearView.Value.IndexOf(searchTarget.ToUpper()) != -1;
         }
 
-        public string GetCoordinatesOfSearchTarget(string searchTarget)
+        // public string GetCoordinatesOfSearchTarget(string searchTarget)
+        // {
+        //     if (String.IsNullOrEmpty(searchTarget)) return "";
+
+        //     int targetIndex = _linearView.Value.IndexOf(searchTarget.ToUpper());
+
+        //     //reduce targetIndex by the number of |'s (row or column boundary indicators) found up to the position of the target string
+        //     var boundaryIndicatorCount = _linearView.Value.Substring(0, targetIndex).Count(o => o == '|');
+        //     targetIndex = targetIndex - boundaryIndicatorCount;
+
+        //     StringBuilder coordinates = new StringBuilder();
+
+        //     for (int i = targetIndex; i < targetIndex + searchTarget.Length; i++)
+        //     {
+        //         //if last coordinate then don't add a comma
+        //         string comma = i == targetIndex + searchTarget.Length - 1 ? "" : ",";
+
+        //         coordinates.Append($"({_linearView.IndexToGridPosition[i].X},{_linearView.IndexToGridPosition[i].Y}){comma}");
+        //     }
+
+        //     return coordinates.ToString();
+        // }
+
+        public PointList GetCoordinatesOfSearchTarget(string searchTarget)
         {
-            if (String.IsNullOrEmpty(searchTarget)) return "";
+            if (String.IsNullOrEmpty(searchTarget)) return null;
 
             int targetIndex = _linearView.Value.IndexOf(searchTarget.ToUpper());
 
@@ -35,17 +58,17 @@ namespace WordSearch.WordSearchLib
             var boundaryIndicatorCount = _linearView.Value.Substring(0, targetIndex).Count(o => o == '|');
             targetIndex = targetIndex - boundaryIndicatorCount;
 
-            StringBuilder coordinates = new StringBuilder();
+            PointList coordinates = new PointList();
 
             for (int i = targetIndex; i < targetIndex + searchTarget.Length; i++)
             {
                 //if last coordinate then don't add a comma
                 string comma = i == targetIndex + searchTarget.Length - 1 ? "" : ",";
 
-                coordinates.Append($"({_linearView.IndexToGridPosition[i].X},{_linearView.IndexToGridPosition[i].Y}){comma}");
+                coordinates.Add(new Point(_linearView.IndexToGridPosition[i].X, _linearView.IndexToGridPosition[i].Y));
             }
 
-            return coordinates.ToString();
+            return coordinates;
         }
     }
 }

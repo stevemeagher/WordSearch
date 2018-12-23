@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using WordSearch.FileLib;
+using WordSearch.WordSearchLib;
 
 namespace WordSearch.ConsoleApp
 {
@@ -18,7 +19,7 @@ namespace WordSearch.ConsoleApp
             _fileOperations = fileOperations;
         }
 
-        public void WriteGridToConsole(string[,] grid, ConsoleColor foregroundColor, ConsoleColor backgroundColor, List<Point> coordinatesToHighlight = null)
+        public void WriteGridToConsole(string[,] grid, ConsoleColor foregroundColor, ConsoleColor backgroundColor, PointList coordinatesToHighlight = null)
         {
             var columnsCount = grid.GetLength(1);
             var rowsCount = grid.GetLength(0);
@@ -64,9 +65,8 @@ namespace WordSearch.ConsoleApp
 
         }
 
-        public (string, string[,]) GetSearchStringsAndGridFromPuzzleFile(string filePath)
+        public (string, string[,]) ReadPuzzleFileToSearchWordsAndGrid(string filePath)
         {
-            Console.WriteLine(filePath);
             string[] fileRows = _fileOperations.ReadLines(filePath); 
 
             var searchStrings = fileRows[0];
@@ -90,7 +90,41 @@ namespace WordSearch.ConsoleApp
             }
 
             return (searchStrings, grid);
+        }
 
+        public PointList WriteSolvedPuzzleCoordinatesToConsole(string searchString, string[,] grid)
+        {
+            string[] searchWords = searchString.Split(',');
+
+            PointList points = new PointList();
+
+            WordFinder finder = new WordFinder(GetSearchOrientations(grid));
+
+            foreach (var searchWord in searchWords)
+            {
+                var coordinates = finder.GetCoordinatesOfSearchTarget(searchWord, "");
+                if (coordinates != null && coordinates.Count != 0)
+                {
+                    _consoleWrapper.WriteLine($"{searchWord}: " + $"{coordinates.ToString()}");
+                }
+            }
+
+            return points;
+        }
+
+        private List<ISearchOrientation> GetSearchOrientations(string[,] grid)
+        {
+            return new List<ISearchOrientation>() 
+            {
+                new SearchOrientation(new GridToLinearLeftRightStrategy(grid)),
+                new SearchOrientation(new GridToLinearRightLeftStrategy(grid)),
+                new SearchOrientation(new GridToLinearTopBottomStrategy(grid)),
+                new SearchOrientation(new GridToLinearBottomTopStrategy(grid)),
+                new SearchOrientation(new GridToLinearTopLeftBottomRightStrategy(grid)),
+                new SearchOrientation(new GridToLinearBottomRightTopLeftStrategy(grid)),
+                new SearchOrientation(new GridToLinearTopRightBottomLeftStrategy(grid)),
+                new SearchOrientation(new GridToLinearBottomLeftTopRightStrategy(grid))
+            };
         }
     }
 }
