@@ -6,6 +6,13 @@ namespace Tests
 {
     public class TestUtilitiesTests
     {
+        private TestUtilities _testUtilities;
+
+        public TestUtilitiesTests()
+        {
+            _testUtilities = new TestUtilities();
+        }
+
         [Fact]
         public void StringToGrid_WellFormedStringInput_Creates2dStringArray()
         {
@@ -18,7 +25,7 @@ namespace Tests
             };
 
             //act
-            string[,] actual = TestUtilities.StringToGrid(source);
+            string[,] actual = _testUtilities.StringToGrid(source);
 
             //assert
             Assert.Equal(expeceted, actual);
@@ -32,7 +39,7 @@ namespace Tests
             string expectedMessage = "source parameter not in correct format: no row separator characters.";
 
             //act & assert
-            var exception = Assert.Throws<ArgumentException>(() => TestUtilities.StringToGrid(source));
+            var exception = Assert.Throws<ArgumentException>(() => _testUtilities.StringToGrid(source));
             Assert.Equal(expectedMessage, exception.Message);
         }
 
@@ -44,7 +51,7 @@ namespace Tests
             string expectedMessage = "source parameter contains no characters.";
 
             //act & assert
-            var exception = Assert.Throws<ArgumentException>(() => TestUtilities.StringToGrid(source));
+            var exception = Assert.Throws<ArgumentException>(() => _testUtilities.StringToGrid(source));
             Assert.Equal(expectedMessage, exception.Message);
         }
         
@@ -56,7 +63,7 @@ namespace Tests
             string expectedMessage = "source parameter not in correct format: rows must contain the same number of characters.";
 
             //act & assert
-            var exception = Assert.Throws<ArgumentException>(() => TestUtilities.StringToGrid(source));
+            var exception = Assert.Throws<ArgumentException>(() => _testUtilities.StringToGrid(source));
             Assert.Equal(expectedMessage, exception.Message);
         }
     }

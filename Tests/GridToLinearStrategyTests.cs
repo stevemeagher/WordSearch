@@ -8,6 +8,13 @@ namespace Tests
 {
     public class GridToLinearStrategyTests
     {
+        private TestUtilities _testUtilities;
+
+        public GridToLinearStrategyTests()
+        {
+            _testUtilities = new TestUtilities();
+        }
+
         [Fact]
         public void GridToLinearLeftRightStrategy_NxNStringGrid_ReturnsLeftToRightString()
         {
@@ -35,7 +42,7 @@ namespace Tests
         public void GridToLinearLeftRightStrategy_NxNGrid_ReturnsLeftToRightString(string gridSource, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
             var gridToLinearStrategy = new GridToLinearLeftRightStrategy(grid);
@@ -52,7 +59,7 @@ namespace Tests
         public void GridToLinearRightLeftStrategy_NxNStringGrid_ReturnsRightToLeftString(string gridSource, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
             var gridToLinearStrategy = new GridToLinearRightLeftStrategy(grid);
@@ -68,7 +75,7 @@ namespace Tests
         public void GridToLinearTopBottomStrategy_NxNStringGrid_ReturnsTopToBottomString(string gridSource, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
             var gridToLinearStrategy = new GridToLinearTopBottomStrategy(grid);
@@ -84,7 +91,7 @@ namespace Tests
         public void GridToLinearBottomTopStrategy_NxNStringGrid_ReturnsBottomToTopString(string gridSource, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
             var gridToLinearStrategy = new GridToLinearBottomTopStrategy(grid);
@@ -176,7 +183,7 @@ namespace Tests
         public void GridToLinearTopRightBottomLeftStrategy_NxNGrid_ReturnsTopRightToBottomLeftString(string gridSource, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
             var gridToLinearStrategy = new GridToLinearTopRightBottomLeftStrategy(grid);
@@ -192,7 +199,7 @@ namespace Tests
         public void GridToLinearBottomLeftTopRightStrategy_NxNGrid_ReturnsBottomLeftToTopRightString(string gridSource, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
             var gridToLinearStrategy = new GridToLinearBottomLeftTopRightStrategy(grid);
@@ -208,7 +215,7 @@ namespace Tests
         public void GridToLinearTopLeftBottomRightStrategy_NxNGrid_ReturnsTopLeftToBottomRightString(string gridSource, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
             var gridToLinearStrategy = new GridToLinearTopLeftBottomRightStrategy(grid);
@@ -224,7 +231,7 @@ namespace Tests
         public void GridToLinearBottomRightTopLeftStrategy_NxNGrid_ReturnsBottomRightToTopLeftString(string gridSource, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
             var gridToLinearStrategy = new GridToLinearBottomRightTopLeftStrategy(grid);

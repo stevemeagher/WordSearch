@@ -3,7 +3,7 @@ using System.IO;
 
 namespace WordSearch.FileLib
 {
-    public class FileOperations
+    public class FileOperations : IFileOperations
     {
         private string _applicationBasePath = "";
         private string _baseApplicationDirectory = "";

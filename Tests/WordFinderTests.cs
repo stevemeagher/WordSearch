@@ -8,6 +8,13 @@ namespace Tests
 {
     public class WordFinderTests
     {
+        private TestUtilities _testUtilities;
+
+        public WordFinderTests()
+        {
+            _testUtilities = new TestUtilities();
+        }
+
 
         [Theory]
         [InlineData("ABC|DEF|GHI", "DEF", "(0,1),(1,1),(2,1)")]
@@ -15,10 +22,10 @@ namespace Tests
         public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInLeftRightOrientation_CoordinatesReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
 
             //assert
@@ -31,10 +38,10 @@ namespace Tests
         public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInRightLeftOrientation_CoordinatesReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
 
             //assert
@@ -47,10 +54,10 @@ namespace Tests
         public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInTopBottomOrientation_CoordinatesReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
 
             //assert
@@ -63,10 +70,10 @@ namespace Tests
         public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInBottomTopOrientation_CoordinatesReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
 
             //assert
@@ -79,10 +86,10 @@ namespace Tests
         public void GetCoordinatesOfSearchTarget_NxNGridDoesNotContainsTarget_NotFoundMessageReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, expected);
 
             //assert
@@ -117,10 +124,10 @@ namespace Tests
         public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInLeftRightOrientationDueToRowEdgesJoined_CoordinatesNotReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget,"Not found.");
 
             //assert
@@ -133,10 +140,10 @@ namespace Tests
         public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInRightLeftOrientationDueToRowEdgesJoined_CoordinatesNotReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, "Not found.");
 
             //assert
@@ -149,10 +156,10 @@ namespace Tests
         public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInTopBottomOrientationDueToColumnEdgesJoined_CoordinatesNotReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, "Not found.");
 
             //assert
@@ -165,10 +172,10 @@ namespace Tests
         public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInBottomTopOrientationDueToColumnEdgesJoined_CoordinatesReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, "Not found.");
 
             //assert
@@ -198,10 +205,10 @@ namespace Tests
         public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInTopLeftBottomRightOrientation_CoordinatesReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
 
             //assert
@@ -214,10 +221,10 @@ namespace Tests
         public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInBottomRightTopLeftOrientation_CoordinatesReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
 
             //assert
@@ -230,10 +237,10 @@ namespace Tests
         public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInTopRightBottomLeftOrientation_CoordinatesReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
 
             //assert
@@ -246,10 +253,10 @@ namespace Tests
         public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInBottomLeftTopRightOrientation_CoordinatesReturned(string gridSource, string searchTarget, string expected)
         {
             //arrange
-            string[,] grid = TestUtilities.StringToGrid(gridSource);
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            var wordFinder = new WordFinder(TestUtilities.GetSearchOrientations(grid));
+            var wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget);
 
             //assert

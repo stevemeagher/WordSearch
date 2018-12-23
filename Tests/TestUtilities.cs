@@ -1,18 +1,22 @@
 using System;
-using Xunit;
-using WordSearch.WordSearchLib;
+using System.IO;
 using System.Collections.Generic;
+using Xunit;
+using WordSearch.FileLib;
+using WordSearch.WordSearchLib;
 
 namespace Tests
 {
     public class TestUtilities
     {
+        public static string APPLICATION_DIRECTORY = "WordSearch";
+
         /// <summary>Converts formatted string to 2d string array </summary>
         /// <para>StringToGrid converts a specifically formatted source string into a two-dimensional string array.  
         /// This method is used to produce string arrays for testing and enables the formatted strings to be passed 
         /// as InLineData attribute parameters.
         /// </para>
-        public static string[,] StringToGrid(string source)
+        public string[,] StringToGrid(string source)
         {
             if (string.IsNullOrEmpty(source)) throw new ArgumentException("source parameter contains no characters.");
             if (!source.Contains("|")) throw new ArgumentException("source parameter not in correct format: no row separator characters.");
@@ -38,7 +42,7 @@ namespace Tests
             return grid;
         }
 
-        public static List<ISearchOrientation> GetSearchOrientations(string[,] grid)
+        public List<ISearchOrientation> GetSearchOrientations(string[,] grid)
         {
             return new List<ISearchOrientation>() 
             {
@@ -51,6 +55,18 @@ namespace Tests
                 new SearchOrientation(new GridToLinearTopRightBottomLeftStrategy(grid)),
                 new SearchOrientation(new GridToLinearBottomLeftTopRightStrategy(grid))
             };
+        }
+
+        public bool CreateEmptyDirectory(string directoryPath)
+        {
+            if (Directory.Exists(directoryPath))
+            {
+                Directory.Delete(directoryPath, true);
+            }
+
+            Directory.CreateDirectory(directoryPath);
+
+            return Directory.Exists(directoryPath);
         }
     }
 }

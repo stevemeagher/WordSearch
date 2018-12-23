@@ -7,14 +7,16 @@ namespace Tests
 {
     public class FileOperationsTests : IDisposable
     {
-        private const string  APPLICATION_DIRECTORY = "WordSearch";
         private string _testFilePath;
         private FileOperations _fileOperations;
+        private TestUtilities _testUtilities;
+        private const string TEST_DIRECTORY = "Test_FileOperations";
 
         public FileOperationsTests()
         {
+            _testUtilities = new TestUtilities();
             _fileOperations = new FileOperations();
-            _testFilePath = _fileOperations.ApplicationBasePath(APPLICATION_DIRECTORY) + "/testFile.txt";
+            _testFilePath = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/fileOperationsTests.txt";
             if (File.Exists(_testFilePath))
             {
                 File.Delete(_testFilePath);
@@ -68,13 +70,9 @@ namespace Tests
         public void GetDirectoryContents_WhenFilesExistInDirectory_ReturnsSortdedArrayOfFilePaths()
         {
             //arrange
-            string workingDir = _fileOperations.ApplicationBasePath(APPLICATION_DIRECTORY) + "/testdirectory";
-            DirectoryInfo di = new DirectoryInfo(workingDir);
-            if (di.Exists)
-            {
-                di.Delete(true);
-            }
-            di.Create();
+            string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
+            _testUtilities.CreateEmptyDirectory(workingDir);
+
             File.Create(workingDir + "/file1.txt");
             File.Create(workingDir + "/file2.txt");
             File.Create(workingDir + "/file3.txt");
@@ -100,11 +98,11 @@ namespace Tests
                 File.Delete(_testFilePath);
             }
 
-            string workingDir = _fileOperations.ApplicationBasePath(APPLICATION_DIRECTORY) + "/testdirectory";
-            DirectoryInfo di = new DirectoryInfo(workingDir);
-            if (di.Exists)
+            string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
+
+            if (Directory.Exists(workingDir))
             {
-                di.Delete(true);
+                Directory.Delete(workingDir, true);
             }
         }
     }
