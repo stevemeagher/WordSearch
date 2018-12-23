@@ -26,8 +26,7 @@ namespace WordSearch.ConsoleApp
             var columnsCount = grid.GetLength(1);
             var rowsCount = grid.GetLength(0);
 
-            _consoleWrapper.ForegroundColor = foregroundColor;
-            _consoleWrapper.BackgroundColor = backgroundColor;
+            SetConsoleColors(foregroundColor, backgroundColor);
 
             for (int rowNumber = 0; rowNumber < rowsCount; rowNumber++)
             {
@@ -37,21 +36,29 @@ namespace WordSearch.ConsoleApp
 
                     if (coordinatesToHighlight != null && coordinatesToHighlight.Contains(new Point(columnNumber, rowNumber)))
                     {
-                        _consoleWrapper.ForegroundColor = backgroundColor;
-                        _consoleWrapper.BackgroundColor = foregroundColor;
+                        SetConsoleColors(backgroundColor, foregroundColor);
                     }
 
                     _consoleWrapper.Write(letter);
                     
-                    if (_consoleWrapper.ForegroundColor != foregroundColor)
-                        _consoleWrapper.ForegroundColor = foregroundColor;
-
-                    if (_consoleWrapper.BackgroundColor != backgroundColor)
-                        _consoleWrapper.BackgroundColor = backgroundColor;
+                    SetConsoleColors(foregroundColor, backgroundColor);
 
                     _consoleWrapper.Write(" ");
                 }
                 _consoleWrapper.WriteLine();
+            }
+        }
+
+        private void SetConsoleColors(ConsoleColor fgColor, ConsoleColor bgColor)
+        {
+            if (_consoleWrapper.ForegroundColor != fgColor)
+            {
+                _consoleWrapper.ForegroundColor = fgColor;
+            }
+
+            if (_consoleWrapper.BackgroundColor != bgColor)
+            {
+                _consoleWrapper.BackgroundColor = bgColor;
             }
         }
 
@@ -128,6 +135,26 @@ namespace WordSearch.ConsoleApp
             return _consoleWrapper.ReadLine();
         }
 
+        public void WritePuzzleSolutionForSearchWord(string[,] grid, string searchWord, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
+        {
+            var failedSearchMessage = $"Did not find {searchWord} in puzzle.";
+
+            _wordFinder.SetSearchOrientations(GetSearchOrientations(grid));
+
+            var coordinates = _wordFinder.GetCoordinatesOfSearchTarget(searchWord, failedSearchMessage);
+            var coordinatesForDisplay = coordinates.ToString();
+            
+            _consoleWrapper.WriteLine();
+            _consoleWrapper.WriteLine($"{searchWord}: {coordinatesForDisplay}");
+
+            if (coordinatesForDisplay != failedSearchMessage)
+            {
+                _consoleWrapper.WriteLine();
+                WriteGridToConsole(grid, foregroundColor, backgroundColor, coordinates);
+                _consoleWrapper.WriteLine();
+            }
+        }
+
         private List<ISearchOrientation> GetSearchOrientations(string[,] grid)
         {
             return new List<ISearchOrientation>() 
@@ -142,5 +169,7 @@ namespace WordSearch.ConsoleApp
                 new SearchOrientation(new GridToLinearBottomLeftTopRightStrategy(grid))
             };
         }
+
+        
     }
 }

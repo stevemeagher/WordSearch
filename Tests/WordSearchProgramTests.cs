@@ -55,14 +55,16 @@ namespace Tests
         ///fg: indicates setting the foreground color and bg: indicates setting the background color
         ///</summary>
         [Theory]
-        [InlineData("ABC|DEF|GHI", 1, 1, "<fg:Gray><bg:Black>A B C \nD <fg:Black><bg:Gray>E<fg:Gray><bg:Black> F \nG H I \n")]
-        [InlineData("ABC|DEF|GHI", 2, 0, "<fg:Gray><bg:Black>A B <fg:Black><bg:Gray>C<fg:Gray><bg:Black> \nD E F \nG H I \n")]
+        [InlineData("ABC|DEF|GHI", 1, 1, "A B C \nD <fg:Black><bg:Gray>E<fg:Gray><bg:Black> F \nG H I \n")]
+        [InlineData("ABC|DEF|GHI", 2, 0, "A B <fg:Black><bg:Gray>C<fg:Gray><bg:Black> \nD E F \nG H I \n")]
         public void WriteGridToConsole_WhenGridArrayAndHighlightCoordinatesPassedIn_WritesArrayContentsToConsoleWithColorChanges(string gridSource, int xcoord, int ycoord, string expected)
         {
             //arrange
             string[,] grid = _testUtilities.StringToGrid(gridSource);
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForColors();
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
 
             //act
             wordSearchProgram.WriteGridToConsole(grid, ConsoleColor.Gray, ConsoleColor.Black, new PointList(){ new Point(xcoord, ycoord)});
@@ -70,7 +72,7 @@ namespace Tests
             var output = _consoleOuput.ToString();
 
             //assert
-            Assert.True(expected == _consoleOuput.ToString());
+            Assert.Equal(expected,_consoleOuput.ToString());
         }
 
         [Theory]
@@ -143,6 +145,8 @@ namespace Tests
 
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForColors();
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
 
             //act
             var (searchString, grid) = wordSearchProgram.ConvertPuzzleFileToSearchWordsAndGrid($"{workingDir}/{puzzleFileName}");
@@ -164,6 +168,8 @@ namespace Tests
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForReadLine();
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder);
             ((ConsoleWrapperMockForReadLine)consoleWrapper).ReadLineResult = searchWord;
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
 
             //act
             string searchWordOut = wordSearchProgram.PromptForSearchWord();
@@ -173,6 +179,27 @@ namespace Tests
             Assert.Equal(searchWord, searchWordOut);
             Assert.Equal(expected, output);
         }
+
+        [Theory]
+        [InlineData("ABC|DEF|GHI", "DA", "\nDA: (0,1),(0,0)\n\n<fg:Black><bg:Gray>A<fg:Gray><bg:Black> B C \n<fg:Black><bg:Gray>D<fg:Gray><bg:Black> E F \nG H I \n\n")]
+        public void WritePuzzleSolutionForSearchWord_WhenSearchWordFoundInGrid_SolvedPuzzleWrittenToGrid(string gridSource, string searchWord, string expected)
+        {
+            //arrange
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForColors();
+            _wordFinder.SetSearchOrientations(_testUtilities.GetSearchOrientations(grid));
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
+
+            //act
+            wordSearchProgram.WritePuzzleSolutionForSearchWord(grid, searchWord, ConsoleColor.Gray, ConsoleColor.Black);
+            string output = _consoleOuput.ToString();
+
+            //assert
+            Assert.Equal(expected, output);
+        }
+
 
         private class ConsoleWrapperMockForColors : ConsoleWrapper
         {
