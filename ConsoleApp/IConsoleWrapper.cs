@@ -4,6 +4,7 @@ namespace WordSearch.ConsoleApp
 {
     public interface IConsoleWrapper
     {
+        void Clear();
         void WriteLine();
         void WriteLine(string output);
         void Write(string output);

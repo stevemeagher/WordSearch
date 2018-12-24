@@ -31,5 +31,10 @@ namespace WordSearch.ConsoleApp
         {
             Console.WriteLine();
         }
+
+        public void Clear()
+        {
+            Console.Clear();
+        }
     }
 }

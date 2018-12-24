@@ -8,8 +8,18 @@ using WordSearch.WordSearchLib;
 
 namespace WordSearch.ConsoleApp
 {
+    public enum MenuSelection
+    {
+        NoSelection = 0,
+        ShowSolution,
+        EnterSearchWord,
+        SelectAnotherFile,
+        Exit
+    }
+
     public class WordSearchProgram
     {
+        
         private IConsoleWrapper _consoleWrapper;
         private IFileOperations _fileOperations;
         private IWordFinder _wordFinder;
@@ -110,7 +120,7 @@ namespace WordSearch.ConsoleApp
 
             foreach (var searchWord in searchWords)
             {
-                var coordinates = _wordFinder.GetCoordinatesOfSearchTarget(searchWord, "");
+                var coordinates = _wordFinder.GetCoordinatesOfSearchTarget(searchWord, $"Did not find {searchWord} in puzzle.");
                 if (coordinates != null && coordinates.Count != 0)
                 {
                     _consoleWrapper.WriteLine($"{searchWord}: " + $"{coordinates.ToString()}");
@@ -125,7 +135,7 @@ namespace WordSearch.ConsoleApp
                 }
             }
 
-            return points;
+            return points.Count > 0 ? points : null;
         }
 
         public string PromptForSearchWord()
@@ -136,38 +146,35 @@ namespace WordSearch.ConsoleApp
             return _consoleWrapper.ReadLine();
         }
 
-        public bool WritePuzzleSolutionForSearchWord(string[,] grid, string searchWord, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
-        {
-            var failedSearchMessage = $"Did not find {searchWord} in puzzle.";
-
-            _wordFinder.SetSearchOrientations(GetSearchOrientations(grid));
-
-            var coordinates = _wordFinder.GetCoordinatesOfSearchTarget(searchWord, failedSearchMessage);
-            var coordinatesForDisplay = coordinates.ToString();
-            
-            _consoleWrapper.WriteLine($"{searchWord}: {coordinatesForDisplay}");
-
-            if (coordinatesForDisplay != failedSearchMessage)
-            {
-                _consoleWrapper.WriteLine();
-                WriteGridToConsole(grid, foregroundColor, backgroundColor, coordinates);
-                _consoleWrapper.WriteLine();
-
-                return true;
-            }
-
-            return false;
-        }
-
-        public string PromptForMenuSelection()
+        public MenuSelection PromptForMenuSelection()
         {
             _consoleWrapper.WriteLine("(1) Show solution");
             _consoleWrapper.WriteLine("(2) Enter a search word");
             _consoleWrapper.WriteLine("(3) Select another file");
             _consoleWrapper.WriteLine("(4) Exit");
             _consoleWrapper.WriteLine();
-            _consoleWrapper.Write("Enter selection: ");
-            return _consoleWrapper.ReadKey().KeyChar.ToString();
+
+            string response = "";
+            bool responseValid;
+
+            do
+            {
+                _consoleWrapper.Write("Enter selection: ");
+                response = _consoleWrapper.ReadKey().KeyChar.ToString();
+
+                responseValid = "1234".Contains(response);
+
+                if (!responseValid)
+                {
+                    _consoleWrapper.WriteLine();
+                    _consoleWrapper.WriteLine();
+                    _consoleWrapper.WriteLine("Please enter a number between 1 and 4");
+                    _consoleWrapper.WriteLine();
+                }
+
+            } while (!responseValid);
+
+            return (MenuSelection)Convert.ToInt16(response);
         }
 
         private List<ISearchOrientation> GetSearchOrientations(string[,] grid)

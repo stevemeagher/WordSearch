@@ -7,6 +7,7 @@ using Moq;
 using WordSearch.ConsoleApp;
 using WordSearch.FileLib;
 using WordSearch.WordSearchLib;
+using System.Linq;
 
 namespace Tests
 {
@@ -164,7 +165,7 @@ namespace Tests
         public void PromptForSearchWord_WhenUserEntersWord_PromptDisplayedAndWordReturned(string searchWord)
         {
             //arrange
-            string expected = $"Enter a search word to find in puzzle or hit <enter> to return to the menu\nSearch word: {searchWord}\n";
+            string expected = $"Enter a search word to find in puzzle or hit <enter> to return to the menu\n\nSearch word: {searchWord}\n";
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForRead();
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder);
             ((ConsoleWrapperMockForRead)consoleWrapper).ReadLineResult = searchWord;
@@ -179,51 +180,52 @@ namespace Tests
             Assert.Equal(searchWord, searchWordOut);
             Assert.Equal(expected, output);
         }
-
+        
         [Theory]
-        [InlineData("ABC|DEF|GHI", "DA", "\nDA: (0,1),(0,0)\n\n<fg:Black><bg:Gray>A<fg:Gray><bg:Black> B C \n<fg:Black><bg:Gray>D<fg:Gray><bg:Black> E F \nG H I \n\n")]
-        public void WritePuzzleSolutionForSearchWord_WhenSearchWordFoundInGrid_SolvedPuzzleWrittenToGrid(string gridSource, string searchWord, string expected)
+        [InlineData(MenuSelection.ShowSolution)]
+        [InlineData(MenuSelection.EnterSearchWord)]
+        [InlineData(MenuSelection.SelectAnotherFile)]
+        [InlineData(MenuSelection.Exit)]
+        public void PromptForMenuSelection_WhenUserSelectsNumberedOptionInRange_CorrectNumberReturned(MenuSelection menuSelection)
         {
             //arrange
-            string[,] grid = _testUtilities.StringToGrid(gridSource);
-            IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForColors();
-            _wordFinder.SetSearchOrientations(_testUtilities.GetSearchOrientations(grid));
-            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder);
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.BackgroundColor = ConsoleColor.Black;
-
-            //act
-            wordSearchProgram.WritePuzzleSolutionForSearchWord(grid, searchWord, ConsoleColor.Gray, ConsoleColor.Black);
-            string output = _consoleOuput.ToString();
-
-            //assert
-            Assert.Equal(expected, output);
-        }
-
-        [Theory]
-        [InlineData('1')]
-        [InlineData('2')]
-        [InlineData('3')]
-        [InlineData('4')]
-        public void PromptForMenuSelection_WhenUserSelectsNUmberedOption_CorrectNumberReturned(char menuSelection)
-        {
-            //arrange
-            //string expected = $"Enter a search word to find in puzzle or hit <enter> to return to the menu\nSearch word: {searchWord}\n";
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForRead();
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder);
-            ((ConsoleWrapperMockForRead)consoleWrapper).ReadKeyChar = menuSelection;
+            ((ConsoleWrapperMockForRead)consoleWrapper).ReadKeyChar = ((int)menuSelection).ToString().ToCharArray().First();
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
-            string expected = $"(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: {menuSelection.ToString()}";
+            string expected = $"(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: {(int)menuSelection}";
 
             //act
-            string actualMenuSelection = wordSearchProgram.PromptForMenuSelection();
+            MenuSelection actualMenuSelection = wordSearchProgram.PromptForMenuSelection();
             string output = _consoleOuput.ToString();
 
             //assert
-            Assert.Equal(menuSelection.ToString(), actualMenuSelection);
+            Assert.Equal(menuSelection, actualMenuSelection);
             Assert.Equal(expected, output);
         }
+
+        [Theory]
+        [InlineData("51", "(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: 5\n\nPlease enter a number between 1 and 4\n\nEnter selection: 1", MenuSelection.ShowSolution)]
+        [InlineData("9A2", "(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: 9\n\nPlease enter a number between 1 and 4\n\nEnter selection: A\n\nPlease enter a number between 1 and 4\n\nEnter selection: 2", MenuSelection.EnterSearchWord)]
+        public void PromptForMenuSelection_WhenUserSelectsNumberedOptionOutOfRange_RetryMessageDisplayed(string menuSelection, string expectedOutput, MenuSelection expectedMenuSelection)
+        {
+            //arrange
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForRead();
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder);
+            ((ConsoleWrapperMockForRead)consoleWrapper).ReadKeyChars = menuSelection.ToCharArray().ToList();
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
+
+            //act
+            MenuSelection actualMenuSelection = wordSearchProgram.PromptForMenuSelection();
+            string output = _consoleOuput.ToString();
+
+            //assert
+            Assert.Equal(expectedMenuSelection, actualMenuSelection);
+            Assert.Equal(expectedOutput, output);
+        }
+
 
         private class ConsoleWrapperMockForColors : ConsoleWrapper
         {
@@ -256,8 +258,14 @@ namespace Tests
 
         private class ConsoleWrapperMockForRead : ConsoleWrapper
         {
+            public ConsoleWrapperMockForRead()
+            {
+                ReadKeyChars = null;
+            }
+
             public string ReadLineResult {get; set;}
             public char ReadKeyChar {get; set;}
+            public List<char> ReadKeyChars {get; set;}
 
             public override string ReadLine()
             {
@@ -267,9 +275,23 @@ namespace Tests
 
             public override ConsoleKeyInfo ReadKey()
             {
-                Write(ReadKeyChar.ToString());
-                ConsoleKey key = new ConsoleKey();
-                return new ConsoleKeyInfo(ReadKeyChar, key, false, false, false);
+                if (ReadKeyChars == null)
+                {
+                    Write(ReadKeyChar.ToString());
+                    ConsoleKey key = new ConsoleKey();
+                    return new ConsoleKeyInfo(ReadKeyChar, key, false, false, false);
+                }
+                else if (ReadKeyChars.Count > 0)
+                {
+                    char keyChar = ReadKeyChars.First();
+                    ReadKeyChars.RemoveAt(0);
+                    
+                    Write(keyChar.ToString());
+                    ConsoleKey key = new ConsoleKey();
+                    return new ConsoleKeyInfo(keyChar, key, false, false, false);
+                }
+
+                return new ConsoleKeyInfo(ReadKeyChar, new ConsoleKey(), false, false, false);
             }
         }
 
