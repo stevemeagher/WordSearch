@@ -1,19 +1,21 @@
 using System;
+using System.Drawing;
 using System.Collections.Generic;
 using Xunit;
 using Moq;
 using WordSearch.WordSearchLib;
-using System.Drawing;
 
 namespace Tests
 {
     public class WordFinderTests
     {
         private TestUtilities _testUtilities;
+        private ISearchOrientationManager _searchOrientationManager;
 
         public WordFinderTests()
         {
             _testUtilities = new TestUtilities();
+            _searchOrientationManager = new SearchOrientationManager();
         }
 
 
@@ -26,7 +28,7 @@ namespace Tests
             string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            IWordFinder wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
+            IWordFinder wordFinder = new WordFinder(_searchOrientationManager.GetSearchOrientations(grid));
             string actual = (wordFinder.GetCoordinatesOfSearchTarget(searchTarget)).ToString();
 
             //assert
@@ -42,7 +44,7 @@ namespace Tests
             string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            IWordFinder wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
+            IWordFinder wordFinder = new WordFinder(_searchOrientationManager.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget).ToString();
 
             //assert
@@ -58,7 +60,7 @@ namespace Tests
             string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            IWordFinder wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
+            IWordFinder wordFinder = new WordFinder(_searchOrientationManager.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget).ToString();
 
             //assert
@@ -74,7 +76,7 @@ namespace Tests
             string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            IWordFinder wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
+            IWordFinder wordFinder = new WordFinder(_searchOrientationManager.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget).ToString();
 
             //assert
@@ -90,7 +92,7 @@ namespace Tests
             string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            IWordFinder wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
+            IWordFinder wordFinder = new WordFinder(_searchOrientationManager.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, expected).ToString();
 
             //assert
@@ -128,7 +130,7 @@ namespace Tests
             string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            IWordFinder wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
+            IWordFinder wordFinder = new WordFinder(_searchOrientationManager.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget,"Not found.").ToString();
 
             //assert
@@ -144,7 +146,7 @@ namespace Tests
             string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            IWordFinder wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
+            IWordFinder wordFinder = new WordFinder(_searchOrientationManager.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, "Not found.").ToString();
 
             //assert
@@ -160,7 +162,7 @@ namespace Tests
             string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            IWordFinder wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
+            IWordFinder wordFinder = new WordFinder(_searchOrientationManager.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, "Not found.").ToString();
 
             //assert
@@ -176,7 +178,7 @@ namespace Tests
             string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            IWordFinder wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
+            IWordFinder wordFinder = new WordFinder(_searchOrientationManager.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, "Not found.").ToString();
 
             //assert
@@ -209,7 +211,7 @@ namespace Tests
             string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            IWordFinder wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
+            IWordFinder wordFinder = new WordFinder(_searchOrientationManager.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget).ToString();
 
             //assert
@@ -225,7 +227,7 @@ namespace Tests
             string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            IWordFinder wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
+            IWordFinder wordFinder = new WordFinder(_searchOrientationManager.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget).ToString();
 
             //assert
@@ -241,7 +243,7 @@ namespace Tests
             string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            IWordFinder wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
+            IWordFinder wordFinder = new WordFinder(_searchOrientationManager.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget).ToString();
 
             //assert
@@ -257,7 +259,7 @@ namespace Tests
             string[,] grid = _testUtilities.StringToGrid(gridSource);
 
             //act
-            IWordFinder wordFinder = new WordFinder(_testUtilities.GetSearchOrientations(grid));
+            IWordFinder wordFinder = new WordFinder(_searchOrientationManager.GetSearchOrientations(grid));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget).ToString();
 
             //assert

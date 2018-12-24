@@ -51,5 +51,10 @@ namespace WordSearch.FileLib
             Array.Sort(filePaths);
             return filePaths;
         }
+
+        public string GetFileNameFromPath(string filePath)
+        {
+            return Path.GetFileName(filePath);
+        }
     }
 }

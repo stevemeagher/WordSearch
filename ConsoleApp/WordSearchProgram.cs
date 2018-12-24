@@ -19,20 +19,23 @@ namespace WordSearch.ConsoleApp
 
     public class WordSearchProgram
     {
-        
         private IConsoleWrapper _consoleWrapper;
         private IFileOperations _fileOperations;
         private IWordFinder _wordFinder;
+        private ISearchOrientationManager _searchOrientationManager;
 
-        public WordSearchProgram(IConsoleWrapper consoleWrapper, IFileOperations fileOperations, IWordFinder wordFinder)
+        public WordSearchProgram(IConsoleWrapper consoleWrapper, IFileOperations fileOperations, IWordFinder wordFinder, ISearchOrientationManager searchOrientationManager)
         {
             _consoleWrapper = consoleWrapper;
             _fileOperations = fileOperations;
             _wordFinder = wordFinder;
+            _searchOrientationManager = searchOrientationManager;
         }
 
         public void WriteGridToConsole(string[,] grid, ConsoleColor foregroundColor, ConsoleColor backgroundColor, PointList coordinatesToHighlight = null)
         {
+            if (grid == null) throw new ArgumentException("grid is null.");
+
             var columnsCount = grid.GetLength(1);
             var rowsCount = grid.GetLength(0);
 
@@ -78,7 +81,7 @@ namespace WordSearch.ConsoleApp
 
             foreach(var filePath in filePaths)
             {
-                _consoleWrapper.WriteLine($"({counter}) {Path.GetFileName(filePath)}");
+                _consoleWrapper.WriteLine($"({counter}) {_fileOperations.GetFileNameFromPath(filePath)}");
                 counter++;
             }
         }
@@ -116,7 +119,7 @@ namespace WordSearch.ConsoleApp
 
             PointList points = new PointList();
 
-            _wordFinder.SetSearchOrientations(GetSearchOrientations(grid));
+            _wordFinder.SetSearchOrientations(_searchOrientationManager.GetSearchOrientations(grid));
 
             foreach (var searchWord in searchWords)
             {
@@ -176,22 +179,5 @@ namespace WordSearch.ConsoleApp
 
             return (MenuSelection)Convert.ToInt16(response);
         }
-
-        private List<ISearchOrientation> GetSearchOrientations(string[,] grid)
-        {
-            return new List<ISearchOrientation>() 
-            {
-                new SearchOrientation(new GridToLinearLeftRightStrategy(grid)),
-                new SearchOrientation(new GridToLinearRightLeftStrategy(grid)),
-                new SearchOrientation(new GridToLinearTopBottomStrategy(grid)),
-                new SearchOrientation(new GridToLinearBottomTopStrategy(grid)),
-                new SearchOrientation(new GridToLinearTopLeftBottomRightStrategy(grid)),
-                new SearchOrientation(new GridToLinearBottomRightTopLeftStrategy(grid)),
-                new SearchOrientation(new GridToLinearTopRightBottomLeftStrategy(grid)),
-                new SearchOrientation(new GridToLinearBottomLeftTopRightStrategy(grid))
-            };
-        }
-
-        
     }
 }
