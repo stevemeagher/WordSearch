@@ -46,5 +46,21 @@ namespace Tests
              var exception = Assert.Throws<ArgumentException>(() => gridValidator.Validate(grid));
              Assert.Equal(expectedMessage, exception.Message);
         }
+
+        [Theory]
+        [InlineData("AB$|DEF|GHI", "$")]
+        [InlineData("ABCD|EFGH|IJ.L|MNOP", ".")]
+        public void Validate_WhenGridWithInvalidCharactersIsValidated_ThrowsArgumentException(string gridSource, string invalidCharacter)
+        {
+            //arrange
+            string expectedMessage = $"grid is not valid - at least one element is an invalid character: {invalidCharacter}";
+            string[,] grid = _testUtilities.StringToGrid(gridSource);
+            IGridValidator gridValidator = new GridValidator();
+
+            //act & assert
+             var exception = Assert.Throws<ArgumentException>(() => gridValidator.Validate(grid));
+             Assert.Equal(expectedMessage, exception.Message);
+        }
+
    }
 }

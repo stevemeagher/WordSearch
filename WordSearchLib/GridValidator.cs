@@ -12,6 +12,19 @@ namespace WordSearch.WordSearchLib
 
             if (rowsCount != columnsCount) throw new ArgumentException("grid has a mismatch between the number of rows and columns.");
 
+            Regex validator = new Regex("[a-zA-Z0-9]");
+
+            for (int i = 0; i < columnsCount; i++)
+            {
+                for (int j = 0; j < rowsCount; j++)
+                {
+                    if (!validator.IsMatch(grid[j,i]))
+                    {
+                        throw new ArgumentException($"grid is not valid - at least one element is an invalid character: {grid[j,i]}");
+                    }
+                }
+            }
+
             return true;
         }
     }
