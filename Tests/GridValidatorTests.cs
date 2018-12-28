@@ -26,10 +26,15 @@ namespace Tests
             IGridValidator gridValidator = new GridValidator();
 
             //act
-            bool isValid = gridValidator.Validate(grid);
+            try
+            {
+                gridValidator.Validate(grid);
 
-            //assert
-            Assert.True(isValid);
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, $"Expected no exception: {ex.Message}");
+            }
         }
 
         [Theory]

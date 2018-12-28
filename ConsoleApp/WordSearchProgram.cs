@@ -23,13 +23,15 @@ namespace WordSearch.ConsoleApp
         private IFileOperations _fileOperations;
         private IWordFinder _wordFinder;
         private ISearchOrientationManager _searchOrientationManager;
+        private IGridValidator _gridValidator;
 
-        public WordSearchProgram(IConsoleWrapper consoleWrapper, IFileOperations fileOperations, IWordFinder wordFinder, ISearchOrientationManager searchOrientationManager)
+        public WordSearchProgram(IConsoleWrapper consoleWrapper, IFileOperations fileOperations, IWordFinder wordFinder, ISearchOrientationManager searchOrientationManager, IGridValidator gridValidator)
         {
             _consoleWrapper = consoleWrapper;
             _fileOperations = fileOperations;
             _wordFinder = wordFinder;
             _searchOrientationManager = searchOrientationManager;
+            _gridValidator = gridValidator;
         }
 
         public void WriteGridToConsole(string[,] grid, ConsoleColor foregroundColor, ConsoleColor backgroundColor, PointList coordinatesToHighlight = null)
@@ -119,7 +121,7 @@ namespace WordSearch.ConsoleApp
 
             PointList points = new PointList();
 
-            _wordFinder.SetSearchOrientations(_searchOrientationManager.GetSearchOrientations(grid));
+            _wordFinder.SetSearchOrientations(_searchOrientationManager.GetSearchOrientations(_gridValidator, grid));
 
             foreach (var searchWord in searchWords)
             {

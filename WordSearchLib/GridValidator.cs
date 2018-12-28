@@ -5,7 +5,7 @@ namespace WordSearch.WordSearchLib
 {
     public class GridValidator : IGridValidator
     {
-        public bool Validate(string[,] grid)
+        public void Validate(string[,] grid)
         {
             int rowsCount = grid.GetLength(0);
             int columnsCount = grid.GetLength(1);
@@ -24,8 +24,6 @@ namespace WordSearch.WordSearchLib
                     }
                 }
             }
-
-            return true;
         }
     }
 }

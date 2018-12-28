@@ -10,10 +10,12 @@ namespace Tests
     public class SearchOrientationManagerTests
     {
         private TestUtilities _testUtilities;
+        private IGridValidator _gridValidator;
 
         public SearchOrientationManagerTests()
         {
             _testUtilities = new TestUtilities();
+            _gridValidator = new GridValidator();
         }
 
         [Fact]
@@ -24,8 +26,8 @@ namespace Tests
             ISearchOrientationManager searchOrientationManager = new SearchOrientationManager();
 
             //act
-            var searchOrientations = searchOrientationManager.GetSearchOrientations(grid);
-            var searchOrientation = new SearchOrientation(new GridToLinearLeftRightStrategy(grid));
+            var searchOrientations = searchOrientationManager.GetSearchOrientations(_gridValidator, grid);
+            var searchOrientation = new SearchOrientation(new GridToLinearLeftRightStrategy(_gridValidator, grid));
 
             //assert
             Assert.True(searchOrientations is List<ISearchOrientation>);

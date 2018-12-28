@@ -6,7 +6,7 @@ namespace WordSearch.WordSearchLib
 {
     public class GridToLinearTopLeftBottomRightStrategy : GridToLinearStrategy
     {
-        public GridToLinearTopLeftBottomRightStrategy(string[,] grid) : base(grid)
+        public GridToLinearTopLeftBottomRightStrategy(IGridValidator gridValidator, string[,] grid) : base(gridValidator, grid)
         {
         }
 

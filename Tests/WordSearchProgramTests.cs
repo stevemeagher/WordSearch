@@ -20,6 +20,7 @@ namespace Tests
         private readonly WordFinder _wordFinder;
         private readonly ISearchOrientationManager _searchOrientationManager;
         private readonly IConsoleWrapper _consoleWrapper;
+        private readonly IGridValidator _gridValidator;
         private const string TEST_DIRECTORY = "Test_WordSearchProgram";
 
         public WordSearchProgramTests()
@@ -31,6 +32,7 @@ namespace Tests
             _wordFinder = new WordFinder();
             _searchOrientationManager = new SearchOrientationManager();
             _consoleWrapper = new ConsoleWrapper();
+            _gridValidator = new GridValidator();
 
             Console.SetOut(_consoleOuput);
         }
@@ -42,7 +44,7 @@ namespace Tests
         {
             //arrange
             string[,] grid = _testUtilities.StringToGrid(gridSource);
-            WordSearchProgram wordSearchProgram = new WordSearchProgram(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
 
             //act
             wordSearchProgram.WriteGridToConsole(grid, ConsoleColor.Gray, ConsoleColor.Black);
@@ -66,7 +68,7 @@ namespace Tests
             //arrange
             string[,] grid = _testUtilities.StringToGrid(gridSource);
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForColors();
-            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
 
@@ -87,7 +89,7 @@ namespace Tests
             //arrange
             string[] filePaths = filePathDelimeteredArray.Split('|');
             IFileOperations fileOperations = new FileOperations();
-            WordSearchProgram wordSearchProgram = new WordSearchProgram(_consoleWrapper, fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(_consoleWrapper, fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
 
             //act
             wordSearchProgram.WriteNumberedFileNamesToConsole(filePaths);
@@ -110,7 +112,7 @@ namespace Tests
             //need to remove the commas to provide meaningful input to StringToGrid
             string[,] expectedGrid = _testUtilities.StringToGrid(fileRowsDelimeteredArray.Replace(",",""));
 
-            WordSearchProgram wordSearchProgram = new WordSearchProgram(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
 
             //act
             var (searchString, grid) = wordSearchProgram.ConvertPuzzleFileToSearchWordsAndGrid($"{workingDir}/{puzzleFileName}");
@@ -146,7 +148,7 @@ namespace Tests
             CreatePuzzleFile(workingDir, searchWords, fileRowsDelimeteredArray, puzzleFileName);
 
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForColors();
-            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
 
@@ -168,7 +170,7 @@ namespace Tests
             //arrange
             string expected = $"Enter a search word to find in puzzle or hit <enter> to return to the menu\n\nSearch word: {searchWord}\n";
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForRead();
-            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
             ((ConsoleWrapperMockForRead)consoleWrapper).ReadLineResult = searchWord;
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
@@ -191,7 +193,7 @@ namespace Tests
         {
             //arrange
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForRead();
-            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
             ((ConsoleWrapperMockForRead)consoleWrapper).ReadKeyChar = ((int)menuSelection).ToString().ToCharArray().First();
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
@@ -213,7 +215,7 @@ namespace Tests
         {
             //arrange
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForRead();
-            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
             ((ConsoleWrapperMockForRead)consoleWrapper).ReadKeyChars = menuSelection.ToCharArray().ToList();
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
@@ -233,7 +235,7 @@ namespace Tests
             //arrange
             string expectedMessage = "grid is null.";
             string[,] grid = null;
-            WordSearchProgram wordSearchProgram = new WordSearchProgram(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
 
             //act & assert
             var exception = Assert.Throws<ArgumentException>(() => wordSearchProgram.WriteGridToConsole(grid, ConsoleColor.Gray, ConsoleColor.Black));

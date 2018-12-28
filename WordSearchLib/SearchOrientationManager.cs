@@ -8,18 +8,20 @@ namespace WordSearch.WordSearchLib
         {
         }
 
-        public List<ISearchOrientation> GetSearchOrientations(string[,] grid)
+        public List<ISearchOrientation> GetSearchOrientations(IGridValidator gridValidator, string[,] grid)
         {
+            gridValidator.Validate(grid);
+
             return new List<ISearchOrientation>() 
             {
-                new SearchOrientation(new GridToLinearLeftRightStrategy(grid)),
-                new SearchOrientation(new GridToLinearRightLeftStrategy(grid)),
-                new SearchOrientation(new GridToLinearTopBottomStrategy(grid)),
-                new SearchOrientation(new GridToLinearBottomTopStrategy(grid)),
-                new SearchOrientation(new GridToLinearTopLeftBottomRightStrategy(grid)),
-                new SearchOrientation(new GridToLinearBottomRightTopLeftStrategy(grid)),
-                new SearchOrientation(new GridToLinearTopRightBottomLeftStrategy(grid)),
-                new SearchOrientation(new GridToLinearBottomLeftTopRightStrategy(grid))
+                new SearchOrientation(new GridToLinearLeftRightStrategy(gridValidator, grid)),
+                new SearchOrientation(new GridToLinearRightLeftStrategy(gridValidator, grid)),
+                new SearchOrientation(new GridToLinearTopBottomStrategy(gridValidator, grid)),
+                new SearchOrientation(new GridToLinearBottomTopStrategy(gridValidator, grid)),
+                new SearchOrientation(new GridToLinearTopLeftBottomRightStrategy(gridValidator, grid)),
+                new SearchOrientation(new GridToLinearBottomRightTopLeftStrategy(gridValidator, grid)),
+                new SearchOrientation(new GridToLinearTopRightBottomLeftStrategy(gridValidator, grid)),
+                new SearchOrientation(new GridToLinearBottomLeftTopRightStrategy(gridValidator, grid))
             };
         }
 

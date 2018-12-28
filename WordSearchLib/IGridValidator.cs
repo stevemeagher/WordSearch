@@ -2,6 +2,6 @@ namespace WordSearch.WordSearchLib
 {
     public interface IGridValidator
     {
-        bool Validate(string[,] grid);
+        void Validate(string[,] grid);
     }
 }

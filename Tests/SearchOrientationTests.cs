@@ -8,11 +8,13 @@ namespace Tests
 {
     public class SearchOrientationTests
     {
-        private TestUtilities _testUtilities;
+        private readonly TestUtilities _testUtilities;
+        private readonly IGridValidator _gridValidator;
 
         public SearchOrientationTests()
         {
             _testUtilities = new TestUtilities();
+            _gridValidator = new GridValidator();
         }
 
         [Fact]
@@ -20,7 +22,7 @@ namespace Tests
         {
             //arrange
             string[,] grid = _testUtilities.StringToGrid("ABC|DEF|GHI");
-            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(grid));
+            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(_gridValidator, grid));
 
             //act
             bool actual = serachOrientation.IsSearchTargetFound("BC");
@@ -34,7 +36,7 @@ namespace Tests
         {
             //arrange
             string[,] grid = _testUtilities.StringToGrid("ABC|DEF|GHI");
-            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(grid));
+            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(_gridValidator, grid));
 
             //act
             PointList actual = serachOrientation.GetCoordinatesOfSearchTarget("A");
@@ -46,7 +48,7 @@ namespace Tests
         private class GridToLinearStrategyLeftToRightMock : GridToLinearStrategy
         {
 
-            public GridToLinearStrategyLeftToRightMock(string[,] grid): base(grid)
+            public GridToLinearStrategyLeftToRightMock(IGridValidator gridValidator, string[,] grid): base(gridValidator, grid)
             {
             }
 
@@ -72,7 +74,7 @@ namespace Tests
         {
             //arrange
             string[,] grid = _testUtilities.StringToGrid("ABC|DEF|GHI");
-            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(grid));
+            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(_gridValidator, grid));
 
             //act
             bool actual = serachOrientation.IsSearchTargetFound(null);
@@ -86,7 +88,7 @@ namespace Tests
         {
             //arrange
             string[,] grid = _testUtilities.StringToGrid("ABC|DEF|GHI");
-            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(grid));
+            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(_gridValidator, grid));
 
             //act
             bool actual = serachOrientation.IsSearchTargetFound("");
@@ -100,7 +102,7 @@ namespace Tests
         {
             //arrange
             string[,] grid = _testUtilities.StringToGrid("ABC|DEF|GHI");
-            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(grid));
+            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(_gridValidator, grid));
 
             //act
             PointList actual = serachOrientation.GetCoordinatesOfSearchTarget(null);
@@ -114,7 +116,7 @@ namespace Tests
         {
             //arrange
             string[,] grid = _testUtilities.StringToGrid("ABC|DEF|GHI");
-            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(grid));
+            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRightMock(_gridValidator, grid));
 
             //act
             PointList actual = serachOrientation.GetCoordinatesOfSearchTarget("");
@@ -126,7 +128,7 @@ namespace Tests
         private class GridToLinearStrategyLeftToRighNullLinearViewtMock : GridToLinearStrategy
         {
 
-            public GridToLinearStrategyLeftToRighNullLinearViewtMock(string[,] grid): base(grid)
+            public GridToLinearStrategyLeftToRighNullLinearViewtMock(IGridValidator gridValidator, string[,] grid): base(gridValidator, grid)
             {
             }
 
@@ -139,7 +141,7 @@ namespace Tests
         private class GridToLinearStrategyLeftToRighValueIsNullInLinearViewtMock : GridToLinearStrategy
         {
 
-            public GridToLinearStrategyLeftToRighValueIsNullInLinearViewtMock(string[,] grid): base(grid)
+            public GridToLinearStrategyLeftToRighValueIsNullInLinearViewtMock(IGridValidator gridValidator, string[,] grid): base(gridValidator, grid)
             {
             }
 
@@ -154,7 +156,7 @@ namespace Tests
         {
             //arrange
             string[,] grid = _testUtilities.StringToGrid("ABC|DEF|GHI");
-            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRighNullLinearViewtMock(grid));
+            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRighNullLinearViewtMock(_gridValidator, grid));
 
             //act
             bool actual = serachOrientation.IsSearchTargetFound("BC");
@@ -168,7 +170,7 @@ namespace Tests
         {
             //arrange
             string[,] grid = _testUtilities.StringToGrid("ABC|DEF|GHI");
-            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRighNullLinearViewtMock(grid));
+            var serachOrientation = new SearchOrientation(new GridToLinearStrategyLeftToRighNullLinearViewtMock(_gridValidator, grid));
 
             //act
             bool actual = serachOrientation.IsSearchTargetFound("BC");
