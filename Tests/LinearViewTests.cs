@@ -36,7 +36,7 @@ namespace Tests
         public void LinearView_WhenInstantiatedWithEmptyValueString_ThrowArgumentException()
         {
             //arrange
-            string expectedMessage = "value parameter cannot be empty or null.";
+            string expectedMessage = "value parameter is empty or null.";
             string value = String.Empty;
             Dictionary<int, Point> indexToGridPosition = new Dictionary<int, Point>();
             indexToGridPosition.Add(1, new Point(1,1));
@@ -50,7 +50,7 @@ namespace Tests
         public void LinearView_WhenInstantiatedWithNullIndexToGridPosition_ThrowArgumentException()
         {
             //arrange
-            string expectedMessage = "indexToGridPosition parameter cannot be null.";
+            string expectedMessage = "indexToGridPosition parameter is null.";
             string value = "Value";
             Dictionary<int, Point> indexToGridPosition = null;
 

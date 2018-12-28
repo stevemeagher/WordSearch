@@ -8,8 +8,8 @@ namespace WordSearch.WordSearchLib
     {
         public LinearView(string value, Dictionary<int, Point> indexToGridPosition)
         {
-            if (string.IsNullOrEmpty(value)) throw new ArgumentException("value parameter cannot be empty or null.");
-            if (indexToGridPosition == null) throw new ArgumentException("indexToGridPosition parameter cannot be null.");
+            if (string.IsNullOrEmpty(value)) throw new ArgumentException("value parameter is empty or null.");
+            if (indexToGridPosition == null) throw new ArgumentException("indexToGridPosition parameter is null.");
             if (indexToGridPosition.Count == 0) throw new ArgumentException("indexToGridPosition parameter has a count of zero.");
 
             Value = value;
