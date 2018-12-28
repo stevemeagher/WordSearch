@@ -44,7 +44,6 @@ namespace Tests
             //act & assert
             var exception = Assert.Throws<ArgumentException>(() => new LinearView(value, indexToGridPosition));
             Assert.Equal(expectedMessage, exception.Message);
-
         }
 
         [Fact]
@@ -58,7 +57,19 @@ namespace Tests
             //act & assert
             var exception = Assert.Throws<ArgumentException>(() => new LinearView(value, indexToGridPosition));
             Assert.Equal(expectedMessage, exception.Message);
+        }
 
+        [Fact]
+        public void LinearView_WhenInstantiatedWithIndexToGridPositionWithZeroCount_ThrowArgumentException()
+        {
+            //arrange
+            string expectedMessage = "indexToGridPosition parameter has a count of zero.";
+            string value = "Value";
+            Dictionary<int, Point> indexToGridPosition = new Dictionary<int, Point>();
+
+            //act & assert
+            var exception = Assert.Throws<ArgumentException>(() => new LinearView(value, indexToGridPosition));
+            Assert.Equal(expectedMessage, exception.Message);
         }
     }
 }
