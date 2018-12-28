@@ -52,14 +52,12 @@ namespace Tests
              Assert.Equal(expectedMessage, exception.Message);
         }
 
-        [Theory]
-        [InlineData("AB$|DEF|GHI", "$")]
-        [InlineData("ABCD|EFGH|IJ.L|MNOP", ".")]
-        public void Validate_WhenGridWithInvalidCharactersIsValidated_ThrowsArgumentException(string gridSource, string invalidCharacter)
+        [Fact]
+        public void Validate_WhenGridHasZeroRowsAndColumns_ThrowsArgumentException()
         {
             //arrange
-            string expectedMessage = $"grid is not valid - at least one element is an invalid character: {invalidCharacter}";
-            string[,] grid = _testUtilities.StringToGrid(gridSource);
+            string expectedMessage = "grid has zero rows and/or columns.";
+            string[,] grid = new string[0,0];
             IGridValidator gridValidator = new GridValidator();
 
             //act & assert
@@ -67,5 +65,16 @@ namespace Tests
              Assert.Equal(expectedMessage, exception.Message);
         }
 
+        [Fact]
+        public void Validate_WhenGridIsNUll_ThrowsArgumentException()
+        {
+            //arrange
+            string expectedMessage = "grid is null.";
+            IGridValidator gridValidator = new GridValidator();
+
+            //act & assert
+             var exception = Assert.Throws<ArgumentException>(() => gridValidator.Validate(null));
+             Assert.Equal(expectedMessage, exception.Message);
+        }
    }
 }

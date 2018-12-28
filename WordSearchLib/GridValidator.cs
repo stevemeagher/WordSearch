@@ -7,8 +7,12 @@ namespace WordSearch.WordSearchLib
     {
         public void Validate(string[,] grid)
         {
+            if (grid == null) throw new ArgumentException("grid is null.");
+
             int rowsCount = grid.GetLength(0);
             int columnsCount = grid.GetLength(1);
+
+            if (rowsCount == 0 || columnsCount == 0) throw new ArgumentException("grid has zero rows and/or columns.");
 
             if (rowsCount != columnsCount) throw new ArgumentException("grid has a mismatch between the number of rows and columns.");
 

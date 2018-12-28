@@ -48,7 +48,7 @@ namespace Tests
         private class GridToLinearStrategyLeftToRightMock : GridToLinearStrategy
         {
 
-            public GridToLinearStrategyLeftToRightMock(IGridValidator gridValidator, string[,] grid): base(gridValidator, grid)
+            public   GridToLinearStrategyLeftToRightMock(IGridValidator gridValidator, string[,] grid): base(gridValidator, grid)
             {
             }
 
