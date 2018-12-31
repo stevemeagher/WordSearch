@@ -23,15 +23,13 @@ namespace WordSearch.ConsoleApp
         private IFileOperations _fileOperations;
         private IWordFinder _wordFinder;
         private ISearchOrientationManager _searchOrientationManager;
-        private IGridValidator _gridValidator;
 
-        public WordSearchProgram(IConsoleWrapper consoleWrapper, IFileOperations fileOperations, IWordFinder wordFinder, ISearchOrientationManager searchOrientationManager, IGridValidator gridValidator)
+        public WordSearchProgram(IConsoleWrapper consoleWrapper, IFileOperations fileOperations, IWordFinder wordFinder, ISearchOrientationManager searchOrientationManager)
         {
             _consoleWrapper = consoleWrapper;
             _fileOperations = fileOperations;
             _wordFinder = wordFinder;
             _searchOrientationManager = searchOrientationManager;
-            _gridValidator = gridValidator;
         }
 
         public void ProgramLoop(string puzzleDirectory)
@@ -74,11 +72,14 @@ namespace WordSearch.ConsoleApp
 
                     var (searchWords, grid) = ConvertPuzzleFileToSearchWordsAndGrid(puzzleFilePaths[fileListNumber - 1]);
 
+                    IGridManager gridManager = new GridManager(grid);
+                    gridManager.ValidateGrid();
+
                     _consoleWrapper.WriteLine(searchWords);
 
                     _consoleWrapper.WriteLine();
 
-                    WriteGridToConsole(grid, foregroundColor, backgroundColor);
+                    WriteGridToConsole(gridManager.Grid, foregroundColor, backgroundColor);
 
                     //loop for selecting menu actions (solve puzzle, search for a word, go back to main loop, exit program)
                     do
@@ -91,9 +92,9 @@ namespace WordSearch.ConsoleApp
                         {
                             case MenuSelection.ShowSolution:  
                                 _consoleWrapper.Clear();
-                                PointList solutionCoordinates = WriteSolvedPuzzleCoordinatesToConsole(searchWords, grid);
+                                PointList solutionCoordinates = WriteSolvedPuzzleCoordinatesToConsole(searchWords, gridManager);
                                 _consoleWrapper.WriteLine();
-                                WriteGridToConsole(grid, foregroundColor, backgroundColor, solutionCoordinates);
+                                WriteGridToConsole(gridManager.Grid, foregroundColor, backgroundColor, solutionCoordinates);
                                 _consoleWrapper.WriteLine();
                                 break;
                             case MenuSelection.EnterSearchWord:   
@@ -101,7 +102,7 @@ namespace WordSearch.ConsoleApp
                                 _consoleWrapper.Clear();
                                 _consoleWrapper.WriteLine(searchWords);
                                 _consoleWrapper.WriteLine();
-                                WriteGridToConsole(grid, foregroundColor, backgroundColor);
+                                WriteGridToConsole(gridManager.Grid, foregroundColor, backgroundColor);
 
                                 //search for individual words in puzzle and view solution, or press enter to jump back to menu
                                 do
@@ -113,9 +114,9 @@ namespace WordSearch.ConsoleApp
                                         _consoleWrapper.Clear();
                                         _consoleWrapper.WriteLine(searchWords);
                                         _consoleWrapper.WriteLine();
-                                        var coordinates = WriteSolvedPuzzleCoordinatesToConsole(searchWord, grid);
+                                        var coordinates = WriteSolvedPuzzleCoordinatesToConsole(searchWord, gridManager);
                                         _consoleWrapper.WriteLine();
-                                        WriteGridToConsole(grid, foregroundColor, backgroundColor, coordinates);
+                                        WriteGridToConsole(gridManager.Grid, foregroundColor, backgroundColor, coordinates);
                                     }
                                 } while (searchWord != "");
                                 break;
@@ -208,13 +209,13 @@ namespace WordSearch.ConsoleApp
             return (searchStrings, grid);
         }
 
-        public PointList WriteSolvedPuzzleCoordinatesToConsole(string searchString, string[,] grid)
+        public PointList WriteSolvedPuzzleCoordinatesToConsole(string searchString, IGridManager gridManager)
         {
             string[] searchWords = searchString.Split(',');
 
             PointList points = new PointList();
 
-            _wordFinder.SetSearchOrientations(_searchOrientationManager.GetSearchOrientations(_gridValidator, grid));
+            _wordFinder.SetSearchOrientations(_searchOrientationManager.GetSearchOrientations(gridManager));
 
             foreach (var searchWord in searchWords)
             {

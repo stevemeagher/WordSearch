@@ -6,7 +6,7 @@ namespace WordSearch.WordSearchLib
 {
     public class GridToLinearLeftRightStrategy : GridToLinearStrategy
     {
-        public GridToLinearLeftRightStrategy(IGridValidator gridValidator, string[,] grid) : base(gridValidator, grid)
+        public GridToLinearLeftRightStrategy(IGridManager gridManager) : base(gridManager)
         {
         }
 

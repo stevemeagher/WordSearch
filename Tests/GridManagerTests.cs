@@ -7,11 +7,11 @@ using WordSearch.WordSearchLib;
 
 namespace Tests
 {
-    public class GridValidatorTests
+    public class GridManagerTests
     {
         private TestUtilities _testUtilities;
 
-        public GridValidatorTests()
+        public GridManagerTests()
         {
             _testUtilities = new TestUtilities();
         }
@@ -19,16 +19,15 @@ namespace Tests
         [Theory]
         [InlineData("ABC|DEF|GHI")]
         [InlineData("ABCD|EFGH|IJKL|MNOP")]
-        public void Validate_WhenGridWithEqualColumnsAndRowsValidated_ReturnTrue(string gridSource)
+        public void ValidateGrid_WhenGridWithEqualColumnsAndRowsValidated_ReturnTrue(string gridSource)
         {
             //arrange
-            string[,] grid = _testUtilities.StringToGrid(gridSource);
-            IGridValidator gridValidator = new GridValidator();
+            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid(gridSource));
 
             //act
             try
             {
-                gridValidator.Validate(grid);
+                gridManager.ValidateGrid();
 
             }
             catch (Exception ex)
@@ -40,54 +39,52 @@ namespace Tests
         [Theory]
         [InlineData("ABCD|EFGH|IJKL")]
         [InlineData("AB|CD|EF|GH")]
-        public void Validate_WhenGridWithUnequalColumnsAndRowsValidated_ThrowsArgumentException(string gridSource)
+        public void ValidateGrid_WhenGridWithUnequalColumnsAndRowsValidated_ThrowsArgumentException(string gridSource)
         {
             //arrange
             string expectedMessage = "grid has a mismatch between the number of rows and columns.";
-            string[,] grid = _testUtilities.StringToGrid(gridSource);
-            IGridValidator gridValidator = new GridValidator();
+            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid(gridSource));
 
             //act & assert
-             var exception = Assert.Throws<ArgumentException>(() => gridValidator.Validate(grid));
+             var exception = Assert.Throws<ArgumentException>(() => gridManager.ValidateGrid());
              Assert.Equal(expectedMessage, exception.Message);
         }
 
         [Fact]
-        public void Validate_WhenGridHasZeroRowsAndColumns_ThrowsArgumentException()
+        public void ValidateGrid_WhenGridHasZeroRowsAndColumns_ThrowsArgumentException()
         {
             //arrange
             string expectedMessage = "grid has zero rows and/or columns.";
-            string[,] grid = new string[0,0];
-            IGridValidator gridValidator = new GridValidator();
+            IGridManager gridManager = new GridManager(new string[0,0]);
 
             //act & assert
-             var exception = Assert.Throws<ArgumentException>(() => gridValidator.Validate(grid));
+             var exception = Assert.Throws<ArgumentException>(() => gridManager.ValidateGrid());
              Assert.Equal(expectedMessage, exception.Message);
         }
 
         [Fact]
-        public void Validate_WhenGridIsNUll_ThrowsArgumentException()
+        public void ValidateGrid_WhenGridIsNUll_ThrowsArgumentException()
         {
             //arrange
             string expectedMessage = "grid is null.";
-            IGridValidator gridValidator = new GridValidator();
+            IGridManager gridManager = new GridManager(null);
 
             //act & assert
-             var exception = Assert.Throws<ArgumentException>(() => gridValidator.Validate(null));
+             var exception = Assert.Throws<ArgumentException>(() => gridManager.ValidateGrid());
              Assert.Equal(expectedMessage, exception.Message);
         }
 
         [Fact]
-        public void Validate_WhenGridWithMoreThanOneCharacterInCoordinateValidated_ThrowsArgumentException()
+        public void ValidateGrid_WhenGridWithMoreThanOneCharacterInCoordinateValidated_ThrowsArgumentException()
         {
             //arrange
             string expectedMessage = "grid has more than one character in at least one coordinate.";
             string[,] grid = _testUtilities.StringToGrid("ABC|DEF|GHI");
             grid[1,1] = "ABC";
-            IGridValidator gridValidator = new GridValidator();
+            IGridManager gridManager = new GridManager(grid);
 
             //act & assert
-             var exception = Assert.Throws<ArgumentException>(() => gridValidator.Validate(grid));
+             var exception = Assert.Throws<ArgumentException>(() => gridManager.ValidateGrid());
              Assert.Equal(expectedMessage, exception.Message);
         }
    }

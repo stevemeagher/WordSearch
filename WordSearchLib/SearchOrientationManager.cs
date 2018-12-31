@@ -8,20 +8,23 @@ namespace WordSearch.WordSearchLib
         {
         }
 
-        public List<ISearchOrientation> GetSearchOrientations(IGridValidator gridValidator, string[,] grid)
+        public List<ISearchOrientation> GetSearchOrientations(IGridManager gridManager)
         {
-            gridValidator.Validate(grid);
+            if (!gridManager.IsGridValidated)
+            {
+                gridManager.ValidateGrid();
+            }
 
             return new List<ISearchOrientation>() 
             {
-                new SearchOrientation(new GridToLinearLeftRightStrategy(gridValidator, grid)),
-                new SearchOrientation(new GridToLinearRightLeftStrategy(gridValidator, grid)),
-                new SearchOrientation(new GridToLinearTopBottomStrategy(gridValidator, grid)),
-                new SearchOrientation(new GridToLinearBottomTopStrategy(gridValidator, grid)),
-                new SearchOrientation(new GridToLinearTopLeftBottomRightStrategy(gridValidator, grid)),
-                new SearchOrientation(new GridToLinearBottomRightTopLeftStrategy(gridValidator, grid)),
-                new SearchOrientation(new GridToLinearTopRightBottomLeftStrategy(gridValidator, grid)),
-                new SearchOrientation(new GridToLinearBottomLeftTopRightStrategy(gridValidator, grid))
+                new SearchOrientation(new GridToLinearLeftRightStrategy(gridManager)),
+                new SearchOrientation(new GridToLinearRightLeftStrategy(gridManager)),
+                new SearchOrientation(new GridToLinearTopBottomStrategy(gridManager)),
+                new SearchOrientation(new GridToLinearBottomTopStrategy(gridManager)),
+                new SearchOrientation(new GridToLinearTopLeftBottomRightStrategy(gridManager)),
+                new SearchOrientation(new GridToLinearBottomRightTopLeftStrategy(gridManager)),
+                new SearchOrientation(new GridToLinearTopRightBottomLeftStrategy(gridManager)),
+                new SearchOrientation(new GridToLinearBottomLeftTopRightStrategy(gridManager))
             };
         }
 

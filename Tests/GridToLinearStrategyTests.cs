@@ -9,12 +9,10 @@ namespace Tests
     public class GridToLinearStrategyTests
     {
         private readonly TestUtilities _testUtilities;
-        private readonly IGridValidator _gridValidator;
 
         public GridToLinearStrategyTests()
         {
             _testUtilities = new TestUtilities();
-            _gridValidator = new GridValidator();
         }
 
         [Fact]
@@ -26,11 +24,13 @@ namespace Tests
                 {"D","E","F"},
                 {"G","H","I"}
             };
+            IGridManager gridManager = new GridManager(grid);
+            
 
             string expected = "ABC|DEF|GHI";
 
             //act
-            var gridToLinearStrategy = new GridToLinearLeftRightStrategy(_gridValidator, grid);
+            var gridToLinearStrategy = new GridToLinearLeftRightStrategy(gridManager);
             ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
@@ -44,10 +44,10 @@ namespace Tests
         public void GridToLinearLeftRightStrategy_NxNGrid_ReturnsLeftToRightString(string gridSource, string expected)
         {
             //arrange
-            string[,] grid = _testUtilities.StringToGrid(gridSource);
+            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid(gridSource));
 
             //act
-            var gridToLinearStrategy = new GridToLinearLeftRightStrategy(_gridValidator, grid);
+            var gridToLinearStrategy = new GridToLinearLeftRightStrategy(gridManager);
             ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
@@ -61,10 +61,10 @@ namespace Tests
         public void GridToLinearRightLeftStrategy_NxNStringGrid_ReturnsRightToLeftString(string gridSource, string expected)
         {
             //arrange
-            string[,] grid = _testUtilities.StringToGrid(gridSource);
+            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid(gridSource));
 
             //act
-            var gridToLinearStrategy = new GridToLinearRightLeftStrategy(_gridValidator, grid);
+            var gridToLinearStrategy = new GridToLinearRightLeftStrategy(gridManager);
             ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
@@ -77,10 +77,10 @@ namespace Tests
         public void GridToLinearTopBottomStrategy_NxNStringGrid_ReturnsTopToBottomString(string gridSource, string expected)
         {
             //arrange
-            string[,] grid = _testUtilities.StringToGrid(gridSource);
+            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid(gridSource));
 
             //act
-            var gridToLinearStrategy = new GridToLinearTopBottomStrategy(_gridValidator, grid);
+            var gridToLinearStrategy = new GridToLinearTopBottomStrategy(gridManager);
             ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
@@ -93,10 +93,10 @@ namespace Tests
         public void GridToLinearBottomTopStrategy_NxNStringGrid_ReturnsBottomToTopString(string gridSource, string expected)
         {
             //arrange
-            string[,] grid = _testUtilities.StringToGrid(gridSource);
+            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid(gridSource));
 
             //act
-            var gridToLinearStrategy = new GridToLinearBottomTopStrategy(_gridValidator, grid);
+            var gridToLinearStrategy = new GridToLinearBottomTopStrategy(gridManager);
             ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
@@ -111,11 +111,12 @@ namespace Tests
                 {"A","B"},
                 {"C","D"}
             };
+            IGridManager gridManager = new GridManager(grid);
 
             var expected = new Dictionary<int, Point>() {{0, new Point(0,0)}, {1, new Point(1,0)}, {2, new Point(0,1)}, {3, new Point(1,1)}};
 
             //act
-            var gridToLinearStrategy = new GridToLinearLeftRightStrategy(_gridValidator, grid);
+            var gridToLinearStrategy = new GridToLinearLeftRightStrategy(gridManager);
             ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
@@ -130,11 +131,12 @@ namespace Tests
                 {"A","B"},
                 {"C","D"}
             };
+            IGridManager gridManager = new GridManager(grid);
 
             var expected = new Dictionary<int, Point>() {{0, new Point(1,1)}, {1, new Point(0,1)}, {2, new Point(1,0)}, {3, new Point(0,0)}};
 
             //act
-            var gridToLinearStrategy = new GridToLinearRightLeftStrategy(_gridValidator, grid);
+            var gridToLinearStrategy = new GridToLinearRightLeftStrategy(gridManager);
             ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
@@ -149,11 +151,12 @@ namespace Tests
                 {"A","B"},
                 {"C","D"}
             };
+            IGridManager gridManager = new GridManager(grid);
 
             var expected = new Dictionary<int, Point>() {{0, new Point(0,0)}, {1, new Point(0,1)}, {2, new Point(1,0)}, {3, new Point(1,1)}};
 
             //act
-            var gridToLinearStrategy = new GridToLinearTopBottomStrategy(_gridValidator, grid);
+            var gridToLinearStrategy = new GridToLinearTopBottomStrategy(gridManager);
             ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
@@ -168,11 +171,12 @@ namespace Tests
                 {"A","B"},
                 {"C","D"}
             };
+            IGridManager gridManager = new GridManager(grid);
 
             var expected = new Dictionary<int, Point>() {{0, new Point(1,1)}, {1, new Point(1,0)}, {2, new Point(0,1)}, {3, new Point(0,0)}};
 
             //act
-            var gridToLinearStrategy = new GridToLinearBottomTopStrategy(_gridValidator, grid);
+            var gridToLinearStrategy = new GridToLinearBottomTopStrategy(gridManager);
             ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
@@ -185,10 +189,10 @@ namespace Tests
         public void GridToLinearTopRightBottomLeftStrategy_NxNGrid_ReturnsTopRightToBottomLeftString(string gridSource, string expected)
         {
             //arrange
-            string[,] grid = _testUtilities.StringToGrid(gridSource);
+            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid(gridSource));
 
             //act
-            var gridToLinearStrategy = new GridToLinearTopRightBottomLeftStrategy(_gridValidator, grid);
+            var gridToLinearStrategy = new GridToLinearTopRightBottomLeftStrategy(gridManager);
             ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
@@ -201,10 +205,10 @@ namespace Tests
         public void GridToLinearBottomLeftTopRightStrategy_NxNGrid_ReturnsBottomLeftToTopRightString(string gridSource, string expected)
         {
             //arrange
-            string[,] grid = _testUtilities.StringToGrid(gridSource);
+            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid(gridSource));
 
             //act
-            var gridToLinearStrategy = new GridToLinearBottomLeftTopRightStrategy(_gridValidator, grid);
+            var gridToLinearStrategy = new GridToLinearBottomLeftTopRightStrategy(gridManager);
             ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
@@ -217,10 +221,10 @@ namespace Tests
         public void GridToLinearTopLeftBottomRightStrategy_NxNGrid_ReturnsTopLeftToBottomRightString(string gridSource, string expected)
         {
             //arrange
-            string[,] grid = _testUtilities.StringToGrid(gridSource);
+            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid(gridSource));
 
             //act
-            var gridToLinearStrategy = new GridToLinearTopLeftBottomRightStrategy(_gridValidator, grid);
+            var gridToLinearStrategy = new GridToLinearTopLeftBottomRightStrategy(gridManager);
             ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
@@ -233,10 +237,10 @@ namespace Tests
         public void GridToLinearBottomRightTopLeftStrategy_NxNGrid_ReturnsBottomRightToTopLeftString(string gridSource, string expected)
         {
             //arrange
-            string[,] grid = _testUtilities.StringToGrid(gridSource);
+            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid(gridSource));
 
             //act
-            var gridToLinearStrategy = new GridToLinearBottomRightTopLeftStrategy(_gridValidator, grid);
+            var gridToLinearStrategy = new GridToLinearBottomRightTopLeftStrategy(gridManager);
             ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
@@ -251,11 +255,12 @@ namespace Tests
                 {"A","B"},
                 {"C","D"}
             };
+            IGridManager gridManager = new GridManager(grid);
 
             var expected = new Dictionary<int, Point>() {{0, new Point(0,0)}, {1, new Point(1,0)}, {2, new Point(0,1)}, {3, new Point(1,1)}};
 
             //act
-            var gridToLinearStrategy = new GridToLinearTopRightBottomLeftStrategy(_gridValidator, grid);
+            var gridToLinearStrategy = new GridToLinearTopRightBottomLeftStrategy(gridManager);
             ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
@@ -270,11 +275,12 @@ namespace Tests
                 {"A","B"},
                 {"C","D"}
             };
+            IGridManager gridManager = new GridManager(grid);
 
             var expected = new Dictionary<int, Point>() {{0, new Point(1,1)}, {1, new Point(0,1)}, {2, new Point(1,0)}, {3, new Point(0,0)}};
 
             //act
-            var gridToLinearStrategy = new GridToLinearBottomLeftTopRightStrategy(_gridValidator, grid);
+            var gridToLinearStrategy = new GridToLinearBottomLeftTopRightStrategy(gridManager);
             ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
@@ -289,11 +295,12 @@ namespace Tests
                 {"A","B"},
                 {"C","D"}
             };
+            IGridManager gridManager = new GridManager(grid);
 
             var expected = new Dictionary<int, Point>() {{0, new Point(1,0)}, {1, new Point(0,0)}, {2, new Point(1,1)}, {3, new Point(0,1)}};
 
             //act
-            var gridToLinearStrategy = new GridToLinearTopLeftBottomRightStrategy(_gridValidator, grid);
+            var gridToLinearStrategy = new GridToLinearTopLeftBottomRightStrategy(gridManager);
             ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert
@@ -308,11 +315,12 @@ namespace Tests
                 {"A","B"},
                 {"C","D"}
             };
+            IGridManager gridManager = new GridManager(grid);
 
             var expected = new Dictionary<int, Point>() {{0, new Point(0,1)}, {1, new Point(1,1)}, {2, new Point(0,0)}, {3, new Point(1,0)}};
 
             //act
-            var gridToLinearStrategy = new GridToLinearBottomRightTopLeftStrategy(_gridValidator, grid);
+            var gridToLinearStrategy = new GridToLinearBottomRightTopLeftStrategy(gridManager);
             ILinearView linearView = gridToLinearStrategy.GridToLinear();
 
             //assert

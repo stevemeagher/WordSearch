@@ -2,15 +2,24 @@ namespace WordSearch.WordSearchLib
 {
     public abstract class GridToLinearStrategy
     {
-        protected string[,] Grid {get; private set;}
-        protected IGridValidator GridValidator {get; set;}
+        protected IGridManager GridManager {get; set;}
 
-        public GridToLinearStrategy(IGridValidator gridValidator, string [,] grid)
+        protected string[,] Grid
         {
-            gridValidator.Validate(grid);
+            get
+            {
+                return GridManager.Grid;
+            }
+        }
 
-            Grid = grid;
-            GridValidator = gridValidator;
+        public GridToLinearStrategy(IGridManager gridManager)
+        {
+            if (!gridManager.IsGridValidated)
+            {
+                gridManager.ValidateGrid();
+            }
+
+            GridManager = gridManager;
         }
 
         public abstract ILinearView GridToLinear();
