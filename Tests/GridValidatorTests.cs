@@ -76,5 +76,19 @@ namespace Tests
              var exception = Assert.Throws<ArgumentException>(() => gridValidator.Validate(null));
              Assert.Equal(expectedMessage, exception.Message);
         }
+
+        [Fact]
+        public void Validate_WhenGridWithMoreThanOneCharacterInCoordinateValidated_ThrowsArgumentException()
+        {
+            //arrange
+            string expectedMessage = "grid has more than one character in at least one coordinate.";
+            string[,] grid = _testUtilities.StringToGrid("ABC|DEF|GHI");
+            grid[1,1] = "ABC";
+            IGridValidator gridValidator = new GridValidator();
+
+            //act & assert
+             var exception = Assert.Throws<ArgumentException>(() => gridValidator.Validate(grid));
+             Assert.Equal(expectedMessage, exception.Message);
+        }
    }
 }

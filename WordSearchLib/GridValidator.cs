@@ -22,7 +22,11 @@ namespace WordSearch.WordSearchLib
             {
                 for (int j = 0; j < rowsCount; j++)
                 {
-                    if (!validator.IsMatch(grid[j,i]))
+                    if (grid[j,i].Length > 1)
+                    {
+                        throw new ArgumentException("grid has more than one character in at least one coordinate.");
+                    }
+                    else if (!validator.IsMatch(grid[j,i]))
                     {
                         throw new ArgumentException($"grid is not valid - at least one element is an invalid character: {grid[j,i]}");
                     }

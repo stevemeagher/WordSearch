@@ -56,5 +56,10 @@ namespace WordSearch.FileLib
         {
             return Path.GetFileName(filePath);
         }
+
+        public bool DirectoryExists(string directoryPath)
+        {
+            return Directory.Exists(directoryPath);
+        }
     }
 }

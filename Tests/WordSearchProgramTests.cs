@@ -67,7 +67,7 @@ namespace Tests
         {
             //arrange
             string[,] grid = _testUtilities.StringToGrid(gridSource);
-            IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForColors();
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
@@ -147,7 +147,7 @@ namespace Tests
             string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
             CreatePuzzleFile(workingDir, searchWords, fileRowsDelimeteredArray, puzzleFileName);
 
-            IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForColors();
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
@@ -169,9 +169,9 @@ namespace Tests
         {
             //arrange
             string expected = $"Enter a search word to find in puzzle or hit <enter> to return to the menu\n\nSearch word: {searchWord}\n";
-            IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForRead();
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
-            ((ConsoleWrapperMockForRead)consoleWrapper).ReadLineResult = searchWord;
+            ((ConsoleWrapperMock)consoleWrapper).ReadLineResults = new List<string>(){searchWord};
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
 
@@ -192,12 +192,12 @@ namespace Tests
         public void PromptForMenuSelection_WhenUserSelectsNumberedOptionInRange_CorrectNumberReturned(MenuSelection menuSelection)
         {
             //arrange
-            IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForRead();
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
-            ((ConsoleWrapperMockForRead)consoleWrapper).ReadKeyChar = ((int)menuSelection).ToString().ToCharArray().First();
+            ((ConsoleWrapperMock)consoleWrapper).ReadKeyChar = ((int)menuSelection).ToString().ToCharArray().First();
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
-            string expected = $"(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: {(int)menuSelection}";
+            string expected = $"(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: {(int)menuSelection}\n";
 
             //act
             MenuSelection actualMenuSelection = wordSearchProgram.PromptForMenuSelection();
@@ -209,14 +209,14 @@ namespace Tests
         }
 
         [Theory]
-        [InlineData("51", "(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: 5\n\nPlease enter a number between 1 and 4\n\nEnter selection: 1", MenuSelection.ShowSolution)]
-        [InlineData("9A2", "(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: 9\n\nPlease enter a number between 1 and 4\n\nEnter selection: A\n\nPlease enter a number between 1 and 4\n\nEnter selection: 2", MenuSelection.EnterSearchWord)]
+        [InlineData("51", "(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: 5\n\nPlease enter a number between 1 and 4\n\nEnter selection: 1\n", MenuSelection.ShowSolution)]
+        [InlineData("9A2", "(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: 9\n\nPlease enter a number between 1 and 4\n\nEnter selection: A\n\nPlease enter a number between 1 and 4\n\nEnter selection: 2\n", MenuSelection.EnterSearchWord)]
         public void PromptForMenuSelection_WhenUserSelectsNumberedOptionOutOfRange_RetryMessageDisplayed(string menuSelection, string expectedOutput, MenuSelection expectedMenuSelection)
         {
             //arrange
-            IConsoleWrapper consoleWrapper = new ConsoleWrapperMockForRead();
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
-            ((ConsoleWrapperMockForRead)consoleWrapper).ReadKeyChars = menuSelection.ToCharArray().ToList();
+            ((ConsoleWrapperMock)consoleWrapper).ReadKeyChars = menuSelection.ToCharArray().ToList();
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
 
@@ -242,8 +242,100 @@ namespace Tests
             Assert.Equal(expectedMessage, exception.Message);
         }
 
-        private class ConsoleWrapperMockForColors : ConsoleWrapper
+        [Fact]
+        public void ProgramLoop_WhenUserSelectsFirstPuzzleAndExit_OuputContainsFileListAndGridAndMenuOptions()
         {
+            //arrange
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
+            string expected = "---- Word Search ----\n\n(1) wordsearch.txt\n\nSelect file number: 1\n\nAD,IE\n\nA B C \nD E F \nG H I \n\n(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: 4\n";
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
+            ((ConsoleWrapperMock)consoleWrapper).ReadKeyChars = new List<char>() {'1', '4'};
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
+
+            //act
+            wordSearchProgram.ProgramLoop("tests/testpuzzles");
+            string output = _consoleOuput.ToString();
+
+            //assert
+            Assert.Equal(expected, output);
+        }
+
+        [Fact]
+        public void ProgramLoop_WhenUserSelectsFirstPuzzleAndShowSolutionAndExit_OuputContainsFileListAndGridAndMenuOptionsAndSolution()
+        {
+            //arrange
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
+            string expected = "---- Word Search ----\n\n(1) wordsearch.txt\n\nSelect file number: 1\n\nAD,IE\n\nA B C \nD E F \nG H I \n\n(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: 1\nAD: (0,0),(0,1)\nIE: (2,2),(1,1)\n\n<fg:Black><bg:Gray>A<fg:Gray><bg:Black> B C \n<fg:Black><bg:Gray>D<fg:Gray><bg:Black> <fg:Black><bg:Gray>E<fg:Gray><bg:Black> F \nG H <fg:Black><bg:Gray>I<fg:Gray><bg:Black> \n\n\n(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: 4\n";
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
+            ((ConsoleWrapperMock)consoleWrapper).ReadKeyChars = new List<char>() {'1', '1', '4'};
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
+
+            //act
+            wordSearchProgram.ProgramLoop("tests/testpuzzles");
+            string output = _consoleOuput.ToString();
+
+            //assert
+            Assert.Equal(expected, output);
+        }
+
+        [Fact]
+        public void ProgramLoop_WhenUserSelectsFirstPuzzleAndEnterSearchWordOfABAndExit_OuputContainsFileListAndGridAndMenuOptionsAndSolution()
+        {
+            //arrange
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
+            string expected = "---- Word Search ----\n\n(1) wordsearch.txt\n\nSelect file number: 1\n\nAD,IE\n\nA B C \nD E F \nG H I \n\n(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: 2\nAD,IE\n\nA B C \nD E F \nG H I \n\nEnter a search word to find in puzzle or hit <enter> to return to the menu\n\nSearch word: AB\nAD,IE\n\nAB: (0,0),(1,0)\n\n<fg:Black><bg:Gray>A<fg:Gray><bg:Black> <fg:Black><bg:Gray>B<fg:Gray><bg:Black> C \nD E F \nG H I \n\nEnter a search word to find in puzzle or hit <enter> to return to the menu\n\nSearch word: \n\n(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: 4\n";
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
+            ((ConsoleWrapperMock)consoleWrapper).ReadKeyChars = new List<char>() {'1', '2', '4'};
+            ((ConsoleWrapperMock)consoleWrapper).ReadLineResults = new List<string>(){"AB", ""};
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
+
+            //act
+            wordSearchProgram.ProgramLoop("tests/testpuzzles");
+            string output = _consoleOuput.ToString();
+
+            //assert
+            Assert.Equal(expected, output);
+        }
+
+        [Theory]
+        [InlineData("non_existant_directory")]
+        [InlineData("nope/noway")]
+        public void ProgramLoop_WhenPuzzleDirectoryDoesNotExist_ThrowsArgumentException(string directory)
+        {
+            //arrange
+            string fullPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}/{directory}";
+            string expectedMessage = $"directory does not exist: {fullPath}";
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
+
+            //act & assert
+            var exception = Assert.Throws<ArgumentException>(() => wordSearchProgram.ProgramLoop(directory));
+            Assert.Equal(expectedMessage, exception.Message);
+        }
+        
+        [Fact]
+        public void ProgramLoop_WhenPuzzleDirectoryIsEmpty_ThrowsArgumentException()
+        {
+            //arrange
+            string directory = "/tests/emptydirectory";
+            string fullPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}/{directory}";
+            string expectedMessage = $"puzzle directory contains no files: {fullPath}";
+            WordSearchProgram wordSearchProgram = new WordSearchProgram(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager, _gridValidator);
+
+            //act & assert
+            var exception = Assert.Throws<ArgumentException>(() => wordSearchProgram.ProgramLoop(directory));
+            Assert.Equal(expectedMessage, exception.Message);
+        }
+
+        private class ConsoleWrapperMock : ConsoleWrapper
+        {
+            public ConsoleWrapperMock()
+            {
+                ReadKeyChars = null;
+            }
+
             public override ConsoleColor BackgroundColor
             { 
                 get 
@@ -269,23 +361,35 @@ namespace Tests
                     Console.ForegroundColor = value;
                 }
             }
-        }
-
-        private class ConsoleWrapperMockForRead : ConsoleWrapper
-        {
-            public ConsoleWrapperMockForRead()
-            {
-                ReadKeyChars = null;
-            }
 
             public string ReadLineResult {get; set;}
+            public List<string> ReadLineResults {get; set;}
             public char ReadKeyChar {get; set;}
             public List<char> ReadKeyChars {get; set;}
 
+            // public override string ReadLine()
+            // {
+            //     WriteLine(ReadLineResult);
+            //     return ReadLineResult;
+            // }
+
             public override string ReadLine()
             {
-                WriteLine(ReadLineResult);
-                return ReadLineResult;
+                if (ReadLineResults == null)
+                {
+                    WriteLine(ReadLineResult);
+                    return ReadLineResult;
+                }
+                else if (ReadLineResults.Count > 0)
+                {
+                    string line = ReadLineResults.First();
+                    ReadLineResults.RemoveAt(0);
+                    
+                    WriteLine(line);
+                    return line;
+                }
+
+                return "";
             }
 
             public override ConsoleKeyInfo ReadKey()

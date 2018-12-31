@@ -90,6 +90,32 @@ namespace Tests
             Assert.True(filePaths[4] == workingDir + "/file5.txt");
         }
 
+        [Fact]
+        public void DirectoryExists_WhenDirectoryExists_ReturnsTrue()
+        {
+            //arrange
+            string directory = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY);
+
+            //act
+            bool directoryExists = _fileOperations.DirectoryExists(directory);
+
+            //assert
+            Assert.True(directoryExists);
+        }
+
+        [Fact]
+        public void DirectoryExists_WhenDirectoryDoesNotExist_ReturnsFalse()
+        {
+            //arrange
+            string directory = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "NOPE";
+
+            //act
+            bool directoryExists = _fileOperations.DirectoryExists(directory);
+
+            //assert
+            Assert.False(directoryExists);
+        }
+
         public void Dispose()
         {
             //clean-up

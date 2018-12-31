@@ -34,6 +34,99 @@ namespace WordSearch.ConsoleApp
             _gridValidator = gridValidator;
         }
 
+        public void ProgramLoop(string puzzleDirectory)
+        {
+            ConsoleColor foregroundColor = ConsoleColor.Gray;
+            ConsoleColor backgroundColor = ConsoleColor.Black;
+
+            SetConsoleColors(foregroundColor, backgroundColor);
+
+            string puzzleDirectoryPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}/{puzzleDirectory}";
+
+            if (!_fileOperations.DirectoryExists(puzzleDirectoryPath)) throw new ArgumentException($"directory does not exist: {puzzleDirectoryPath}");
+
+            string[] puzzleFilePaths = _fileOperations.GetDirectoryContents(puzzleDirectoryPath);
+
+            if (puzzleFilePaths.Length == 0) throw new ArgumentException($"puzzle directory contains no files: {puzzleDirectoryPath}");
+
+            MenuSelection menuSelection = MenuSelection.NoSelection;
+
+            //main loop for selecting puzzle files
+            do
+            {
+                _consoleWrapper.Clear();
+                _consoleWrapper.WriteLine("---- Word Search ----");
+                _consoleWrapper.WriteLine();
+
+                WriteNumberedFileNamesToConsole(puzzleFilePaths);
+
+                _consoleWrapper.WriteLine();
+                _consoleWrapper.Write("Select file number: ");
+                var command = _consoleWrapper.ReadKey().KeyChar;
+                _consoleWrapper.WriteLine();
+                _consoleWrapper.WriteLine();
+
+                short fileListNumber;
+
+                if (Int16.TryParse(command.ToString(), out fileListNumber) && fileListNumber > 0 && fileListNumber <= puzzleFilePaths.Count())
+                {
+                    _consoleWrapper.Clear();
+
+                    var (searchWords, grid) = ConvertPuzzleFileToSearchWordsAndGrid(puzzleFilePaths[fileListNumber - 1]);
+
+                    _consoleWrapper.WriteLine(searchWords);
+
+                    _consoleWrapper.WriteLine();
+
+                    WriteGridToConsole(grid, foregroundColor, backgroundColor);
+
+                    //loop for selecting menu actions (solve puzzle, search for a word, go back to main loop, exit program)
+                    do
+                    {
+                        _consoleWrapper.WriteLine();
+
+                        menuSelection = PromptForMenuSelection();
+
+                        switch(menuSelection)
+                        {
+                            case MenuSelection.ShowSolution:  
+                                _consoleWrapper.Clear();
+                                PointList solutionCoordinates = WriteSolvedPuzzleCoordinatesToConsole(searchWords, grid);
+                                _consoleWrapper.WriteLine();
+                                WriteGridToConsole(grid, foregroundColor, backgroundColor, solutionCoordinates);
+                                _consoleWrapper.WriteLine();
+                                break;
+                            case MenuSelection.EnterSearchWord:   
+                                string searchWord = "";
+                                _consoleWrapper.Clear();
+                                _consoleWrapper.WriteLine(searchWords);
+                                _consoleWrapper.WriteLine();
+                                WriteGridToConsole(grid, foregroundColor, backgroundColor);
+
+                                //search for individual words in puzzle and view solution, or press enter to jump back to menu
+                                do
+                                {
+                                    _consoleWrapper.WriteLine();
+                                    searchWord = PromptForSearchWord();
+                                    if (!String.IsNullOrEmpty(searchWord))
+                                    {
+                                        _consoleWrapper.Clear();
+                                        _consoleWrapper.WriteLine(searchWords);
+                                        _consoleWrapper.WriteLine();
+                                        var coordinates = WriteSolvedPuzzleCoordinatesToConsole(searchWord, grid);
+                                        _consoleWrapper.WriteLine();
+                                        WriteGridToConsole(grid, foregroundColor, backgroundColor, coordinates);
+                                    }
+                                } while (searchWord != "");
+                                break;
+                            default:
+                                break;
+                        }
+                    } while (menuSelection != MenuSelection.SelectAnotherFile && menuSelection != MenuSelection.Exit);
+                }
+            } while (menuSelection != MenuSelection.Exit);
+        }
+
         public void WriteGridToConsole(string[,] grid, ConsoleColor foregroundColor, ConsoleColor backgroundColor, PointList coordinatesToHighlight = null)
         {
             if (grid == null) throw new ArgumentException("grid is null.");
@@ -178,6 +271,8 @@ namespace WordSearch.ConsoleApp
                 }
 
             } while (!responseValid);
+
+            _consoleWrapper.WriteLine();
 
             return (MenuSelection)Convert.ToInt16(response);
         }
