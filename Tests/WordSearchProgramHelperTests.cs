@@ -348,6 +348,46 @@ namespace Tests
             Assert.Equal(expected, output);
         }
 
+        [Theory]
+        [InlineData(5, "3", "\nSelect file number: 3\n\n")]
+        [InlineData(10, "1", "\nSelect file number: 1\n\n")]
+        public void ReadFileNumber_WhenUserEntersValidNumber_ThatNumberIsReturned(int numFiles, string userInput, string expected)
+        {
+            //arrange
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
+            ((ConsoleWrapperMock)consoleWrapper).ReadKeyChars = userInput.ToCharArray().ToList();
+
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+
+            //act
+            var userSelection = wordSearchProgramHelper.ReadFileNumber(numFiles);
+            string output = _consoleOuput.ToString();
+
+            //assert
+            Assert.Equal(expected, output);
+            Assert.Equal(userInput, userSelection.ToString());
+        }
+
+        [Theory]
+        [InlineData(5, "71", "\nSelect file number: 7\n\n\nSelect file number: 1\n\n")]
+        [InlineData(10, "02", "\nSelect file number: 0\n\n\nSelect file number: 2\n\n")]
+        public void ReadFileNumber_WhenUserFirstEntersInvalidNumber_UserIsPromptedToEnterAgain(int numFiles, string userInput, string expected)
+        {
+            //arrange
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
+            ((ConsoleWrapperMock)consoleWrapper).ReadKeyChars = userInput.ToCharArray().ToList();
+
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+
+            //act
+            var userSelection = wordSearchProgramHelper.ReadFileNumber(numFiles);
+            string output = _consoleOuput.ToString();
+
+            //assert
+            Assert.Equal(expected, output);
+            Assert.Equal(userInput.Substring(userInput.Length-1), userSelection.ToString());
+        }
+
         public void Dispose()
         {
             Console.SetOut(_originalConsoleOutput);
