@@ -263,6 +263,75 @@ namespace Tests
             Console.BackgroundColor = bg;
         }
 
+        [Fact]
+        public void SetConsoleColors_WhenColorsAreSameAsCurrentColors_ColorsAreNotChanged()
+        {
+            //arrange
+            var fg = Console.ForegroundColor;
+            var bg = Console.BackgroundColor;
+            string expected = "";
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.Blue;
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+
+            //act
+            wordSearchProgramHelper.SetConsoleColors(ConsoleColor.Blue, ConsoleColor.DarkBlue);
+            string output = _consoleOuput.ToString();
+
+            //assert
+            Assert.Equal(expected, output);
+
+            Console.ForegroundColor = fg;
+            Console.BackgroundColor = bg;
+        }
+
+        [Fact]
+        public void SetConsoleColors_WhenOnlyBackgroundColorsIsDifferentToCurrentColor_OnlyBackgroundColorChanged()
+        {
+            //arrange
+            var fg = Console.ForegroundColor;
+            var bg = Console.BackgroundColor;
+            string expected = "<bg:Cyan>";
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.Blue;
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+
+            //act
+            wordSearchProgramHelper.SetConsoleColors(ConsoleColor.Blue, ConsoleColor.Cyan);
+            string output = _consoleOuput.ToString();
+
+            //assert
+            Assert.Equal(expected, output);
+
+            Console.ForegroundColor = fg;
+            Console.BackgroundColor = bg;
+        }
+
+        [Fact]
+        public void SetConsoleColors_WhenOnlyForegroundColorsIsDifferentToCurrentColor_OnlyForegroundColorChanged()
+        {
+            //arrange
+            var fg = Console.ForegroundColor;
+            var bg = Console.BackgroundColor;
+            string expected = "<fg:Cyan>";
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.Blue;
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+
+            //act
+            wordSearchProgramHelper.SetConsoleColors(ConsoleColor.Cyan, ConsoleColor.DarkBlue);
+            string output = _consoleOuput.ToString();
+
+            //assert
+            Assert.Equal(expected, output);
+
+            Console.ForegroundColor = fg;
+            Console.BackgroundColor = bg;
+        }
+
         public void Dispose()
         {
             Console.SetOut(_originalConsoleOutput);
