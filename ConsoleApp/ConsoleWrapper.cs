@@ -32,7 +32,7 @@ namespace WordSearch.ConsoleApp
             Console.WriteLine();
         }
 
-        public void Clear()
+        public virtual void Clear()
         {
             Console.Clear();
         }

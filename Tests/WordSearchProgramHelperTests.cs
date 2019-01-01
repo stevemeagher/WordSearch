@@ -332,6 +332,22 @@ namespace Tests
             Console.BackgroundColor = bg;
         }
 
+        [Fact]
+        public void WriteTitle_ClearsConsoleAndWritesTitle()
+        {
+            //arrange
+            string expected = "<clear>---- Word Search ----\n\n";
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock(true);
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+
+            //act
+            wordSearchProgramHelper.WriteTitle();
+            string output = _consoleOuput.ToString();
+
+            //assert
+            Assert.Equal(expected, output);
+        }
+
         public void Dispose()
         {
             Console.SetOut(_originalConsoleOutput);

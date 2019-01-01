@@ -13,8 +13,11 @@ namespace Tests
 {
     public class ConsoleWrapperMock : ConsoleWrapper
     {
-        public ConsoleWrapperMock()
+        private bool _writeClearCommand;
+
+        public ConsoleWrapperMock(bool writeClearCommand = false)
         {
+            _writeClearCommand = writeClearCommand;
             ReadKeyChars = null;
         }
 
@@ -87,6 +90,15 @@ namespace Tests
             }
 
             return new ConsoleKeyInfo(ReadKeyChar, new ConsoleKey(), false, false, false);
+        }
+
+        public override void Clear()
+        {
+            if (_writeClearCommand)
+            {
+                Write("<clear>");
+            }    
+            base.Clear();
         }
     }
 }
