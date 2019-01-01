@@ -52,7 +52,6 @@ namespace Tests
 
             //assert
             Assert.True(expected == _consoleOuput.ToString());
-
         }
 
         ///<summary>This test uses a class, ConsoleWrapperMock, which inherits from ConsoleWrapper and overrides the color setting properties so that
@@ -96,7 +95,6 @@ namespace Tests
 
             //assert
             Assert.True(expected == _consoleOuput.ToString());
-
         }
 
         [Theory]
@@ -240,6 +238,29 @@ namespace Tests
             //act & assert
             var exception = Assert.Throws<ArgumentException>(() => wordSearchProgramHelper.WriteGridToConsole(grid, ConsoleColor.Gray, ConsoleColor.Black));
             Assert.Equal(expectedMessage, exception.Message);
+        }
+
+        [Fact]
+        public void SetConsoleColors_WhenColorsAreDifferentToCurrentColors_ColorsAreChanged()
+        {
+            //arrange
+            var fg = Console.ForegroundColor;
+            var bg = Console.BackgroundColor;
+            string expected = "<fg:Cyan><bg:Green>";
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.Blue;
+            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+
+            //act
+            wordSearchProgramHelper.SetConsoleColors(ConsoleColor.Cyan, ConsoleColor.Green);
+            string output = _consoleOuput.ToString();
+
+            //assert
+            Assert.Equal(expected, output);
+
+            Console.ForegroundColor = fg;
+            Console.BackgroundColor = bg;
         }
 
         public void Dispose()
