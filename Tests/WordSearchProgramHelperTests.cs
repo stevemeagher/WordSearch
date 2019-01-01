@@ -388,6 +388,33 @@ namespace Tests
             Assert.Equal(userInput.Substring(userInput.Length-1), userSelection.ToString());
         }
 
+        [Fact]
+        public void GetPuzzleFilePathsFromPuzzleDirectory_WhenPuzzleDirectoryExistsAndContainsFiles_ListOfFilePathsReturned()
+        {
+            //arrange
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+
+            //act
+            var filePaths = wordSearchProgramHelper.GetPuzzleFilePathsFromPuzzleDirectory("tests/testpuzzles");
+
+            //assert
+            Assert.True(filePaths.Length == 1);
+        }
+
+        [Fact]
+        public void GetPuzzleFilePathsFromPuzzleDirectory_WhenPuzzleDirectoryDoesNotExist_ListOfFilePathsReturned()
+        {
+            //arrange
+            string directory = "NODIRECTORY";
+            string fullPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}/{directory}";
+            string expectedMessage = $"directory does not exist: {fullPath}";            
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+
+            //act & assert
+            var exception = Assert.Throws<ArgumentException>(() => wordSearchProgramHelper.GetPuzzleFilePathsFromPuzzleDirectory(directory));
+            Assert.Equal(expectedMessage, exception.Message);
+        }
+
         public void Dispose()
         {
             Console.SetOut(_originalConsoleOutput);
