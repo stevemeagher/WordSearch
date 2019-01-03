@@ -10,8 +10,8 @@ namespace WordSearch.Tests.Common
     public class TestUtilities
     {
         public static string APPLICATION_DIRECTORY = "WordSearch";
-        public static string TEST_PUZZLES_DIRECTORY = "tests/testresources/testpuzzles";
-        public static string EMPTY_DIRECTORY = "tests/testresources/emptydirectory";
+        public static string TEST_PUZZLES_DIRECTORY = "tests/testpuzzles";
+        public static string EMPTY_DIRECTORY = "tests/emptydirectory";
 
         /// <summary>Converts formatted string to 2d string array </summary>
         /// <para>StringToGrid converts a specifically formatted source string into a two-dimensional string array.  

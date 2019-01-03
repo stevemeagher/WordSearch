@@ -116,6 +116,7 @@ namespace WordSearch.Tests.IntegrationTests
             //arrange
             string directory = TestUtilities.EMPTY_DIRECTORY;
             string fullPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}/{directory}";
+            _testUtilities.CreateEmptyDirectory(fullPath);
             string expectedMessage = $"puzzle directory contains no files: {fullPath}";
             WordSearchProgram wordSearchProgram = new WordSearchProgram(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
 
@@ -130,6 +131,14 @@ namespace WordSearch.Tests.IntegrationTests
 
             string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
             DirectoryInfo di = new DirectoryInfo(workingDir);
+            if (di.Exists)
+            {
+                di.Delete(true);
+            }
+
+            string directory = TestUtilities.EMPTY_DIRECTORY;
+            string fullPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}/{directory}";
+            di = new DirectoryInfo(fullPath);
             if (di.Exists)
             {
                 di.Delete(true);
