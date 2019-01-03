@@ -46,14 +46,15 @@ namespace WordSearch.ConsoleApp
 
                 _programHelper.WriteNumberedFileNamesToConsole(puzzleFilePaths);
 
-                short fileListNumber = _programHelper.ReadFileNumber(puzzleFilePaths.Count());
+                short fileListNumber = _programHelper.ReadFileNumberFromConsole(puzzleFilePaths.Count());
 
-                _consoleWrapper.Clear();
 
                 var (searchWords, grid) = _programHelper.ConvertPuzzleFileToSearchWordsAndGrid(puzzleFilePaths[fileListNumber - 1]);
 
                 IGridManager gridManager = new GridManager(grid);
                 gridManager.ValidateGrid();
+
+                _consoleWrapper.Clear();
 
                 _consoleWrapper.WriteLine(searchWords);
 

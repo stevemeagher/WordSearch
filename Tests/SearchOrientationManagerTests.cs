@@ -25,11 +25,11 @@ namespace Tests
 
             //act
             var searchOrientations = searchOrientationManager.GetSearchOrientations(gridManager);
-            var searchOrientation = new SearchOrientation(new GridToLinearLeftRightStrategy(gridManager));
+            var searchOrientation = new SearchOrientation(new GridToLinearHorizontalStrategy(gridManager));
 
             //assert
             Assert.True(searchOrientations is List<ISearchOrientation>);
-            Assert.True(searchOrientations.Count == 8);
+            Assert.True(searchOrientations.Count == 4);
         }
     }
 }

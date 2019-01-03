@@ -56,16 +56,16 @@ namespace Tests
             }
         }
 
-        [Fact]
-        public void SearchOrientation_CreatedWithNullGridToLinearStrategy_ThrowsArgumentException()
-        {
-            //arrange
-            string expectedMessage = "gridToLinearStrategy parameter is null.";
+        // [Fact]
+        // public void SearchOrientation_CreatedWithNullGridToLinearStrategy_ThrowsArgumentException()
+        // {
+        //     //arrange
+        //     string expectedMessage = "gridToLinearStrategy parameter is null.";
 
-            //act & assert
-            var exception = Assert.Throws<ArgumentException>(() => new SearchOrientation(null));
-            Assert.Equal(expectedMessage, exception.Message);
-        }
+        //     //act & assert
+        //     var exception = Assert.Throws<ArgumentException>(() => new SearchOrientation(null));
+        //     Assert.Equal(expectedMessage, exception.Message);
+        // }
 
         [Fact]
         public void IsSearchTargetFound_PassNullSearchTarget_ReturnsFalse()

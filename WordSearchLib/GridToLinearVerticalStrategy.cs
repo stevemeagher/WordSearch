@@ -4,15 +4,15 @@ using System.Text;
 
 namespace WordSearch.WordSearchLib
 {
-    public class GridToLinearLeftRightStrategy : GridToLinearStrategy
+    public class GridToLinearVerticalStrategy : GridToLinearStrategy
     {
-        public GridToLinearLeftRightStrategy(IGridManager gridManager) : base(gridManager)
+        public GridToLinearVerticalStrategy(IGridManager gridManager) : base(gridManager)
         {
         }
 
         /// <summary>
         /// Traverse the grid to create a string that enables us to search
-        /// for words that have a horizontal orientation from left to right
+        /// for words that have a vertical orientation from top to bottom
         /// </summary>
         public override ILinearView GridToLinear()
         {
@@ -22,18 +22,17 @@ namespace WordSearch.WordSearchLib
             StringBuilder gridAsLinear = new StringBuilder("", columnsCount * rowsCount);
             Dictionary<int, Point> indexToGridPosition = new Dictionary<int, Point>();
 
-            for (int rowNumber = 0; rowNumber < rowsCount; rowNumber++)
+            for (int columnNumber = 0; columnNumber < columnsCount; columnNumber++)
             {
-                for (int columnNumber = 0; columnNumber < columnsCount; columnNumber++)
+                for (int rowNumber = 0; rowNumber < rowsCount; rowNumber++)
                 {
                     gridAsLinear.Append(Grid[rowNumber, columnNumber]);
                     indexToGridPosition.Add(stringPosition, new Point(columnNumber, rowNumber));
                     stringPosition++;
                 }
 
-                if (rowNumber < rowsCount - 1)
+                if (columnNumber < columnsCount - 1)
                 {
-                    //add grid boundary indicator to avoid false finds when searching for target string
                     gridAsLinear.Append("|");
                 }
             }

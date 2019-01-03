@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using WordSearch.FileLib;
+﻿using WordSearch.FileLib;
 using WordSearch.WordSearchLib;
 
 namespace WordSearch.ConsoleApp
@@ -17,11 +13,7 @@ namespace WordSearch.ConsoleApp
             ISearchOrientationManager searchOrientationManager = new SearchOrientationManager();
 
             var wordSearchProgram = new WordSearchProgram(consoleWrapper, fileOperations, wordFinder, searchOrientationManager);
-
             wordSearchProgram.ProgramLoop("puzzles");
         }
-
-        
-            
     }
 }

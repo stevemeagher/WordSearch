@@ -22,7 +22,7 @@ namespace Tests
             //arrange
             string expectedValue = "Value";
             Dictionary<int, Point> expecetdIndexToGridPosition = new Dictionary<int, Point>();
-            expecetdIndexToGridPosition.Add(1, new Point(1,1));
+            expecetdIndexToGridPosition.Add(0, new Point(1,1));
 
             //act
             ILinearView linearView = new LinearView(expectedValue, expecetdIndexToGridPosition);

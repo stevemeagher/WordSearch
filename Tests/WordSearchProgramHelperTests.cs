@@ -360,7 +360,7 @@ namespace Tests
             WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
 
             //act
-            var userSelection = wordSearchProgramHelper.ReadFileNumber(numFiles);
+            var userSelection = wordSearchProgramHelper.ReadFileNumberFromConsole(numFiles);
             string output = _consoleOuput.ToString();
 
             //assert
@@ -380,7 +380,7 @@ namespace Tests
             WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
 
             //act
-            var userSelection = wordSearchProgramHelper.ReadFileNumber(numFiles);
+            var userSelection = wordSearchProgramHelper.ReadFileNumberFromConsole(numFiles);
             string output = _consoleOuput.ToString();
 
             //assert

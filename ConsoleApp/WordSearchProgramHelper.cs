@@ -54,7 +54,7 @@ namespace WordSearch.ConsoleApp
             }
         }
 
-        public short ReadFileNumber(int numFiles)
+        public short ReadFileNumberFromConsole(int numFiles)
         {
             short selectedFileNumber;
             char selectedKey;
@@ -203,9 +203,9 @@ namespace WordSearch.ConsoleApp
                     _consoleWrapper.Clear();
                     _consoleWrapper.WriteLine(searchWords);
                     _consoleWrapper.WriteLine();
-                    var coordinates = WriteSolvedPuzzleCoordinatesToConsole(searchWord, gridManager);
+                    var coordinatesOfSearchTarget = WriteSolvedPuzzleCoordinatesToConsole(searchWord, gridManager);
                     _consoleWrapper.WriteLine();
-                    WriteGridToConsole(gridManager.Grid, foregroundColor, backgroundColor, coordinates);
+                    WriteGridToConsole(gridManager.Grid, foregroundColor, backgroundColor, coordinatesOfSearchTarget);
                 }
             } while (searchWord != "");
         }
@@ -228,12 +228,13 @@ namespace WordSearch.ConsoleApp
 
             foreach (var searchWord in searchWords)
             {
-                var coordinates = _wordFinder.GetCoordinatesOfSearchTarget(searchWord, $"Did not find {searchWord} in puzzle.");
-                if (coordinates != null && coordinates.Count != 0)
+                var coordinatesOfSearchTarget = _wordFinder.GetCoordinatesOfSearchTarget(searchWord, $"Did not find {searchWord} in puzzle.");
+                if (coordinatesOfSearchTarget != null && coordinatesOfSearchTarget.Count > 0)
                 {
-                    _consoleWrapper.WriteLine($"{searchWord}: " + $"{coordinates.ToString()}");
+                    _consoleWrapper.WriteLine($"{searchWord}: " + $"{coordinatesOfSearchTarget.ToString()}");
 
-                    foreach(var coordinate in coordinates)
+                    //create list of all coordinates of grid that are part of the puzzle solution
+                    foreach(var coordinate in coordinatesOfSearchTarget)
                     {
                         if (!points.Contains(coordinate))
                         {

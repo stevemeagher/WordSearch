@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace WordSearch.WordSearchLib
 {
@@ -17,16 +18,14 @@ namespace WordSearch.WordSearchLib
 
             return new List<ISearchOrientation>() 
             {
-                new SearchOrientation(new GridToLinearLeftRightStrategy(gridManager)),
-                new SearchOrientation(new GridToLinearRightLeftStrategy(gridManager)),
-                new SearchOrientation(new GridToLinearTopBottomStrategy(gridManager)),
-                new SearchOrientation(new GridToLinearBottomTopStrategy(gridManager)),
-                new SearchOrientation(new GridToLinearTopLeftBottomRightStrategy(gridManager)),
-                new SearchOrientation(new GridToLinearBottomRightTopLeftStrategy(gridManager)),
-                new SearchOrientation(new GridToLinearTopRightBottomLeftStrategy(gridManager)),
-                new SearchOrientation(new GridToLinearBottomLeftTopRightStrategy(gridManager))
+                new SearchOrientation(new GridToLinearHorizontalStrategy(gridManager)),
+                new SearchOrientation(new GridToLinearVerticalStrategy(gridManager)),
+                new SearchOrientation(new GridToLinearDiagonalNWSEStrategy(gridManager)),
+                new SearchOrientation(new GridToLinearDiagonalNESWStrategy(gridManager)),
             };
+
         }
+        
 
     }
 }

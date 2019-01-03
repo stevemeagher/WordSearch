@@ -7,5 +7,7 @@ namespace WordSearch.WordSearchLib
     {
         string Value { get; set; }
         Dictionary<int, Point> IndexToGridPosition { get; set; }
+        string ReversedValue { get; }
+        Dictionary<int, Point> ReversedIndexToGridPosition { get; }
     }
 }

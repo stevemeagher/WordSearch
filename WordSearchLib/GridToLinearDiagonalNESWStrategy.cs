@@ -4,15 +4,15 @@ using System.Text;
 
 namespace WordSearch.WordSearchLib
 {
-    public class GridToLinearBottomLeftTopRightStrategy : GridToLinearStrategy
+    public class GridToLinearDiagonalNESWStrategy : GridToLinearStrategy
     {
-        public GridToLinearBottomLeftTopRightStrategy(IGridManager gridManager) : base(gridManager)
+        public GridToLinearDiagonalNESWStrategy(IGridManager gridManager) : base(gridManager)
         {
         }
 
         /// <summary>
         /// Traverse the grid to create a string that enables us to search
-        /// for words that have a diagonal orientation from lower left to upper right
+        /// for words that have a diagonal orientation from upper right to lower left
         /// </summary>
         public override ILinearView GridToLinear()
         {
@@ -23,10 +23,10 @@ namespace WordSearch.WordSearchLib
             StringBuilder gridAsLinear = new StringBuilder("", columnsCount * rowsCount);
             Dictionary<int, Point> indexToGridPosition = new Dictionary<int, Point>();
 
-            int columnNumber = columnsCount - 1;
-            int rowNumber = rowsCount - 1;
-            int minColumnNumber = columnsCount - 1;
-            int maxRowNumber = rowsCount - 1;
+            int columnNumber = 0;
+            int rowNumber = 0;
+            int maxColumnNumber = 0;
+            int minRowNumber = 0;
 
             do
             {
@@ -34,35 +34,39 @@ namespace WordSearch.WordSearchLib
                 indexToGridPosition.Add(stringPosition, new Point(columnNumber, rowNumber));
                 stringPosition++;
 
-                columnNumber++;
-                rowNumber--;
+                columnNumber--;
+                rowNumber++;
 
-                if (columnNumber > columnsCount - 1)
+                //if we're at the left edge...
+                if (columnNumber < 0)
                 {
                     gridAsLinear.Append("|");
-                    minColumnNumber--;
-                    if (minColumnNumber < 0)
+
+                    maxColumnNumber++;
+                    if (maxColumnNumber > columnsCount - 1)
                     {
-                        minColumnNumber = 0;
-                        maxRowNumber--;
+                        maxColumnNumber = columnsCount - 1;
+                        minRowNumber++;
                     }
-                    columnNumber = minColumnNumber;
-                    rowNumber = maxRowNumber;
+                    columnNumber = maxColumnNumber;
+                    rowNumber = minRowNumber;
                 }
 
-                if (rowNumber < 0)
+                //if we're at the bottom edge
+                if (rowNumber > rowsCount - 1)
                 {
-                    if (maxRowNumber > 0)
+                    minRowNumber++;
+
+                    if (minRowNumber < rowsCount)
                     {
                         gridAsLinear.Append("|");
                     }
-                    
-                    maxRowNumber--;
-                    rowNumber = maxRowNumber;
-                    columnNumber = minColumnNumber;
+
+                    rowNumber = minRowNumber;
+                    columnNumber = maxColumnNumber;
                 }
 
-            } while (maxRowNumber >= 0);
+            } while (minRowNumber < rowsCount);
 
             return new LinearView(gridAsLinear.ToString(), indexToGridPosition);
 
