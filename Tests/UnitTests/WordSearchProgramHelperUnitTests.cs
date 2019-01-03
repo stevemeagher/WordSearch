@@ -10,28 +10,22 @@ using WordSearch.FileLib;
 using WordSearch.WordSearchLib;
 using WordSearch.Tests.Common;
 
-namespace WordSearch.Tests
+namespace WordSearch.Tests.UnitTests
 {
     [Collection("WordSearchProgram Collection")]
-    public class WordSearchProgramHelperHelperTests : IDisposable
+    public class WordSearchProgramHelperHelperUnitTests
     {
-        private TestUtilities _testUtilities;
+        private readonly TestUtilities _testUtilities;
         private readonly StringWriter _consoleOuput;
         private readonly TextWriter _originalConsoleOutput;
-        private readonly FileOperations _fileOperations;
-        private readonly WordFinder _wordFinder;
-        private readonly ISearchOrientationManager _searchOrientationManager;
         private readonly IConsoleWrapper _consoleWrapper;
         private const string TEST_DIRECTORY = "Test_WordSearchProgramHelper";
 
-        public WordSearchProgramHelperHelperTests()
+        public WordSearchProgramHelperHelperUnitTests()
         {
             _testUtilities = new TestUtilities();
             _originalConsoleOutput = Console.Out;
             _consoleOuput = new StringWriter();
-            _fileOperations = new FileOperations();
-            _wordFinder = new WordFinder();
-            _searchOrientationManager = new SearchOrientationManager();
             _consoleWrapper = new ConsoleWrapper();
 
             Console.SetOut(_consoleOuput);
@@ -44,7 +38,7 @@ namespace WordSearch.Tests
         {
             //arrange
             string[,] grid = _testUtilities.StringToGrid(gridSource);
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, null, null, null);
 
             //act
             wordSearchProgramHelper.WriteGridToConsole(grid, ConsoleColor.Gray, ConsoleColor.Black);
@@ -52,7 +46,7 @@ namespace WordSearch.Tests
             var output = _consoleOuput.ToString();
 
             //assert
-            Assert.True(expected == _consoleOuput.ToString());
+            Assert.True(expected == output);
         }
 
         ///<summary>This test uses a class, ConsoleWrapperMock, which inherits from ConsoleWrapper and overrides the color setting properties so that
@@ -67,97 +61,36 @@ namespace WordSearch.Tests
             //arrange
             string[,] grid = _testUtilities.StringToGrid(gridSource);
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, null, null, null);
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
 
             //act
             wordSearchProgramHelper.WriteGridToConsole(grid, ConsoleColor.Gray, ConsoleColor.Black, new PointList(){ new Point(xcoord, ycoord)});
-
             var output = _consoleOuput.ToString();
 
             //assert
-            Assert.Equal(expected,_consoleOuput.ToString());
+            Assert.Equal(expected, output);
         }
 
-        [Theory]
-        [InlineData("c:/dir/file1.txt|c:/dir/file2.txt|c:/dir/file3.txt", "(1) file1.txt\n(2) file2.txt\n(3) file3.txt\n")]
-        [InlineData("c:/dir1/dir2/file1.txt|c:/dir1/dir2/file2.txt|c:/dir1/dir2/file3.txt", "(1) file1.txt\n(2) file2.txt\n(3) file3.txt\n")]
-        public void WriteNumberedFileNamesToConsole_WhenWellFormedFilePathsArePassedIn_WritesNumberedFileNamesToConsole(string filePathDelimeteredArray, string expected)
+        [Fact]
+        public void WriteNumberedFileNamesToConsole_WhenWellFormedFilePathsArePassedIn_WritesNumberedFileNamesToConsole()
         {
             //arrange
-            string[] filePaths = filePathDelimeteredArray.Split('|');
-            IFileOperations fileOperations = new FileOperations();
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, fileOperations, _wordFinder, _searchOrientationManager);
+            string fileName = "EvilMorty.txt";
+            string expected = $"(1) {fileName}\n";
+            string[] filePaths = new string[1];
+            Mock<IFileOperations> mockFileOperations = new Mock<IFileOperations>();
+            mockFileOperations.Setup(m => m.GetFileNameFromPath(It.IsAny<string>())).Returns(() => fileName);
+
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, mockFileOperations.Object, null, null);
 
             //act
             wordSearchProgramHelper.WriteNumberedFileNamesToConsole(filePaths);
             var output = _consoleOuput.ToString();
 
             //assert
-            Assert.True(expected == _consoleOuput.ToString());
-        }
-
-        [Theory]
-        [InlineData("WORD1,WORD2,WORD3", "A,B,C|D,E,F|G,H,I", "puzzle.txt")]
-        [InlineData("WORD1,WORD2,WORD3,WORD4", "A,B,C,D|E,F,G,H|I,J,K,L|M,N,O,P", "puzzle.txt")]
-        public void GetSearchStringsAndGridFromPuzzleFile_WhenFileExistsInCorrectFormat_ReturnsFirstRowAsSearchStringAndAllOthersAsStringArray(string searchWords, string fileRowsDelimeteredArray, string puzzleFileName)
-        {
-            //arrange
-            string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
-            CreatePuzzleFile(workingDir, searchWords, fileRowsDelimeteredArray, puzzleFileName);
-
-            //need to remove the commas to provide meaningful input to StringToGrid
-            string[,] expectedGrid = _testUtilities.StringToGrid(fileRowsDelimeteredArray.Replace(",",""));
-
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
-
-            //act
-            var (searchString, grid) = wordSearchProgramHelper.ConvertPuzzleFileToSearchWordsAndGrid($"{workingDir}/{puzzleFileName}");
-
-            //assert
-            Assert.Equal(searchWords, searchString);
-            Assert.Equal(expectedGrid, grid);
-        }
-
-        private void CreatePuzzleFile(string workingDir, string searchWords, string fileRowsDelimeteredArray, string puzzleFileName)
-        {
-            _testUtilities.CreateEmptyDirectory(workingDir);
-
-            string[] puzzleRows = fileRowsDelimeteredArray.Split('|');  
-
-            string[] puzzleForFile = new string[puzzleRows.Length + 1];
-            puzzleForFile[0] = searchWords;
-            for (int i = 0; i < puzzleRows.Length; i++)
-            {
-                puzzleForFile[i + 1] = puzzleRows[i];
-            }
-
-            File.WriteAllLines($"{workingDir}/{puzzleFileName}", puzzleForFile);
-        }
-
-        [Theory]
-        [InlineData("AB,HEB", "A,B,C|D,E,F|G,H,I", "puzzle.txt","AB: (0,0),(1,0)\nHEB: (1,2),(1,1),(1,0)\n")]
-        [InlineData("16AF", "1,2,3,4|5,6,7,8|9,0,A,B|C,D,E,F", "puzzle.txt","16AF: (0,0),(1,1),(2,2),(3,3)\n")]
-        public void WriteSolvedPuzzleCoordinatesToConsole_WhenSearchWordFound_CoordinatesWrittenToConsole(string searchWords, string fileRowsDelimeteredArray, string puzzleFileName, string expected)
-        {
-            //arrange
-            string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
-            CreatePuzzleFile(workingDir, searchWords, fileRowsDelimeteredArray, puzzleFileName);
-
-            IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.BackgroundColor = ConsoleColor.Black;
-
-            //act
-            var (searchString, grid) = wordSearchProgramHelper.ConvertPuzzleFileToSearchWordsAndGrid($"{workingDir}/{puzzleFileName}");
-            IGridManager gridManager = new GridManager(grid);
-            wordSearchProgramHelper.WriteSolvedPuzzleCoordinatesToConsole(searchString, gridManager);
-            var output = _consoleOuput.ToString();
-
-            //assert
-            Assert.True(expected == _consoleOuput.ToString());
+            Assert.True(expected == output);
         }
 
         [Theory]
@@ -169,7 +102,7 @@ namespace WordSearch.Tests
             //arrange
             string expected = $"Enter a search word to find in puzzle or hit <enter> to return to the menu\n\nSearch word: {searchWord}\n";
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, null, null, null);
             ((ConsoleWrapperMock)consoleWrapper).ReadLineResults = new List<string>(){searchWord};
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
@@ -192,7 +125,7 @@ namespace WordSearch.Tests
         {
             //arrange
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, null, null, null);
             ((ConsoleWrapperMock)consoleWrapper).ReadKeyChar = ((int)menuSelection).ToString().ToCharArray().First();
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
@@ -214,7 +147,7 @@ namespace WordSearch.Tests
         {
             //arrange
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, null, null, null);
             ((ConsoleWrapperMock)consoleWrapper).ReadKeyChars = menuSelection.ToCharArray().ToList();
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
@@ -234,7 +167,7 @@ namespace WordSearch.Tests
             //arrange
             string expectedMessage = "grid is null.";
             string[,] grid = null;
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, null, null, null);
 
             //act & assert
             var exception = Assert.Throws<ArgumentException>(() => wordSearchProgramHelper.WriteGridToConsole(grid, ConsoleColor.Gray, ConsoleColor.Black));
@@ -251,7 +184,7 @@ namespace WordSearch.Tests
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.ForegroundColor = ConsoleColor.Blue;
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, null, null, null);
 
             //act
             wordSearchProgramHelper.SetConsoleColors(ConsoleColor.Cyan, ConsoleColor.Green);
@@ -274,7 +207,7 @@ namespace WordSearch.Tests
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.ForegroundColor = ConsoleColor.Blue;
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, null, null, null);
 
             //act
             wordSearchProgramHelper.SetConsoleColors(ConsoleColor.Blue, ConsoleColor.DarkBlue);
@@ -297,7 +230,7 @@ namespace WordSearch.Tests
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.ForegroundColor = ConsoleColor.Blue;
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, null, null, null);
 
             //act
             wordSearchProgramHelper.SetConsoleColors(ConsoleColor.Blue, ConsoleColor.Cyan);
@@ -320,7 +253,7 @@ namespace WordSearch.Tests
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.ForegroundColor = ConsoleColor.Blue;
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, null, null, null);
 
             //act
             wordSearchProgramHelper.SetConsoleColors(ConsoleColor.Cyan, ConsoleColor.DarkBlue);
@@ -339,7 +272,7 @@ namespace WordSearch.Tests
             //arrange
             string expected = "<clear>---- Word Search ----\n\n";
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMock(true);
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, null, null, null);
 
             //act
             wordSearchProgramHelper.WriteTitle();
@@ -358,7 +291,7 @@ namespace WordSearch.Tests
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
             ((ConsoleWrapperMock)consoleWrapper).ReadKeyChars = userInput.ToCharArray().ToList();
 
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, null, null, null);
 
             //act
             var userSelection = wordSearchProgramHelper.ReadFileNumberFromConsole(numFiles);
@@ -378,7 +311,7 @@ namespace WordSearch.Tests
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
             ((ConsoleWrapperMock)consoleWrapper).ReadKeyChars = userInput.ToCharArray().ToList();
 
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(consoleWrapper, null, null, null);
 
             //act
             var userSelection = wordSearchProgramHelper.ReadFileNumberFromConsole(numFiles);
@@ -393,41 +326,41 @@ namespace WordSearch.Tests
         public void GetPuzzleFilePathsFromPuzzleDirectory_WhenPuzzleDirectoryExistsAndContainsFiles_ListOfFilePathsReturned()
         {
             //arrange
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            Mock<IFileOperations> mockFileOperations = new Mock<IFileOperations>();
+            string applicationBasePath = "basePath";
+            bool directoryExists = true;
+            string[] directoryContents = new string[] {"one.txt", "two.txt", "three.txt"};
+            mockFileOperations.Setup(m => m.ApplicationBasePath(It.IsAny<string>())).Returns(() => applicationBasePath);
+            mockFileOperations.Setup(m => m.DirectoryExists(It.IsAny<string>())).Returns(() => directoryExists);
+            mockFileOperations.Setup(m => m.GetDirectoryContents(It.IsAny<string>())).Returns(() => directoryContents);
+
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, mockFileOperations.Object, null, null);
 
             //act
             var filePaths = wordSearchProgramHelper.GetPuzzleFilePathsFromPuzzleDirectory(TestUtilities.TEST_PUZZLES_DIRECTORY);
 
             //assert
-            Assert.True(filePaths.Length == 1);
+            Assert.Equal(directoryContents, filePaths);
         }
 
         [Fact]
         public void GetPuzzleFilePathsFromPuzzleDirectory_WhenPuzzleDirectoryDoesNotExist_ListOfFilePathsReturned()
         {
             //arrange
+            Mock<IFileOperations> mockFileOperations = new Mock<IFileOperations>();
+            string applicationBasePath = "basePath";
+            bool directoryExists = false;
+            mockFileOperations.Setup(m => m.ApplicationBasePath(It.IsAny<string>())).Returns(() => applicationBasePath);
+            mockFileOperations.Setup(m => m.DirectoryExists(It.IsAny<string>())).Returns(() => directoryExists);
+
             string directory = "NODIRECTORY";
-            string fullPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}/{directory}";
+            string fullPath = $"{applicationBasePath}/{directory}";
             string expectedMessage = $"directory does not exist: {fullPath}";            
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, mockFileOperations.Object, null, null);
 
             //act & assert
             var exception = Assert.Throws<ArgumentException>(() => wordSearchProgramHelper.GetPuzzleFilePathsFromPuzzleDirectory(directory));
             Assert.Equal(expectedMessage, exception.Message);
         }
-
-        public void Dispose()
-        {
-            Console.SetOut(_originalConsoleOutput);
-
-            string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
-            DirectoryInfo di = new DirectoryInfo(workingDir);
-            if (di.Exists)
-            {
-                di.Delete(true);
-            }
-        }
-
-
     }
 }

@@ -6,13 +6,13 @@ using Xunit;
 using WordSearch.WordSearchLib;
 using WordSearch.Tests.Common;
 
-namespace WordSearch.Tests
+namespace WordSearch.Tests.UnitTests
 {
-    public class GridManagerTests
+    public class GridManagerUnitTests
     {
         private TestUtilities _testUtilities;
 
-        public GridManagerTests()
+        public GridManagerUnitTests()
         {
             _testUtilities = new TestUtilities();
         }
@@ -22,7 +22,7 @@ namespace WordSearch.Tests
         [InlineData("ABCD|EFGH|IJKL|MNOP")]
         public void GridManager_WhenGridWithEqualColumnsAndRowsPassedToConstructor_NoExceptionThrown(string gridSource)
         {
-            //act
+            //act & assert
             try
             {
                 IGridManager gridManager = new GridManager(_testUtilities.StringToGrid(gridSource));

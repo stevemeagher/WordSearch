@@ -5,37 +5,22 @@ using Xunit;
 using WordSearch.WordSearchLib;
 using WordSearch.Tests.Common;
 
-namespace WordSearch.Tests
+namespace WordSearch.Tests.UnitTests
 {
-    public class SearchOrientationTests
+    public class SearchOrientationUnitTests
     {
         private readonly TestUtilities _testUtilities;
 
-        public SearchOrientationTests()
+        public SearchOrientationUnitTests()
         {
             _testUtilities = new TestUtilities();
         }
 
         [Fact]
-        public void IsSearchTargetFound_LinearViewContainsSearchText_ReturnsTrue()
-        {
-            //arrange
-            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid("ABC|DEF|GHI"));
-            var serachOrientation = new SearchOrientation(new GridToLinearHorizontalStrategyMock(gridManager));
-
-            //act
-            bool actual = serachOrientation.IsSearchTargetFound("BC");
-
-            //assert
-            Assert.True(actual);
-        }
-        
-        [Fact]
         public void GetCoordinatesOfSearchTarget_NxNGridContainsTargetInLeftRightOrientation_CoordinatesReturned()
         {
             //arrange
-            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid("ABC|DEF|GHI"));
-            var serachOrientation = new SearchOrientation(new GridToLinearHorizontalStrategyMock(gridManager));
+            var serachOrientation = new SearchOrientation(new GridToLinearHorizontalStrategyMock(null));
 
             //act
             PointList actual = serachOrientation.GetCoordinatesOfSearchTarget("A");
@@ -44,6 +29,21 @@ namespace WordSearch.Tests
             Assert.Equal(new PointList() {new Point(0,0)}, actual);
         }
 
+        
+        [Fact]
+        public void IsSearchTargetFound_LinearViewContainsSearchText_ReturnsTrue()
+        {
+            //arrange
+            var serachOrientation = new SearchOrientation(new GridToLinearHorizontalStrategyMock(null));
+
+            //act
+            bool actual = serachOrientation.IsSearchTargetFound("BC");
+
+            //assert
+            Assert.True(actual);
+        }
+
+        
         [Fact]
         public void SearchOrientation_CreatedWithNullGridToLinearStrategy_ThrowsArgumentException()
         {
@@ -60,8 +60,8 @@ namespace WordSearch.Tests
         public void IsSearchTargetFound_PassNullSearchTarget_ReturnsFalse()
         {
             //arrange
-            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid("ABC|DEF|GHI"));
-            var serachOrientation = new SearchOrientation(new GridToLinearHorizontalStrategyMock(gridManager));
+            ILinearView linearView = null;
+            var serachOrientation = new SearchOrientation(linearView);
 
             //act
             bool actual = serachOrientation.IsSearchTargetFound(null);
@@ -74,8 +74,8 @@ namespace WordSearch.Tests
         public void IsSearchTargetFound_PassEmptySearchTarget_ReturnsFalse()
         {
             //arrange
-            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid("ABC|DEF|GHI"));
-            var serachOrientation = new SearchOrientation(new GridToLinearHorizontalStrategyMock(gridManager));
+            ILinearView linearView = null;
+            var serachOrientation = new SearchOrientation(linearView);
 
             //act
             bool actual = serachOrientation.IsSearchTargetFound("");
@@ -88,8 +88,8 @@ namespace WordSearch.Tests
         public void GetCoordinatesOfSearchTarget_PassNullSearchTarget_ReturnsNull()
         {
             //arrange
-            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid("ABC|DEF|GHI"));
-            var serachOrientation = new SearchOrientation(new GridToLinearHorizontalStrategyMock(gridManager));
+            ILinearView linearView = null;
+            var serachOrientation = new SearchOrientation(linearView);
 
             //act
             PointList actual = serachOrientation.GetCoordinatesOfSearchTarget(null);
@@ -102,8 +102,8 @@ namespace WordSearch.Tests
         public void GetCoordinatesOfSearchTarget_PassEmptySearchTarget_ReturnsEmptyString()
         {
             //arrange
-            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid("ABC|DEF|GHI"));
-            var serachOrientation = new SearchOrientation(new GridToLinearHorizontalStrategyMock(gridManager));
+            ILinearView linearView = null;
+            var serachOrientation = new SearchOrientation(linearView);
 
             //act
             PointList actual = serachOrientation.GetCoordinatesOfSearchTarget("");
@@ -117,8 +117,7 @@ namespace WordSearch.Tests
         public void IsSearchTargetFound_LinearViewIsNull_ReturnsFalse()
         {
             //arrange
-            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid("ABC|DEF|GHI"));
-            var serachOrientation = new SearchOrientation(new GridToLinearHorizontalStrategyNullLinearViewtMock(gridManager));
+            var serachOrientation = new SearchOrientation(new GridToLinearHorizontalStrategyNullLinearViewtMock(null));
 
             //act
             bool actual = serachOrientation.IsSearchTargetFound("BC");
@@ -131,8 +130,7 @@ namespace WordSearch.Tests
         public void IsSearchTargetFound_ValueOfLinearViewIsNull_ReturnsFalse()
         {
             //arrange
-            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid("ABC|DEF|GHI"));
-            var serachOrientation = new SearchOrientation(new GridToLinearHorizontalStrategyNullLinearViewtMock(gridManager));
+            var serachOrientation = new SearchOrientation(new GridToLinearHorizontalStrategyNullLinearViewtMock(null));
 
             //act
             bool actual = serachOrientation.IsSearchTargetFound("BC");

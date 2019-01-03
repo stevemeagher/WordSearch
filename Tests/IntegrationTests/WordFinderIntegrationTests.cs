@@ -6,14 +6,14 @@ using Moq;
 using WordSearch.WordSearchLib;
 using WordSearch.Tests.Common;
 
-namespace WordSearch.Tests
+namespace WordSearch.Tests.IntegrationTests
 {
-    public class WordFinderTests
+    public class WordFinderIntegrationTests
     {
         private TestUtilities _testUtilities;
         private ISearchOrientationManager _searchOrientationManager;
 
-        public WordFinderTests()
+        public WordFinderIntegrationTests()
         {
             _testUtilities = new TestUtilities();
             _searchOrientationManager = new SearchOrientationManager();
@@ -98,28 +98,6 @@ namespace WordSearch.Tests
             //assert
             Assert.Equal(expected, actual);
         }
-        
-        [Fact]
-        public void WordFinder_CreatedWithNullSearchOrientations_ThrowsArgumentException()
-        {
-            //arrange
-            string expectedMessage = "searchOrientations parameter is null.";
-
-            //act & assert
-            var exception = Assert.Throws<ArgumentException>(() => new WordFinder(null));
-            Assert.Equal(expectedMessage, exception.Message);
-        }
-        
-        [Fact]
-        public void WordFinder_CreatedWithEmptySearchOrientations_ThrowsArgumentException()
-        {
-            //arrange
-            string expectedMessage = "searchOrientations list is empty.";
-
-            //act & assert
-            var exception = Assert.Throws<ArgumentException>(() => new WordFinder(new List<ISearchOrientation>()));
-            Assert.Equal(expectedMessage, exception.Message);
-        }
 
         [Theory]
         [InlineData("ABC|DEF|GHI", "CDE", "Not found.")]
@@ -180,23 +158,6 @@ namespace WordSearch.Tests
             //act
             IWordFinder wordFinder = new WordFinder(_searchOrientationManager.GetSearchOrientations(gridManager));
             string actual = wordFinder.GetCoordinatesOfSearchTarget(searchTarget, "Not found.").ToString();
-
-            //assert
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void GetCoordinatesOfSearchTarget_SearchTargetFound_ReturnsResultOfSearchOrientationGetCoords()
-        {
-            //arrange
-            string expected = "(10,10)";
-            Mock<ISearchOrientation> mock = new Mock<ISearchOrientation>();
-            mock.Setup(m => m.IsSearchTargetFound(It.IsAny<string>())).Returns(true);
-            mock.Setup(m => m.GetCoordinatesOfSearchTarget(It.IsAny<string>())).Returns(new PointList(){new Point(10,10)});
-
-            //act
-            IWordFinder wordFinder = new WordFinder(new List<ISearchOrientation>(){{mock.Object}});
-            string actual = wordFinder.GetCoordinatesOfSearchTarget("","Not found.").ToString();
 
             //assert
             Assert.Equal(expected, actual);

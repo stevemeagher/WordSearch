@@ -6,13 +6,13 @@ using Xunit;
 using WordSearch.WordSearchLib;
 using WordSearch.Tests.Common;
 
-namespace WordSearch.Tests
+namespace WordSearch.Tests.UnitTests
 {
-    public class LinearViewTests
+    public class LinearViewUnitTests
     {
         private TestUtilities _testUtilities;
 
-        public LinearViewTests()
+        public LinearViewUnitTests()
         {
             _testUtilities = new TestUtilities();
         }

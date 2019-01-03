@@ -6,13 +6,13 @@ using Xunit;
 using WordSearch.WordSearchLib;
 using WordSearch.Tests.Common;
 
-namespace WordSearch.Tests
+namespace WordSearch.Tests.UnitTests
 {
-    public class SearchOrientationManagerTests
+    public class SearchOrientationManagerUnitTests
     {
         private TestUtilities _testUtilities;
 
-        public SearchOrientationManagerTests()
+        public SearchOrientationManagerUnitTests()
         {
             _testUtilities = new TestUtilities();
         }

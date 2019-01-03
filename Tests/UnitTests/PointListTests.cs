@@ -2,9 +2,9 @@ using System.Drawing;
 using Xunit;
 using WordSearch.WordSearchLib;
 
-namespace WordSearch.Tests
+namespace WordSearch.Tests.UnitTests
 {
-    public class PointListTests
+    public class PointListUnitTests
     {
         [Fact]
         public void ToString_WhenPointListContainsListOfPoints_ReturnsPointsAsCommaDelimeteredString()

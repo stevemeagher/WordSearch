@@ -20,6 +20,8 @@ namespace WordSearch.WordSearchLib
 
         public PointList GetCoordinatesOfSearchTarget(string searchTarget, string targetNotFoundMessage = "")
         {
+            if (_searchOrientations is null || _searchOrientations.Count == 0) throw new Exception("no SearchOrientations have been set in WordFinder.");
+
             foreach (var searchOrientation in _searchOrientations)
             {
                 if (searchOrientation.IsSearchTargetFound(searchTarget))

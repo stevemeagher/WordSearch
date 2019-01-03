@@ -5,11 +5,11 @@ using WordSearch.Tests.Common;
 
 namespace WordSearch.Tests
 {
-    public class TestUtilitiesTests
+    public class TestUtilitiesUnitTests
     {
         private TestUtilities _testUtilities;
 
-        public TestUtilitiesTests()
+        public TestUtilitiesUnitTests()
         {
             _testUtilities = new TestUtilities();
         }

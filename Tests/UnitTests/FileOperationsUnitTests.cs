@@ -4,16 +4,16 @@ using Xunit;
 using WordSearch.FileLib;
 using WordSearch.Tests.Common;
 
-namespace WordSearch.Tests
+namespace WordSearch.Tests.UnitTests
 {
-    public class FileOperationsTests : IDisposable
+    public class FileOperationsUnitTests : IDisposable
     {
         private string _testFilePath;
         private FileOperations _fileOperations;
         private TestUtilities _testUtilities;
         private const string TEST_DIRECTORY = "Test_FileOperations";
 
-        public FileOperationsTests()
+        public FileOperationsUnitTests()
         {
             _testUtilities = new TestUtilities();
             _fileOperations = new FileOperations();

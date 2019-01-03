@@ -79,6 +79,7 @@ namespace WordSearch.ConsoleApp
                             break;
                     }
                 } while (menuSelection != MenuSelection.SelectAnotherFile && menuSelection != MenuSelection.Exit);
+                
             } while (menuSelection != MenuSelection.Exit);
         }
     }

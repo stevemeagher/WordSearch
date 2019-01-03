@@ -10,10 +10,10 @@ using WordSearch.FileLib;
 using WordSearch.WordSearchLib;
 using WordSearch.Tests.Common;
 
-namespace WordSearch.Tests
+namespace WordSearch.Tests.IntegrationTests
 {
     [Collection("WordSearchProgram Collection")]
-    public class WordSearchProgramTests : IDisposable
+    public class WordSearchProgramIntegrationTests : IDisposable
     {
         private TestUtilities _testUtilities;
         private readonly StringWriter _consoleOuput;
@@ -24,7 +24,7 @@ namespace WordSearch.Tests
         private readonly IConsoleWrapper _consoleWrapper;
         private const string TEST_DIRECTORY = "Test_WordSearchProgram";
 
-        public WordSearchProgramTests()
+        public WordSearchProgramIntegrationTests()
         {
             _testUtilities = new TestUtilities();
             _originalConsoleOutput = Console.Out;

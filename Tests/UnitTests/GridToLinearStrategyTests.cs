@@ -5,13 +5,13 @@ using Xunit;
 using WordSearch.WordSearchLib;
 using WordSearch.Tests.Common;
 
-namespace WordSearch.Tests
+namespace WordSearch.Tests.UnitTests
 {
-    public class GridToLinearStrategyTests
+    public class GridToLinearStrategyUnitTests
     {
         private readonly TestUtilities _testUtilities;
 
-        public GridToLinearStrategyTests()
+        public GridToLinearStrategyUnitTests()
         {
             _testUtilities = new TestUtilities();
         }

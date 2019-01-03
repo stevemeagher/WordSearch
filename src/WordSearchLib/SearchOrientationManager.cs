@@ -18,9 +18,6 @@ namespace WordSearch.WordSearchLib
                 new SearchOrientation(new GridToLinearDiagonalNWSEStrategy(gridManager)),
                 new SearchOrientation(new GridToLinearDiagonalNESWStrategy(gridManager)),
             };
-
         }
-        
-
     }
 }
