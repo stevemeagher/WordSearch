@@ -1,8 +1,9 @@
 using System;
 using Xunit;
 using WordSearch.WordSearchLib;
+using WordSearch.Tests.Common;
 
-namespace Tests
+namespace WordSearch.Tests
 {
     public class TestUtilitiesTests
     {

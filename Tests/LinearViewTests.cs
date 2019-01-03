@@ -4,8 +4,9 @@ using System.Linq;
 using System.Drawing;
 using Xunit;
 using WordSearch.WordSearchLib;
+using WordSearch.Tests.Common;
 
-namespace Tests
+namespace WordSearch.Tests
 {
     public class LinearViewTests
     {

@@ -14,11 +14,6 @@ namespace WordSearch.WordSearchLib
 
         public GridToLinearStrategy(IGridManager gridManager)
         {
-            if (!gridManager.IsGridValidated)
-            {
-                gridManager.ValidateGrid();
-            }
-
             GridManager = gridManager;
         }
 

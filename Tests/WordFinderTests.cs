@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using Xunit;
 using Moq;
 using WordSearch.WordSearchLib;
+using WordSearch.Tests.Common;
 
-namespace Tests
+namespace WordSearch.Tests
 {
     public class WordFinderTests
     {

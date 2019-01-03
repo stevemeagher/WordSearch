@@ -2,8 +2,9 @@ using System;
 using System.IO;
 using Xunit;
 using WordSearch.FileLib;
+using WordSearch.Tests.Common;
 
-namespace Tests
+namespace WordSearch.Tests
 {
     public class FileOperationsTests : IDisposable
     {

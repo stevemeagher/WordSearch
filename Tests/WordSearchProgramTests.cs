@@ -2,14 +2,15 @@ using System;
 using System.IO;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 using Moq;
 using WordSearch.ConsoleApp;
 using WordSearch.FileLib;
 using WordSearch.WordSearchLib;
-using System.Linq;
+using WordSearch.Tests.Common;
 
-namespace Tests
+namespace WordSearch.Tests
 {
     [Collection("WordSearchProgram Collection")]
     public class WordSearchProgramTests : IDisposable
@@ -48,7 +49,7 @@ namespace Tests
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
 
             //act
-            wordSearchProgram.ProgramLoop("tests/testpuzzles");
+            wordSearchProgram.ProgramLoop(TestUtilities.TEST_PUZZLES_DIRECTORY);
             string output = _consoleOuput.ToString();
 
             //assert
@@ -67,7 +68,7 @@ namespace Tests
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
 
             //act
-            wordSearchProgram.ProgramLoop("tests/testpuzzles");
+            wordSearchProgram.ProgramLoop(TestUtilities.TEST_PUZZLES_DIRECTORY);
             string output = _consoleOuput.ToString();
 
             //assert
@@ -87,7 +88,7 @@ namespace Tests
             WordSearchProgram wordSearchProgram = new WordSearchProgram(consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
 
             //act
-            wordSearchProgram.ProgramLoop("tests/testpuzzles");
+            wordSearchProgram.ProgramLoop(TestUtilities.TEST_PUZZLES_DIRECTORY);
             string output = _consoleOuput.ToString();
 
             //assert
@@ -113,7 +114,7 @@ namespace Tests
         public void ProgramLoop_WhenPuzzleDirectoryIsEmpty_ThrowsArgumentException()
         {
             //arrange
-            string directory = "/tests/emptydirectory";
+            string directory = TestUtilities.EMPTY_DIRECTORY;
             string fullPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}/{directory}";
             string expectedMessage = $"puzzle directory contains no files: {fullPath}";
             WordSearchProgram wordSearchProgram = new WordSearchProgram(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);

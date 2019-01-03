@@ -2,12 +2,12 @@ using System.Drawing;
 using Xunit;
 using WordSearch.WordSearchLib;
 
-namespace Tests
+namespace WordSearch.Tests
 {
     public class PointListTests
     {
         [Fact]
-        public void ToString_WhenPointListContainsListOfPoints_ReturnsPointsAsSingleCommaDelimeteredString()
+        public void ToString_WhenPointListContainsListOfPoints_ReturnsPointsAsCommaDelimeteredString()
         {
             //arrange
             string expected = "(0,0),(1,1),(2,2)";

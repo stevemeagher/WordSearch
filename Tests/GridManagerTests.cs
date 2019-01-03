@@ -4,8 +4,9 @@ using System.Linq;
 using System.Drawing;
 using Xunit;
 using WordSearch.WordSearchLib;
+using WordSearch.Tests.Common;
 
-namespace Tests
+namespace WordSearch.Tests
 {
     public class GridManagerTests
     {
@@ -19,15 +20,12 @@ namespace Tests
         [Theory]
         [InlineData("ABC|DEF|GHI")]
         [InlineData("ABCD|EFGH|IJKL|MNOP")]
-        public void ValidateGrid_WhenGridWithEqualColumnsAndRowsValidated_ReturnTrue(string gridSource)
+        public void GridManager_WhenGridWithEqualColumnsAndRowsPassedToConstructor_NoExceptionThrown(string gridSource)
         {
-            //arrange
-            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid(gridSource));
-
             //act
             try
             {
-                gridManager.ValidateGrid();
+                IGridManager gridManager = new GridManager(_testUtilities.StringToGrid(gridSource));
 
             }
             catch (Exception ex)
@@ -39,52 +37,48 @@ namespace Tests
         [Theory]
         [InlineData("ABCD|EFGH|IJKL")]
         [InlineData("AB|CD|EF|GH")]
-        public void ValidateGrid_WhenGridWithUnequalColumnsAndRowsValidated_ThrowsArgumentException(string gridSource)
+        public void GridManager_WhenGridWithUnequalColumnsAndRowsPassedToConstructor_ThrowsArgumentException(string gridSource)
         {
             //arrange
             string expectedMessage = "grid has a mismatch between the number of rows and columns.";
-            IGridManager gridManager = new GridManager(_testUtilities.StringToGrid(gridSource));
 
             //act & assert
-             var exception = Assert.Throws<ArgumentException>(() => gridManager.ValidateGrid());
+             var exception = Assert.Throws<ArgumentException>(() => new GridManager(_testUtilities.StringToGrid(gridSource)));
              Assert.Equal(expectedMessage, exception.Message);
         }
 
         [Fact]
-        public void ValidateGrid_WhenGridHasZeroRowsAndColumns_ThrowsArgumentException()
+        public void GridManager_WhenGridHasZeroRowsAndColumnsPassedToConstructor_ThrowsArgumentException()
         {
             //arrange
             string expectedMessage = "grid has zero rows and/or columns.";
-            IGridManager gridManager = new GridManager(new string[0,0]);
 
             //act & assert
-             var exception = Assert.Throws<ArgumentException>(() => gridManager.ValidateGrid());
+             var exception = Assert.Throws<ArgumentException>(() => new GridManager(new string[0,0]));
              Assert.Equal(expectedMessage, exception.Message);
         }
 
         [Fact]
-        public void ValidateGrid_WhenGridIsNUll_ThrowsArgumentException()
+        public void GridManager_WhenGridIsNUll_ThrowsArgumentException()
         {
             //arrange
             string expectedMessage = "grid is null.";
-            IGridManager gridManager = new GridManager(null);
 
             //act & assert
-             var exception = Assert.Throws<ArgumentException>(() => gridManager.ValidateGrid());
+             var exception = Assert.Throws<ArgumentException>(() => new GridManager(null));
              Assert.Equal(expectedMessage, exception.Message);
         }
 
         [Fact]
-        public void ValidateGrid_WhenGridWithMoreThanOneCharacterInCoordinateValidated_ThrowsArgumentException()
+        public void GridManager_WhenGridWithMoreThanOneCharacterInCoordinatePassedToConstructor_ThrowsArgumentException()
         {
             //arrange
             string expectedMessage = "grid has more than one character in at least one coordinate.";
             string[,] grid = _testUtilities.StringToGrid("ABC|DEF|GHI");
             grid[1,1] = "ABC";
-            IGridManager gridManager = new GridManager(grid);
 
             //act & assert
-             var exception = Assert.Throws<ArgumentException>(() => gridManager.ValidateGrid());
+             var exception = Assert.Throws<ArgumentException>(() => new GridManager(grid));
              Assert.Equal(expectedMessage, exception.Message);
         }
    }

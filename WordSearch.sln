@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{598D8125-2BFD-418A-9120-2C4CAFBC54FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "src\ConsoleApp\ConsoleApp.csproj", "{598D8125-2BFD-418A-9120-2C4CAFBC54FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{27C49874-E446-4851-B4FE-A39E32238DF7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "tests\Tests.csproj", "{27C49874-E446-4851-B4FE-A39E32238DF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileLib", "FileLib\FileLib.csproj", "{26480664-7051-4972-AAB9-5540C02CA925}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileLib", "src\FileLib\FileLib.csproj", "{26480664-7051-4972-AAB9-5540C02CA925}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,14 +2,15 @@ using System;
 using System.IO;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 using Moq;
 using WordSearch.ConsoleApp;
 using WordSearch.FileLib;
 using WordSearch.WordSearchLib;
-using System.Linq;
+using WordSearch.Tests.Common;
 
-namespace Tests
+namespace WordSearch.Tests
 {
     [Collection("WordSearchProgram Collection")]
     public class WordSearchProgramHelperHelperTests : IDisposable
@@ -395,7 +396,7 @@ namespace Tests
             WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
 
             //act
-            var filePaths = wordSearchProgramHelper.GetPuzzleFilePathsFromPuzzleDirectory("tests/testpuzzles");
+            var filePaths = wordSearchProgramHelper.GetPuzzleFilePathsFromPuzzleDirectory(TestUtilities.TEST_PUZZLES_DIRECTORY);
 
             //assert
             Assert.True(filePaths.Length == 1);

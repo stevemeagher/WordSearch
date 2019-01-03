@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -18,9 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WordSearchLib\WordSearchLib.csproj" />
-    <ProjectReference Include="..\FileLib\FileLib.csproj" />
-    <ProjectReference Include="..\ConsoleApp\ConsoleApp.csproj" />
+    <ProjectReference Include="..\src\WordSearchLib\WordSearchLib.csproj" />
+    <ProjectReference Include="..\src\FileLib\FileLib.csproj" />
+    <ProjectReference Include="..\src\ConsoleApp\ConsoleApp.csproj" />
   </ItemGroup>
 
 </Project>

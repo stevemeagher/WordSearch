@@ -11,11 +11,6 @@ namespace WordSearch.WordSearchLib
 
         public List<ISearchOrientation> GetSearchOrientations(IGridManager gridManager)
         {
-            if (!gridManager.IsGridValidated)
-            {
-                gridManager.ValidateGrid();
-            }
-
             return new List<ISearchOrientation>() 
             {
                 new SearchOrientation(new GridToLinearHorizontalStrategy(gridManager)),

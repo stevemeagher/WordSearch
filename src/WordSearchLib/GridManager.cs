@@ -6,19 +6,16 @@ namespace WordSearch.WordSearchLib
     public class GridManager : IGridManager
     {
         private readonly string[,] _grid;
-        private bool _isGridValidated;
         
         public GridManager(string[,] grid)
         {
             _grid = grid;
-            _isGridValidated = false;
-
+            ValidateGrid();
         }
         
         public string[,] Grid { get => _grid;}
-        public bool IsGridValidated { get => _isGridValidated; private set => _isGridValidated = value; }
 
-        public void ValidateGrid()
+        private void ValidateGrid()
         {
             if (_grid == null) throw new ArgumentException("grid is null.");
 
@@ -45,8 +42,6 @@ namespace WordSearch.WordSearchLib
                     }
                 }
             }
-
-            IsGridValidated = true;
         }
     }
 

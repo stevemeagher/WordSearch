@@ -1,11 +1,12 @@
 using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 using WordSearch.WordSearchLib;
-using System.Linq;
+using WordSearch.Tests.Common;
 
-namespace Tests
+namespace WordSearch.Tests
 {
     public class SearchOrientationManagerTests
     {
@@ -17,7 +18,7 @@ namespace Tests
         }
 
         [Fact]
-        public void GetSearchOrientations_WhenGridIsValid_ReturnsListOfISearchOrientations()
+        public void GetSearchOrientations_ReturnsListOfISearchOrientations()
         {
             //arrange
             IGridManager gridManager = new GridManager(_testUtilities.StringToGrid("ABC|DEF|GHI"));
@@ -25,7 +26,6 @@ namespace Tests
 
             //act
             var searchOrientations = searchOrientationManager.GetSearchOrientations(gridManager);
-            var searchOrientation = new SearchOrientation(new GridToLinearHorizontalStrategy(gridManager));
 
             //assert
             Assert.True(searchOrientations is List<ISearchOrientation>);

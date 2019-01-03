@@ -1,10 +1,11 @@
 using System;
-using Xunit;
-using WordSearch.WordSearchLib;
 using System.Collections.Generic;
 using System.Drawing;
+using Xunit;
+using WordSearch.WordSearchLib;
+using WordSearch.Tests.Common;
 
-namespace Tests
+namespace WordSearch.Tests
 {
     public class GridToLinearStrategyTests
     {
