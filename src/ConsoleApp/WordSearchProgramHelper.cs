@@ -62,7 +62,7 @@ namespace WordSearch.ConsoleApp
             do
             {
                 _consoleWrapper.WriteLine();
-                _consoleWrapper.Write("Select file number: ");
+                _consoleWrapper.Write("Select puzzle number: ");
                 selectedKey = _consoleWrapper.ReadKey().KeyChar;
                 _consoleWrapper.WriteLine();
                 _consoleWrapper.WriteLine();
@@ -147,7 +147,7 @@ namespace WordSearch.ConsoleApp
         {
             _consoleWrapper.WriteLine("(1) Show solution");
             _consoleWrapper.WriteLine("(2) Enter a search word");
-            _consoleWrapper.WriteLine("(3) Select another file");
+            _consoleWrapper.WriteLine("(3) Select another puzzle");
             _consoleWrapper.WriteLine("(4) Exit");
             _consoleWrapper.WriteLine();
 

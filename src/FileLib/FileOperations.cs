@@ -42,7 +42,9 @@ namespace WordSearch.FileLib
                 throw new ApplicationException($"Applictaion path does not include {baseApplicationDirectory}");
             }
 
-            return path.Substring(0,indexOfBaseName + baseApplicationDirectory.Length);
+            int indexOfNextSlash = path.IndexOf("/", indexOfBaseName);
+
+            return path.Substring(0,indexOfNextSlash);
         }
 
         public string[] GetDirectoryContents(string directoryPath)

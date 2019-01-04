@@ -129,7 +129,7 @@ namespace WordSearch.Tests.UnitTests
             ((ConsoleWrapperMock)consoleWrapper).ReadKeyChar = ((int)menuSelection).ToString().ToCharArray().First();
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.BackgroundColor = ConsoleColor.Black;
-            string expected = $"(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: {(int)menuSelection}\n";
+            string expected = $"(1) Show solution\n(2) Enter a search word\n(3) Select another puzzle\n(4) Exit\n\nEnter selection: {(int)menuSelection}\n";
 
             //act
             MenuSelection actualMenuSelection = wordSearchProgramHelper.PromptForMenuSelection();
@@ -141,8 +141,8 @@ namespace WordSearch.Tests.UnitTests
         }
 
         [Theory]
-        [InlineData("51", "(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: 5\n\nPlease enter a number between 1 and 4\n\nEnter selection: 1\n", MenuSelection.ShowSolution)]
-        [InlineData("9A2", "(1) Show solution\n(2) Enter a search word\n(3) Select another file\n(4) Exit\n\nEnter selection: 9\n\nPlease enter a number between 1 and 4\n\nEnter selection: A\n\nPlease enter a number between 1 and 4\n\nEnter selection: 2\n", MenuSelection.EnterSearchWord)]
+        [InlineData("51", "(1) Show solution\n(2) Enter a search word\n(3) Select another puzzle\n(4) Exit\n\nEnter selection: 5\n\nPlease enter a number between 1 and 4\n\nEnter selection: 1\n", MenuSelection.ShowSolution)]
+        [InlineData("9A2", "(1) Show solution\n(2) Enter a search word\n(3) Select another puzzle\n(4) Exit\n\nEnter selection: 9\n\nPlease enter a number between 1 and 4\n\nEnter selection: A\n\nPlease enter a number between 1 and 4\n\nEnter selection: 2\n", MenuSelection.EnterSearchWord)]
         public void PromptForMenuSelection_WhenUserSelectsNumberedOptionOutOfRange_RetryMessageDisplayed(string menuSelection, string expectedOutput, MenuSelection expectedMenuSelection)
         {
             //arrange
@@ -283,8 +283,8 @@ namespace WordSearch.Tests.UnitTests
         }
 
         [Theory]
-        [InlineData(5, "3", "\nSelect file number: 3\n\n")]
-        [InlineData(10, "1", "\nSelect file number: 1\n\n")]
+        [InlineData(5, "3", "\nSelect puzzle number: 3\n\n")]
+        [InlineData(10, "1", "\nSelect puzzle number: 1\n\n")]
         public void ReadFileNumber_WhenUserEntersValidNumber_ThatNumberIsReturned(int numFiles, string userInput, string expected)
         {
             //arrange
@@ -303,8 +303,8 @@ namespace WordSearch.Tests.UnitTests
         }
 
         [Theory]
-        [InlineData(5, "71", "\nSelect file number: 7\n\n\nSelect file number: 1\n\n")]
-        [InlineData(10, "02", "\nSelect file number: 0\n\n\nSelect file number: 2\n\n")]
+        [InlineData(5, "71", "\nSelect puzzle number: 7\n\n\nSelect puzzle number: 1\n\n")]
+        [InlineData(10, "02", "\nSelect puzzle number: 0\n\n\nSelect puzzle number: 2\n\n")]
         public void ReadFileNumber_WhenUserFirstEntersInvalidNumber_UserIsPromptedToEnterAgain(int numFiles, string userInput, string expected)
         {
             //arrange
