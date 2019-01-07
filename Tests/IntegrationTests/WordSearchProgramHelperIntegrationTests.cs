@@ -94,7 +94,7 @@ namespace WordSearch.Tests.IntegrationTests
             var filePaths = wordSearchProgramHelper.GetPuzzleFilePathsFromPuzzleDirectory(TestUtilities.TEST_PUZZLES_DIRECTORY);
 
             //assert
-            Assert.True(filePaths.Length == 1);
+            Assert.True(filePaths.Length == 2);
         }
 
         [Fact]

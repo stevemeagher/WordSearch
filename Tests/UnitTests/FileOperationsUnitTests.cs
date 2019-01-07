@@ -6,25 +6,19 @@ using WordSearch.Tests.Common;
 
 namespace WordSearch.Tests.UnitTests
 {
-    public class FileOperationsUnitTests : IDisposable
+    public class FileOperationsUnitTests
     {
         private string _testFilePath;
+        private string _testDirectoryPath;
         private FileOperations _fileOperations;
         private TestUtilities _testUtilities;
-        private const string TEST_DIRECTORY = "Test_FileOperations";
 
         public FileOperationsUnitTests()
         {
             _testUtilities = new TestUtilities();
             _fileOperations = new FileOperations();
-            _testFilePath = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + $"{Path.DirectorySeparatorChar}fileOperationsTests.txt";
-            if (File.Exists(_testFilePath))
-            {
-                File.Delete(_testFilePath);
-            }
-            string[] fileLinesOut = {"First", "Second", "Third", "Fourth", "Fifth"};
-
-            File.WriteAllLines(_testFilePath, fileLinesOut);
+            _testDirectoryPath = $"{_fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY)}{Path.DirectorySeparatorChar}{TestUtilities.TEST_PUZZLES_DIRECTORY}";
+            _testFilePath = $"{_testDirectoryPath}{Path.DirectorySeparatorChar}wordsearch.txt";
         }
 
         [Fact]
@@ -34,11 +28,10 @@ namespace WordSearch.Tests.UnitTests
             string[] fileLines = _fileOperations.ReadLines(_testFilePath);
 
             //assert
-            Assert.True(fileLines[0] == "First");
-            Assert.True(fileLines[1] == "Second");
-            Assert.True(fileLines[2] == "Third");
-            Assert.True(fileLines[3] == "Fourth");
-            Assert.True(fileLines[4] == "Fifth");
+            Assert.True(fileLines[0] == "AD,IE");
+            Assert.True(fileLines[1] == "A,B,C");
+            Assert.True(fileLines[2] == "D,E,F");
+            Assert.True(fileLines[3] == "G,H,I");
         }
 
         [Fact]
@@ -48,20 +41,14 @@ namespace WordSearch.Tests.UnitTests
             string[] fileLines = _fileOperations.ReadLines(_testFilePath);
 
             //assert
-            Assert.True(fileLines.Length == 5);
+            Assert.True(fileLines.Length == 4);
         }
 
         [Fact]
         public void ReadLines_WhenFileDoesNotExists_ReturnsEmptyArray()
         {
-            //arrange
-            if (File.Exists(_testFilePath))
-            {
-                File.Delete(_testFilePath);
-            }
-
             //act
-            string[] fileLines = _fileOperations.ReadLines(_testFilePath);
+            string[] fileLines = _fileOperations.ReadLines($"{_testDirectoryPath}{Path.DirectorySeparatorChar}does_not_exist.txt");
 
             //assert
             Assert.True(fileLines.Length == 0);
@@ -70,31 +57,12 @@ namespace WordSearch.Tests.UnitTests
         [Fact]
         public void GetDirectoryContents_WhenFilesExistInDirectory_ReturnsSortdedArrayOfFilePaths()
         {
-            //arrange
-            string workingDir = $"{_fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY)}{Path.DirectorySeparatorChar}{TEST_DIRECTORY}";
-            _testUtilities.CreateEmptyDirectory(workingDir);
-
-            File.Create($"{workingDir}{Path.DirectorySeparatorChar}file1.txt");
-            File.Create($"{workingDir}{Path.DirectorySeparatorChar}file2.txt");
-            File.Create($"{workingDir}{Path.DirectorySeparatorChar}file3.txt");
-            File.Create($"{workingDir}{Path.DirectorySeparatorChar}file4.txt");
-            File.Create($"{workingDir}{Path.DirectorySeparatorChar}file5.txt");
-
             //act
-            string[] filePaths = _fileOperations.GetDirectoryContents(workingDir);
+            string[] filePaths = _fileOperations.GetDirectoryContents(_testDirectoryPath);
 
             //assert
-            Assert.True(filePaths[0] == $"{workingDir}{Path.DirectorySeparatorChar}file1.txt");
-            Assert.True(filePaths[1] == $"{workingDir}{Path.DirectorySeparatorChar}file2.txt");
-            Assert.True(filePaths[2] == $"{workingDir}{Path.DirectorySeparatorChar}file3.txt");
-            Assert.True(filePaths[3] == $"{workingDir}{Path.DirectorySeparatorChar}file4.txt");
-            Assert.True(filePaths[4] == $"{workingDir}{Path.DirectorySeparatorChar}file5.txt");
-
-            File.Delete($"{workingDir}{Path.DirectorySeparatorChar}file1.txt");
-            File.Delete($"{workingDir}{Path.DirectorySeparatorChar}file2.txt");
-            File.Delete($"{workingDir}{Path.DirectorySeparatorChar}file3.txt");
-            File.Delete($"{workingDir}{Path.DirectorySeparatorChar}file4.txt");
-            File.Delete($"{workingDir}{Path.DirectorySeparatorChar}file5.txt");
+            Assert.Equal($"{_testDirectoryPath}{Path.DirectorySeparatorChar}wordsearch.txt", filePaths[0]);
+            Assert.Equal($"{_testDirectoryPath}{Path.DirectorySeparatorChar}wordsearch2.txt", filePaths[1]);
         }
 
         [Fact]
@@ -126,7 +94,6 @@ namespace WordSearch.Tests.UnitTests
         [Fact]
         public void GetApplicationBasePath_WhenPathHasMultipleInstancesOfApplicationName_ReturnsFullBasePath()
         {
-
             //arrange
             string duplicateDirectoryNameOnly = "MyApplicationName";
             string duplicateDirectory = $"{Path.DirectorySeparatorChar}MyApplicationName";
@@ -148,20 +115,5 @@ namespace WordSearch.Tests.UnitTests
             Assert.Equal(expected, actual);
         }
 
-        public void Dispose()
-        {
-            //clean-up
-            if (File.Exists(_testFilePath))
-            {
-                File.Delete(_testFilePath);
-            }
-
-            string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + Path.DirectorySeparatorChar + TEST_DIRECTORY;
-
-            if (Directory.Exists(workingDir))
-            {
-                Directory.Delete(workingDir, true);
-            }
-        }
     }
 }
