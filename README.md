@@ -1,7 +1,7 @@
 Word Search
 ===========
 
-The input to this application (**WordSearch**) is a text file consisting of a series of words (search words) and an **N x N** grid of characters.  It displays the coordinates of the grid locations at which the search words are found.
+The input to this application (**WordSearch**) is a text file consisting of a series of words (search words) and an **N x N** grid of characters.  As output, it displays the coordinates of the grid locations at which the search words are found.
 
 When run, **WordSearch** will display, in alphanumeric order, a list of up to 9 files found in the **wordsearch/puzzles** directory.  With the supplied puzzles, the list appears as:
 
