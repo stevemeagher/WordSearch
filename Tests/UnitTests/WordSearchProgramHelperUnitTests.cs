@@ -337,15 +337,37 @@ namespace WordSearch.Tests.UnitTests
             string[] directoryContents = new string[] {"one.txt", "two.txt", "three.txt"};
             mockFileOperations.Setup(m => m.ApplicationBasePath(It.IsAny<string>(), It.IsAny<string>())).Returns(() => applicationBasePath);
             mockFileOperations.Setup(m => m.DirectoryExists(It.IsAny<string>())).Returns(() => directoryExists);
-            mockFileOperations.Setup(m => m.GetDirectoryContents(It.IsAny<string>())).Returns(() => directoryContents);
+            mockFileOperations.Setup(m => m.GetSortedDirectoryContents(It.IsAny<string>())).Returns(() => directoryContents);
 
             WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, mockFileOperations.Object, null, null);
 
             //act
-            var filePaths = wordSearchProgramHelper.GetPuzzleFilePathsFromPuzzleDirectory(TestUtilities.TEST_PUZZLES_DIRECTORY);
+            var filePaths = wordSearchProgramHelper.GetPuzzleFilePathsFromPuzzleDirectory(TestUtilities.TEST_PUZZLES_DIRECTORY, 9);
 
             //assert
             Assert.Equal(directoryContents, filePaths);
+        }
+
+        [Fact]
+        public void GetPuzzleFilePathsFromPuzzleDirectory_WhenPuzzleDirectoryExistsAndContainsMoreFilesThanMaxRequested_ListOfFilePathsReturnedUpToMax()
+        {
+            //arrange
+            Mock<IFileOperations> mockFileOperations = new Mock<IFileOperations>();
+            string applicationBasePath = "basePath";
+            bool directoryExists = true;
+            string[] directoryContents = new string[] {"one.txt", "two.txt", "three.txt", "four.txt", "five.txt"};
+            string[] expected = new string[] {"one.txt", "two.txt", "three.txt", "four.txt"};
+            mockFileOperations.Setup(m => m.ApplicationBasePath(It.IsAny<string>(), It.IsAny<string>())).Returns(() => applicationBasePath);
+            mockFileOperations.Setup(m => m.DirectoryExists(It.IsAny<string>())).Returns(() => directoryExists);
+            mockFileOperations.Setup(m => m.GetSortedDirectoryContents(It.IsAny<string>())).Returns(() => directoryContents);
+
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, mockFileOperations.Object, null, null);
+
+            //act
+            var filePaths = wordSearchProgramHelper.GetPuzzleFilePathsFromPuzzleDirectory(TestUtilities.TEST_PUZZLES_DIRECTORY, 4);
+
+            //assert
+            Assert.Equal(expected, filePaths);
         }
 
         [Fact]
@@ -364,7 +386,7 @@ namespace WordSearch.Tests.UnitTests
             WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, mockFileOperations.Object, null, null);
 
             //act & assert
-            var exception = Assert.Throws<ArgumentException>(() => wordSearchProgramHelper.GetPuzzleFilePathsFromPuzzleDirectory(directory));
+            var exception = Assert.Throws<ArgumentException>(() => wordSearchProgramHelper.GetPuzzleFilePathsFromPuzzleDirectory(directory, 9));
             Assert.Equal(expectedMessage, exception.Message);
         }
 
@@ -386,7 +408,7 @@ namespace WordSearch.Tests.UnitTests
             var output = _consoleOuput.ToString();
 
             //assert
-            Assert.True(expected == _consoleOuput.ToString());
+            Assert.Equal(expected, _consoleOuput.ToString());
         }
     }
 }

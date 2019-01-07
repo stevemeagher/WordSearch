@@ -55,7 +55,7 @@ namespace WordSearch.FileLib
             return path.Substring(0,indexOfNextSlash);
         }
 
-        public string[] GetDirectoryContents(string directoryPath)
+        public string[] GetSortedDirectoryContents(string directoryPath)
         {
             string[] filePaths = Directory.GetFiles(directoryPath);
             Array.Sort(filePaths);

@@ -58,7 +58,7 @@ namespace WordSearch.Tests.UnitTests
         public void GetDirectoryContents_WhenFilesExistInDirectory_ReturnsSortdedArrayOfFilePaths()
         {
             //act
-            string[] filePaths = _fileOperations.GetDirectoryContents(_testDirectoryPath);
+            string[] filePaths = _fileOperations.GetSortedDirectoryContents(_testDirectoryPath);
 
             //assert
             Assert.Equal($"{_testDirectoryPath}{Path.DirectorySeparatorChar}wordsearch.txt", filePaths[0]);

@@ -51,6 +51,7 @@ namespace WordSearch.ConsoleApp
             {
                 _consoleWrapper.WriteLine($"({counter}) {_fileOperations.GetFileNameFromPath(filePath)}");
                 counter++;
+                if (counter > 9) break;
             }
         }
 
@@ -73,15 +74,20 @@ namespace WordSearch.ConsoleApp
             return selectedFileNumber;
         }
 
-        public string[] GetPuzzleFilePathsFromPuzzleDirectory(string puzzleDirectory)
+        public string[] GetPuzzleFilePathsFromPuzzleDirectory(string puzzleDirectory, int maximumNumberOfFiles)
         {
             string puzzleDirectoryPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}{Path.DirectorySeparatorChar}{puzzleDirectory}";
 
             if (!_fileOperations.DirectoryExists(puzzleDirectoryPath)) throw new ArgumentException($"directory does not exist: {puzzleDirectoryPath}");
 
-            string[] puzzleFilePaths = _fileOperations.GetDirectoryContents(puzzleDirectoryPath);
+            string[] puzzleFilePaths = _fileOperations.GetSortedDirectoryContents(puzzleDirectoryPath);
 
             if (puzzleFilePaths.Length == 0) throw new ArgumentException($"puzzle directory contains no files: {puzzleDirectoryPath}");
+
+            if (puzzleFilePaths.Length > maximumNumberOfFiles)
+            {
+                Array.Resize(ref puzzleFilePaths, maximumNumberOfFiles);
+            }
 
             return puzzleFilePaths;
         }

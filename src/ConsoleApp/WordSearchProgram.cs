@@ -35,7 +35,7 @@ namespace WordSearch.ConsoleApp
 
             _programHelper.SetConsoleColors(foregroundColor, backgroundColor);
 
-            string[] puzzleFilePaths = _programHelper.GetPuzzleFilePathsFromPuzzleDirectory(puzzleDirectory);
+            string[] puzzleFilePaths = _programHelper.GetPuzzleFilePathsFromPuzzleDirectory(puzzleDirectory, 9);
             
             MenuSelection menuSelection = MenuSelection.NoSelection;
 
