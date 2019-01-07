@@ -81,7 +81,7 @@ My Approach to the Problem
 
 When I first considered a solution to this kata, I thought about the possibility of creating a string array and writing code to search the array by looking for the first character of the search word, and, once found, checking its eight closest neighbours to determine if any matched the second character of the search word and so on.  
 
-Then I realized that I could create eight strings to represent the search grid in the eight directions that needed to be searched (up, down, left, right, top-left to bottom right, bottom-right to top-left, top-right to bottom-left and bottom-left to top-right), and simply use .IndexOf to find the string that contained the search word.  There would then need to be a conversion from the string index position to coordinates in the grid.  That was the approach I went with.
+Then I realized that I could create eight strings to represent the search grid in the eight directions that needed to be searched (up, down, left, right, top-left to bottom right, bottom-right to top-left, top-right to bottom-left and bottom-left to top-right), and simply use ``.IndexOf`` to find the string that contained the search word.  There would then need to be a conversion from the string index position to coordinates in the grid.  That was the approach I went with.
 
 Therefore, the complexity, as much as there is, is contained in the code that generates the search strings and the mapping back from the string index to the grid.
 
