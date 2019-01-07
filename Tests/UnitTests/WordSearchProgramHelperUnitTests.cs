@@ -335,7 +335,7 @@ namespace WordSearch.Tests.UnitTests
             string applicationBasePath = "basePath";
             bool directoryExists = true;
             string[] directoryContents = new string[] {"one.txt", "two.txt", "three.txt"};
-            mockFileOperations.Setup(m => m.ApplicationBasePath(It.IsAny<string>())).Returns(() => applicationBasePath);
+            mockFileOperations.Setup(m => m.ApplicationBasePath(It.IsAny<string>(), It.IsAny<string>())).Returns(() => applicationBasePath);
             mockFileOperations.Setup(m => m.DirectoryExists(It.IsAny<string>())).Returns(() => directoryExists);
             mockFileOperations.Setup(m => m.GetDirectoryContents(It.IsAny<string>())).Returns(() => directoryContents);
 
@@ -355,7 +355,7 @@ namespace WordSearch.Tests.UnitTests
             Mock<IFileOperations> mockFileOperations = new Mock<IFileOperations>();
             string applicationBasePath = "basePath";
             bool directoryExists = false;
-            mockFileOperations.Setup(m => m.ApplicationBasePath(It.IsAny<string>())).Returns(() => applicationBasePath);
+            mockFileOperations.Setup(m => m.ApplicationBasePath(It.IsAny<string>(), It.IsAny<string>())).Returns(() => applicationBasePath);
             mockFileOperations.Setup(m => m.DirectoryExists(It.IsAny<string>())).Returns(() => directoryExists);
 
             string directory = "NODIRECTORY";

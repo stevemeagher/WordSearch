@@ -20,29 +20,37 @@ namespace WordSearch.FileLib
             }
         }
 
-        public string ApplicationBasePath(string baseApplicationDirectory)
+        public string ApplicationBasePath(string baseApplicationDirectory, string fullApplicationPath = "")
         {
             if (_applicationBasePath == "" || baseApplicationDirectory != _baseApplicationDirectory)
             {
                 _baseApplicationDirectory = baseApplicationDirectory;
-                _applicationBasePath = GetApplicationBasePath(baseApplicationDirectory);
+                _applicationBasePath = GetApplicationBasePath(baseApplicationDirectory, fullApplicationPath);
             }
 
             return _applicationBasePath;
         }
 
-        private string GetApplicationBasePath(string baseApplicationDirectory)
+        private string GetApplicationBasePath(string baseApplicationDirectory, string fullApplicationPath)
         {
-            string path = Directory.GetCurrentDirectory();
+            string path = String.IsNullOrEmpty(fullApplicationPath) ? Directory.GetCurrentDirectory() : fullApplicationPath;
 
-            var indexOfBaseName = path.IndexOf(baseApplicationDirectory);
-
-            if (indexOfBaseName == -1)
+            int indexOfBaseName = -1;
+            int lastIndexOfBaseName = -1;
+            
+            do
             {
-                throw new ApplicationException($"Applictaion path does not include {baseApplicationDirectory}");
+                lastIndexOfBaseName = indexOfBaseName;
+                indexOfBaseName = path.IndexOf(baseApplicationDirectory, indexOfBaseName + 1);
+            } while (indexOfBaseName != -1);
+
+
+            if (lastIndexOfBaseName == -1)
+            {
+                throw new ApplicationException($"Application path does not include {baseApplicationDirectory}");
             }
 
-            int indexOfNextSlash = path.IndexOf("/", indexOfBaseName);
+            int indexOfNextSlash = path.IndexOf("/", lastIndexOfBaseName);
 
             return path.Substring(0,indexOfNextSlash);
         }

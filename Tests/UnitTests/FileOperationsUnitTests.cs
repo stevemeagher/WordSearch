@@ -117,6 +117,28 @@ namespace WordSearch.Tests.UnitTests
             Assert.False(directoryExists);
         }
 
+        [Fact]
+        public void GetApplicationBasePath_WhenPathHasMultipleInstancesOfApplicationName_ReturnsFullBasePath()
+        {
+            //arrange
+            string baseDirectory = _fileOperations.ApplicationBasePath("WordSearch");
+            string expected = baseDirectory + "/MyApplicationName/MyApplicationName";
+            if (!Directory.Exists(baseDirectory + "/MyApplicationName"))
+            {
+                Directory.CreateDirectory(baseDirectory + "/MyApplicationName");
+                if (!Directory.Exists(baseDirectory + "/MyApplicationName/MyApplicationName"))
+                {
+                    Directory.CreateDirectory(baseDirectory + "/MyApplicationName/MyApplicationName");
+                }   
+            }
+
+            //act
+            string actual = _fileOperations.ApplicationBasePath("MyApplicationName", baseDirectory + "/MyApplicationName/MyApplicationName/Directory1/Directopry2");
+
+            //assert
+            Assert.Equal(expected, actual);
+        }
+
         public void Dispose()
         {
             //clean-up
