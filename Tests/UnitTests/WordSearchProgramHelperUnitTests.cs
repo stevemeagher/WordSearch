@@ -76,7 +76,7 @@ namespace WordSearch.Tests.UnitTests
         }
 
         [Fact]
-        public void WriteNumberedFileNamesToConsole_WhenWellFormedFilePathsArePassedIn_WritesNumberedFileNamesToConsole()
+        public void WriteNumberedFileNamesToConsole_WhenWellFormedFilePathIsPassedIn_WritesNumberedFileNameToConsole()
         {
             //arrange
             string fileName = "EvilMorty.txt";
@@ -366,6 +366,27 @@ namespace WordSearch.Tests.UnitTests
             //act & assert
             var exception = Assert.Throws<ArgumentException>(() => wordSearchProgramHelper.GetPuzzleFilePathsFromPuzzleDirectory(directory));
             Assert.Equal(expectedMessage, exception.Message);
+        }
+
+        [Theory]
+        [InlineData("file.txt|file.txt", "(1) file.txt{Environment.NewLine}(2) file.txt{Environment.NewLine}")]
+        [InlineData("file.txt|file.txt|file.txt", "(1) file.txt{Environment.NewLine}(2) file.txt{Environment.NewLine}(3) file.txt{Environment.NewLine}")]
+        public void WriteNumberedFileNamesToConsole_WhenWellFormedFilePathsArePassedIn_WritesNumberedFileNamesToConsole(string filePathDelimeteredArray, string expected)
+        {
+            //arrange
+            expected = expected.Replace("{Environment.NewLine}", Environment.NewLine);
+            string[] filePaths = filePathDelimeteredArray.Split('|');
+            Mock<IFileOperations> mockFileOperations = new Mock<IFileOperations>();
+            mockFileOperations.Setup(m => m.GetFileNameFromPath(It.IsAny<string>())).Returns(() => "file.txt");
+
+            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, mockFileOperations.Object, null, null);
+
+            //act
+            wordSearchProgramHelper.WriteNumberedFileNamesToConsole(filePaths);
+            var output = _consoleOuput.ToString();
+
+            //assert
+            Assert.True(expected == _consoleOuput.ToString());
         }
     }
 }

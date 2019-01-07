@@ -89,6 +89,12 @@ namespace WordSearch.Tests.UnitTests
             Assert.True(filePaths[2] == $"{workingDir}{Path.DirectorySeparatorChar}file3.txt");
             Assert.True(filePaths[3] == $"{workingDir}{Path.DirectorySeparatorChar}file4.txt");
             Assert.True(filePaths[4] == $"{workingDir}{Path.DirectorySeparatorChar}file5.txt");
+
+            File.Delete($"{workingDir}{Path.DirectorySeparatorChar}file1.txt");
+            File.Delete($"{workingDir}{Path.DirectorySeparatorChar}file2.txt");
+            File.Delete($"{workingDir}{Path.DirectorySeparatorChar}file3.txt");
+            File.Delete($"{workingDir}{Path.DirectorySeparatorChar}file4.txt");
+            File.Delete($"{workingDir}{Path.DirectorySeparatorChar}file5.txt");
         }
 
         [Fact]

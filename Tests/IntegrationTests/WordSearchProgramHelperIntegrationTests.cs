@@ -38,24 +38,6 @@ namespace WordSearch.Tests.IntegrationTests
         }
 
         [Theory]
-        [InlineData("c:/dir/file1.txt|c:/dir/file2.txt|c:/dir/file3.txt", "(1) file1.txt{Environment.NewLine}(2) file2.txt{Environment.NewLine}(3) file3.txt{Environment.NewLine}")]
-        [InlineData("c:/dir1/dir2/file1.txt|c:/dir1/dir2/file2.txt|c:/dir1/dir2/file3.txt", "(1) file1.txt{Environment.NewLine}(2) file2.txt{Environment.NewLine}(3) file3.txt{Environment.NewLine}")]
-        public void WriteNumberedFileNamesToConsole_WhenWellFormedFilePathsArePassedIn_WritesNumberedFileNamesToConsole(string filePathDelimeteredArray, string expected)
-        {
-            //arrange
-            expected = expected.Replace("{Environment.NewLine}", Environment.NewLine);
-            string[] filePaths = filePathDelimeteredArray.Split('|');
-            WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
-
-            //act
-            wordSearchProgramHelper.WriteNumberedFileNamesToConsole(filePaths);
-            var output = _consoleOuput.ToString();
-
-            //assert
-            Assert.True(expected == _consoleOuput.ToString());
-        }
-
-        [Theory]
         [InlineData("WORD1,WORD2,WORD3", "A,B,C|D,E,F|G,H,I", "puzzle.txt")]
         [InlineData("WORD1,WORD2,WORD3,WORD4", "A,B,C,D|E,F,G,H|I,J,K,L|M,N,O,P", "puzzle.txt")]
         public void GetSearchStringsAndGridFromPuzzleFile_WhenFileExistsInCorrectFormat_ReturnsFirstRowAsSearchStringAndAllOthersAsStringArray(string searchWords, string fileRowsDelimeteredArray, string puzzleFileName)
