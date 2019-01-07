@@ -359,7 +359,7 @@ namespace WordSearch.Tests.UnitTests
             mockFileOperations.Setup(m => m.DirectoryExists(It.IsAny<string>())).Returns(() => directoryExists);
 
             string directory = "NODIRECTORY";
-            string fullPath = $"{applicationBasePath}/{directory}";
+            string fullPath = $"{applicationBasePath}{Path.DirectorySeparatorChar}{directory}";
             string expectedMessage = $"directory does not exist: {fullPath}";            
             WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, mockFileOperations.Object, null, null);
 

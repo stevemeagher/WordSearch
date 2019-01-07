@@ -17,7 +17,7 @@ namespace WordSearch.Tests.UnitTests
         {
             _testUtilities = new TestUtilities();
             _fileOperations = new FileOperations();
-            _testFilePath = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/fileOperationsTests.txt";
+            _testFilePath = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + $"{Path.DirectorySeparatorChar}fileOperationsTests.txt";
             if (File.Exists(_testFilePath))
             {
                 File.Delete(_testFilePath);
@@ -71,24 +71,24 @@ namespace WordSearch.Tests.UnitTests
         public void GetDirectoryContents_WhenFilesExistInDirectory_ReturnsSortdedArrayOfFilePaths()
         {
             //arrange
-            string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
+            string workingDir = $"{_fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY)}{Path.DirectorySeparatorChar}{TEST_DIRECTORY}";
             _testUtilities.CreateEmptyDirectory(workingDir);
 
-            File.Create(workingDir + "/file1.txt");
-            File.Create(workingDir + "/file2.txt");
-            File.Create(workingDir + "/file3.txt");
-            File.Create(workingDir + "/file4.txt");
-            File.Create(workingDir + "/file5.txt");
+            File.Create($"{workingDir}{Path.DirectorySeparatorChar}file1.txt");
+            File.Create($"{workingDir}{Path.DirectorySeparatorChar}file2.txt");
+            File.Create($"{workingDir}{Path.DirectorySeparatorChar}file3.txt");
+            File.Create($"{workingDir}{Path.DirectorySeparatorChar}file4.txt");
+            File.Create($"{workingDir}{Path.DirectorySeparatorChar}file5.txt");
 
             //act
             string[] filePaths = _fileOperations.GetDirectoryContents(workingDir);
 
             //assert
-            Assert.True(filePaths[0] == workingDir + "/file1.txt");
-            Assert.True(filePaths[1] == workingDir + "/file2.txt");
-            Assert.True(filePaths[2] == workingDir + "/file3.txt");
-            Assert.True(filePaths[3] == workingDir + "/file4.txt");
-            Assert.True(filePaths[4] == workingDir + "/file5.txt");
+            Assert.True(filePaths[0] == $"{workingDir}{Path.DirectorySeparatorChar}file1.txt");
+            Assert.True(filePaths[1] == $"{workingDir}{Path.DirectorySeparatorChar}file2.txt");
+            Assert.True(filePaths[2] == $"{workingDir}{Path.DirectorySeparatorChar}file3.txt");
+            Assert.True(filePaths[3] == $"{workingDir}{Path.DirectorySeparatorChar}file4.txt");
+            Assert.True(filePaths[4] == $"{workingDir}{Path.DirectorySeparatorChar}file5.txt");
         }
 
         [Fact]
@@ -120,20 +120,23 @@ namespace WordSearch.Tests.UnitTests
         [Fact]
         public void GetApplicationBasePath_WhenPathHasMultipleInstancesOfApplicationName_ReturnsFullBasePath()
         {
+
             //arrange
+            string duplicateDirectoryNameOnly = "MyApplicationName";
+            string duplicateDirectory = $"{Path.DirectorySeparatorChar}MyApplicationName";
             string baseDirectory = _fileOperations.ApplicationBasePath("WordSearch");
-            string expected = baseDirectory + "/MyApplicationName/MyApplicationName";
-            if (!Directory.Exists(baseDirectory + "/MyApplicationName"))
+            string expected = baseDirectory + $"{duplicateDirectory}{duplicateDirectory}";
+            if (!Directory.Exists(baseDirectory + $"{duplicateDirectory}"))
             {
-                Directory.CreateDirectory(baseDirectory + "/MyApplicationName");
-                if (!Directory.Exists(baseDirectory + "/MyApplicationName/MyApplicationName"))
+                Directory.CreateDirectory(baseDirectory + $"{duplicateDirectory}");
+                if (!Directory.Exists($"{baseDirectory}{duplicateDirectory}{duplicateDirectory}"))
                 {
-                    Directory.CreateDirectory(baseDirectory + "/MyApplicationName/MyApplicationName");
+                    Directory.CreateDirectory($"{baseDirectory}{duplicateDirectory}{duplicateDirectory}");
                 }   
             }
 
             //act
-            string actual = _fileOperations.ApplicationBasePath("MyApplicationName", baseDirectory + "/MyApplicationName/MyApplicationName/Directory1/Directopry2");
+            string actual = _fileOperations.ApplicationBasePath(duplicateDirectoryNameOnly, baseDirectory + $"{duplicateDirectory}{duplicateDirectory}{Path.DirectorySeparatorChar}Directory1{Path.DirectorySeparatorChar}Directory2");
 
             //assert
             Assert.Equal(expected, actual);
@@ -147,7 +150,7 @@ namespace WordSearch.Tests.UnitTests
                 File.Delete(_testFilePath);
             }
 
-            string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
+            string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + Path.DirectorySeparatorChar + TEST_DIRECTORY;
 
             if (Directory.Exists(workingDir))
             {

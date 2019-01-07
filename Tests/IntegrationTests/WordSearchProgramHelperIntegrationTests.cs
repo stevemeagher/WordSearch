@@ -61,7 +61,7 @@ namespace WordSearch.Tests.IntegrationTests
         public void GetSearchStringsAndGridFromPuzzleFile_WhenFileExistsInCorrectFormat_ReturnsFirstRowAsSearchStringAndAllOthersAsStringArray(string searchWords, string fileRowsDelimeteredArray, string puzzleFileName)
         {
             //arrange
-            string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
+            string workingDir = $"{_fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY)}{Path.DirectorySeparatorChar}{TEST_DIRECTORY}";
             CreatePuzzleFile(workingDir, searchWords, fileRowsDelimeteredArray, puzzleFileName);
 
             //need to remove the commas to provide meaningful input to StringToGrid
@@ -70,7 +70,7 @@ namespace WordSearch.Tests.IntegrationTests
             WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
 
             //act
-            var (searchString, grid) = wordSearchProgramHelper.ConvertPuzzleFileToSearchWordsAndGrid($"{workingDir}/{puzzleFileName}");
+            var (searchString, grid) = wordSearchProgramHelper.ConvertPuzzleFileToSearchWordsAndGrid($"{workingDir}{Path.DirectorySeparatorChar}{puzzleFileName}");
 
             //assert
             Assert.Equal(searchWords, searchString);
@@ -84,7 +84,7 @@ namespace WordSearch.Tests.IntegrationTests
         {
             //arrange
             expected = expected.Replace("{Environment.NewLine}", Environment.NewLine);
-            string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
+            string workingDir = $"{_fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY)}{Path.DirectorySeparatorChar}{TEST_DIRECTORY}";
             CreatePuzzleFile(workingDir, searchWords, fileRowsDelimeteredArray, puzzleFileName);
 
             IConsoleWrapper consoleWrapper = new ConsoleWrapperMock();
@@ -93,7 +93,7 @@ namespace WordSearch.Tests.IntegrationTests
             Console.BackgroundColor = ConsoleColor.Black;
 
             //act
-            var (searchString, grid) = wordSearchProgramHelper.ConvertPuzzleFileToSearchWordsAndGrid($"{workingDir}/{puzzleFileName}");
+            var (searchString, grid) = wordSearchProgramHelper.ConvertPuzzleFileToSearchWordsAndGrid($"{workingDir}{Path.DirectorySeparatorChar}{puzzleFileName}");
             IGridManager gridManager = new GridManager(grid);
             wordSearchProgramHelper.WriteSolvedPuzzleCoordinatesToConsole(searchString, gridManager);
             var output = _consoleOuput.ToString();
@@ -120,7 +120,7 @@ namespace WordSearch.Tests.IntegrationTests
         {
             //arrange
             string directory = "NODIRECTORY";
-            string fullPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}/{directory}";
+            string fullPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}{Path.DirectorySeparatorChar}{directory}";
             string expectedMessage = $"directory does not exist: {fullPath}";            
             WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
 
@@ -142,14 +142,14 @@ namespace WordSearch.Tests.IntegrationTests
                 puzzleForFile[i + 1] = puzzleRows[i];
             }
 
-            File.WriteAllLines($"{workingDir}/{puzzleFileName}", puzzleForFile);
+            File.WriteAllLines($"{workingDir}{Path.DirectorySeparatorChar}{puzzleFileName}", puzzleForFile);
         }
 
         public void Dispose()
         {
             Console.SetOut(_originalConsoleOutput);
 
-            string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
+            string workingDir = $"{_fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY)}{Path.DirectorySeparatorChar}{TEST_DIRECTORY}";
             DirectoryInfo di = new DirectoryInfo(workingDir);
             if (di.Exists)
             {

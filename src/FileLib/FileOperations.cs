@@ -50,7 +50,7 @@ namespace WordSearch.FileLib
                 throw new ApplicationException($"Application path does not include {baseApplicationDirectory}");
             }
 
-            int indexOfNextSlash = path.IndexOf("/", lastIndexOfBaseName);
+            int indexOfNextSlash = path.IndexOf(Path.DirectorySeparatorChar, lastIndexOfBaseName);
 
             return path.Substring(0,indexOfNextSlash);
         }

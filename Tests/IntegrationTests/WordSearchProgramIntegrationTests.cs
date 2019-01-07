@@ -97,11 +97,11 @@ namespace WordSearch.Tests.IntegrationTests
 
         [Theory]
         [InlineData("non_existant_directory")]
-        [InlineData("nope/noway")]
+        [InlineData("nope_noway")]
         public void ProgramLoop_WhenPuzzleDirectoryDoesNotExist_ThrowsArgumentException(string directory)
         {
             //arrange
-            string fullPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}/{directory}";
+            string fullPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}{Path.DirectorySeparatorChar}{directory}";
             string expectedMessage = $"directory does not exist: {fullPath}";
             WordSearchProgram wordSearchProgram = new WordSearchProgram(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
 
@@ -115,7 +115,7 @@ namespace WordSearch.Tests.IntegrationTests
         {
             //arrange
             string directory = TestUtilities.EMPTY_DIRECTORY;
-            string fullPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}/{directory}";
+            string fullPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}{Path.DirectorySeparatorChar}{directory}";
             _testUtilities.CreateEmptyDirectory(fullPath);
             string expectedMessage = $"puzzle directory contains no files: {fullPath}";
             WordSearchProgram wordSearchProgram = new WordSearchProgram(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
@@ -129,7 +129,7 @@ namespace WordSearch.Tests.IntegrationTests
         {
             Console.SetOut(_originalConsoleOutput);
 
-            string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
+            string workingDir = $"{_fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY)}{Path.DirectorySeparatorChar}{TEST_DIRECTORY}";
             DirectoryInfo di = new DirectoryInfo(workingDir);
             if (di.Exists)
             {
@@ -137,7 +137,7 @@ namespace WordSearch.Tests.IntegrationTests
             }
 
             string directory = TestUtilities.EMPTY_DIRECTORY;
-            string fullPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}/{directory}";
+            string fullPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}{Path.DirectorySeparatorChar}{directory}";
             di = new DirectoryInfo(fullPath);
             if (di.Exists)
             {
