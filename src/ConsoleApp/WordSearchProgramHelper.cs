@@ -75,7 +75,7 @@ namespace WordSearch.ConsoleApp
 
         public string[] GetPuzzleFilePathsFromPuzzleDirectory(string puzzleDirectory)
         {
-            string puzzleDirectoryPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}/{puzzleDirectory}";
+            string puzzleDirectoryPath = $"{_fileOperations.ApplicationBasePath("WordSearch")}{Path.DirectorySeparatorChar}{puzzleDirectory}";
 
             if (!_fileOperations.DirectoryExists(puzzleDirectoryPath)) throw new ArgumentException($"directory does not exist: {puzzleDirectoryPath}");
 
