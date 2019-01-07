@@ -38,11 +38,12 @@ namespace WordSearch.Tests.IntegrationTests
         }
 
         [Theory]
-        [InlineData("c:/dir/file1.txt|c:/dir/file2.txt|c:/dir/file3.txt", "(1) file1.txt\n(2) file2.txt\n(3) file3.txt\n")]
-        [InlineData("c:/dir1/dir2/file1.txt|c:/dir1/dir2/file2.txt|c:/dir1/dir2/file3.txt", "(1) file1.txt\n(2) file2.txt\n(3) file3.txt\n")]
+        [InlineData("c:/dir/file1.txt|c:/dir/file2.txt|c:/dir/file3.txt", "(1) file1.txt{Environment.NewLine}(2) file2.txt{Environment.NewLine}(3) file3.txt{Environment.NewLine}")]
+        [InlineData("c:/dir1/dir2/file1.txt|c:/dir1/dir2/file2.txt|c:/dir1/dir2/file3.txt", "(1) file1.txt{Environment.NewLine}(2) file2.txt{Environment.NewLine}(3) file3.txt{Environment.NewLine}")]
         public void WriteNumberedFileNamesToConsole_WhenWellFormedFilePathsArePassedIn_WritesNumberedFileNamesToConsole(string filePathDelimeteredArray, string expected)
         {
             //arrange
+            expected = expected.Replace("{Environment.NewLine}", Environment.NewLine);
             string[] filePaths = filePathDelimeteredArray.Split('|');
             WordSearchProgramHelper wordSearchProgramHelper = new WordSearchProgramHelper(_consoleWrapper, _fileOperations, _wordFinder, _searchOrientationManager);
 
@@ -77,11 +78,12 @@ namespace WordSearch.Tests.IntegrationTests
         }
 
         [Theory]
-        [InlineData("AB,HEB", "A,B,C|D,E,F|G,H,I", "puzzle.txt","AB: (0,0),(1,0)\nHEB: (1,2),(1,1),(1,0)\n")]
-        [InlineData("16AF", "1,2,3,4|5,6,7,8|9,0,A,B|C,D,E,F", "puzzle.txt","16AF: (0,0),(1,1),(2,2),(3,3)\n")]
+        [InlineData("AB,HEB", "A,B,C|D,E,F|G,H,I", "puzzle.txt","AB: (0,0),(1,0){Environment.NewLine}HEB: (1,2),(1,1),(1,0){Environment.NewLine}")]
+        [InlineData("16AF", "1,2,3,4|5,6,7,8|9,0,A,B|C,D,E,F", "puzzle.txt","16AF: (0,0),(1,1),(2,2),(3,3){Environment.NewLine}")]
         public void WriteSolvedPuzzleCoordinatesToConsole_WhenSearchWordFound_CoordinatesWrittenToConsole(string searchWords, string fileRowsDelimeteredArray, string puzzleFileName, string expected)
         {
             //arrange
+            expected = expected.Replace("{Environment.NewLine}", Environment.NewLine);
             string workingDir = _fileOperations.ApplicationBasePath(TestUtilities.APPLICATION_DIRECTORY) + "/" + TEST_DIRECTORY;
             CreatePuzzleFile(workingDir, searchWords, fileRowsDelimeteredArray, puzzleFileName);
 
