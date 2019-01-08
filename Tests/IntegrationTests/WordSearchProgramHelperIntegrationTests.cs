@@ -13,7 +13,7 @@ using WordSearch.Tests.Common;
 namespace WordSearch.Tests.IntegrationTests
 {
     [Collection("WordSearchProgram Collection")]
-    public class WordSearchProgramHelperHelperIntegrationTests : IDisposable
+    public class WordSearchProgramHelperIntegrationTests : IDisposable
     {
         private TestUtilities _testUtilities;
         private readonly StringWriter _consoleOuput;
@@ -24,7 +24,7 @@ namespace WordSearch.Tests.IntegrationTests
         private readonly IConsoleWrapper _consoleWrapper;
         private const string TEST_DIRECTORY = "Test_WordSearchProgramHelper";
 
-        public WordSearchProgramHelperHelperIntegrationTests()
+        public WordSearchProgramHelperIntegrationTests()
         {
             _testUtilities = new TestUtilities();
             _originalConsoleOutput = Console.Out;
